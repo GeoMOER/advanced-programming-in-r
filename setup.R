@@ -12,5 +12,6 @@ if (log_avl[2] != log_avl[1])
   installGitbook()
 
 ## create new Gitbook
-newGitbook("advancedProgrammingInR")
-initGitbook("advancedProgrammingInR/")
+# newGitbook("advancedProgrammingInR")
+# initGitbook("advancedProgrammingInR/")
+buildGitbook("advancedProgrammingInR/")
