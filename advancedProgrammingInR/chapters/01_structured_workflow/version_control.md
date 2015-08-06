@@ -1,2 +1,24 @@
 
 # GitHub version control
+
+GitHub is a ...
+
+### Add a new code repository
+In order to add version control to your newly established RStudio 
+project, you are required to create a user account at 
+[GitHub](https://github.com/). This involves the specification of a username, an 
+e-mail address and a password only and goes without giving away personal data. 
+
+Once your account has been created and you've successfully logged in, select 
+'New repository' from the 'Create new...' (plus sign) drop-down menu in the 
+top-right corner
+
+![new_repository](http://i.imgur.com/N4ni6RY.png)
+
+to create a new GitHub code repository. Now, enter 'advanced-programming-in-r' 
+as repository name and, optionally, provide a short description of the data it 
+contains (or, more precisely, the data that it is supposed to contain in the 
+future). Finally, hit the 'Create repository' button to complete the setup 
+process.
+
+![new_repository_ii](http://i.imgur.com/K9D6NQr.png)
