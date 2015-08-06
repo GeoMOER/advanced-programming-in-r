@@ -1,0 +1,2 @@
+
+# Speeding up iteration procedures

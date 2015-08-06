@@ -1,0 +1,2 @@
+
+# C++ interconnectivity via **Rcpp**
