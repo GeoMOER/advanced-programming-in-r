@@ -8,3 +8,43 @@ opts_chunk$set(prompt=TRUE, comment='', results='markup')
 # end setup chunk
 ```
 # Data handling and visualization
+
+As noted earlier in this guide, an R workflow basically consists of performing 
+calculations and/or visualizing your data which has previously been imported into 
+R. In the majority of cases, this workflow usually includes an intermediary step 
+referred to as data manipulation meant to get your data into shape for 
+visualization. Note that some packages even require you to provide the data to 
+be displayed in a particular format (of which more later on).  
+
+Within the scope of this short course, we'll simply assume that you already 
+heard a lot about importing your data into R. Even if this were not the case, 
+there's plenty of tutorials on the internet demonstrating the use of `read.table` 
+and the like. Help on this topic may be found e.g. on 
+[Quick-R](http://www.statmethods.net/input/importingdata.html), 
+[CRAN](https://cran.r-project.org/doc/manuals/r-release/R-data.html), 
+[R-Tutor](http://www.r-tutor.com/r-introduction/data-frame/data-import) and so 
+forth. Just remember, Google is your friend &#9786;
+
+### Data manipulation
+A hodgepodge of typical data manipulation steps including illustrative examples 
+is given at [Cookbook for R](http://www.cookbook-r.com/Manipulating_data/) and 
+includes, amongst others,
+
+* **General operations**
+    * Sorting
+    * Converting between vector types
+    * Dealing with duplicate records and missing values
+* **Factor operations**
+    * Renaming and re-computing factor levels
+    * Reordering factor levels (which comes in quite handy when it comes to plotting)
+* **Data frame operations**
+    * Adding and removing columns
+    * Reordering columns
+    * Merging data frames
+* **Restructuring data**
+    * Data format conversions
+    * Summarizing data
+
+Assuming that you're already familiar with the basics of data manipulation, we'll 
+primarily focus on the latter point which represents an essential step towards 
+conveying your results clearly and vividly to a broader audience. 
