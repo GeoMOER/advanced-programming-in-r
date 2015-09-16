@@ -47,7 +47,8 @@ helps to overcome such ritual-like investigation procedures.
 library(dplyr)
 
 ## create a local data frame
-tbl_df(diamonds)
+diamonds <- tbl_df(diamonds)
+diamonds
 ```
 
 Notice that not only the class and the dimensions of the dataset are displayed, 
@@ -98,3 +99,73 @@ filter(diamonds, carat > 3 &
          cut %in% c("Premium", "Ideal") &
          color %in% c("D", "E", "F"))
 ```
+
+### Selecting columns via `select`
+Selecting specific columns from a data frame follows a similar syntax to 
+`filter` and works analogous to SQL standards. Again, the first argument 
+represents the data frame under consideration followed by the desired column 
+names (without double quotes). 
+
+```{r select}
+select(diamonds, carat, cut, color, clarity)
+```
+
+Note that both the use of `c` to combine the single column names into a vector 
+as well as the need for double quotes became obsolete. In addition to this, 
+column names may be treated analogous to numeric indices, eliminating the need 
+to count columns when desiring to extract several consecutive columns from a 
+rather wide datasets. 
+
+```{r select2}
+select(diamonds, carat:clarity, price)
+```
+
+There's also a set of additional helper functions, including `starts_with`, 
+`ends_with`, `matches` and `contains`, which definitely go beyond the scope of 
+this short introduction. Still, it's good to know that such things existed in 
+case you needed any of them.
+
+### A brief note on chaining (or pipelining)
+Now suppose we wanted to select the same columns from the previously created 
+subset of data. Traditionally, this would either require a 2-step approach, 
+generating otherwise unnecessary intermediate results, via 
+
+```{r filter_select, eval = FALSE}
+## first, create subset
+diamonds_sub <- filter(diamonds, carat > 3 &
+                         cut %in% c("Premium", "Ideal") &
+                         color %in% c("D", "E", "F"))
+
+## second, select columns
+select(diamonds_sub, carat:clarity, price)
+```
+
+or nested function calls which are usually hard to read.
+
+```{r filter_select2, eval = FALSE}
+## all-in-one nested solution
+select(
+  filter(diamonds, carat > 3 &
+           cut %in% c("Premium", "Ideal") &
+           color %in% c("D", "E", "F")), 
+  carat:clarity, price
+)
+```
+
+**dplyr** introduces the `%>%` operator which is meant to bridge a set of 
+connected processing steps, thus eliminating the need for intermediary 
+variables ('diamonds_sub') or nested functions. Just think of `%>%` as "then" 
+connecting two parts of a sentence.
+
+```{r pipelining}
+diamonds %>%
+  filter(carat > 3 &
+           cut %in% c("Premium", "Ideal") &
+           color %in% c("D", "E", "F")) %>%
+  select(carat:clarity, price)
+```
+
+Note that chaining comes in handy when performing multiple operations at once, 
+rendering your code much more elegant and reducing the accumulated overhead 
+significantly. The single worksteps can be read from left to right and from top 
+to bottom, just like you would read the pages of a book. 

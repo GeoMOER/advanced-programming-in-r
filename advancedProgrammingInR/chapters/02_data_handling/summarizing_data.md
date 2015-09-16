@@ -41,24 +41,10 @@ helps to overcome such ritual-like investigation procedures.
 ```r
 > ## required package
 > library(dplyr)
-```
-
-```
-
-Attaching package: 'dplyr'
-
-The following objects are masked from 'package:stats':
-
-    filter, lag
-
-The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union
-```
-
-```r
+> 
 > ## create a local data frame
-> tbl_df(diamonds)
+> diamonds <- tbl_df(diamonds)
+> diamonds
 ```
 
 ```
@@ -118,7 +104,130 @@ of the data frame with every single condition.
 ```
 
 ```
-  carat     cut color clarity depth table price    x    y    z
-1  3.01 Premium     F      I1  62.2    56  9925 9.24 9.13 5.73
-2  3.05 Premium     E      I1  60.9    58 10453 9.26 9.25 5.66
+Source: local data frame [2 x 10]
+
+  carat     cut  color clarity depth table price     x     y     z
+  (dbl)  (fctr) (fctr)  (fctr) (dbl) (dbl) (int) (dbl) (dbl) (dbl)
+1  3.01 Premium      F      I1  62.2    56  9925  9.24  9.13  5.73
+2  3.05 Premium      E      I1  60.9    58 10453  9.26  9.25  5.66
 ```
+
+### Selecting columns via `select`
+Selecting specific columns from a data frame follows a similar syntax to 
+`filter` and works analogous to SQL standards. Again, the first argument 
+represents the data frame under consideration followed by the desired column 
+names (without double quotes). 
+
+
+```r
+> select(diamonds, carat, cut, color, clarity)
+```
+
+```
+Source: local data frame [53,940 x 4]
+
+   carat       cut  color clarity
+   (dbl)    (fctr) (fctr)  (fctr)
+1   0.23     Ideal      E     SI2
+2   0.21   Premium      E     SI1
+3   0.23      Good      E     VS1
+4   0.29   Premium      I     VS2
+5   0.31      Good      J     SI2
+6   0.24 Very Good      J    VVS2
+7   0.24 Very Good      I    VVS1
+8   0.26 Very Good      H     SI1
+9   0.22      Fair      E     VS2
+10  0.23 Very Good      H     VS1
+..   ...       ...    ...     ...
+```
+
+Note that both the use of `c` to combine the single column names into a vector 
+as well as the need for double quotes became obsolete. In addition to this, 
+column names may be treated analogous to numeric indices, eliminating the need 
+to count columns when desiring to extract several consecutive columns from a 
+rather wide datasets. 
+
+
+```r
+> select(diamonds, carat:clarity, price)
+```
+
+```
+Source: local data frame [53,940 x 5]
+
+   carat       cut  color clarity price
+   (dbl)    (fctr) (fctr)  (fctr) (int)
+1   0.23     Ideal      E     SI2   326
+2   0.21   Premium      E     SI1   326
+3   0.23      Good      E     VS1   327
+4   0.29   Premium      I     VS2   334
+5   0.31      Good      J     SI2   335
+6   0.24 Very Good      J    VVS2   336
+7   0.24 Very Good      I    VVS1   336
+8   0.26 Very Good      H     SI1   337
+9   0.22      Fair      E     VS2   337
+10  0.23 Very Good      H     VS1   338
+..   ...       ...    ...     ...   ...
+```
+
+There's also a set of additional helper functions, including `starts_with`, 
+`ends_with`, `matches` and `contains`, which definitely go beyond the scope of 
+this short introduction. Still, it's good to know that such things existed in 
+case you needed any of them.
+
+### A brief note on chaining (or pipelining)
+Now suppose we wanted to select the same columns from the previously created 
+subset of data. Traditionally, this would either require a 2-step approach, 
+generating otherwise unnecessary intermediate results, via 
+
+
+```r
+> ## first, create subset
+> diamonds_sub <- filter(diamonds, carat > 3 &
++                          cut %in% c("Premium", "Ideal") &
++                          color %in% c("D", "E", "F"))
+> 
+> ## second, select columns
+> select(diamonds_sub, carat:clarity, price)
+```
+
+or nested function calls which are usually hard to read.
+
+
+```r
+> ## all-in-one nested solution
+> select(
++   filter(diamonds, carat > 3 &
++            cut %in% c("Premium", "Ideal") &
++            color %in% c("D", "E", "F")), 
++   carat:clarity, price
++ )
+```
+
+**dplyr** introduces the `%>%` operator which is meant to bridge a set of 
+connected processing steps, thus eliminating the need for intermediary 
+variables ('diamonds_sub') or nested functions. Just think of `%>%` as "then" 
+connecting two parts of a sentence.
+
+
+```r
+> diamonds %>%
++   filter(carat > 3 &
++            cut %in% c("Premium", "Ideal") &
++            color %in% c("D", "E", "F")) %>%
++   select(carat:clarity, price)
+```
+
+```
+Source: local data frame [2 x 5]
+
+  carat     cut  color clarity price
+  (dbl)  (fctr) (fctr)  (fctr) (int)
+1  3.01 Premium      F      I1  9925
+2  3.05 Premium      E      I1 10453
+```
+
+Note that chaining comes in handy when performing multiple operations at once, 
+rendering your code much more elegant and reducing the accumulated overhead 
+significantly. The single worksteps can be read from left to right and from top 
+to bottom, just like you would read the pages of a book. 
