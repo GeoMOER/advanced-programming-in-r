@@ -1,6 +1,7 @@
 ```{r knitsetup, echo=FALSE, results='hide', warning=FALSE, message=FALSE, cache=FALSE}
 library(knitr)
 library(knitcitations)
+mybib <- bibtex::read.bib("../../bib/references")
 opts_knit$set(base.dir='./', fig.path='', out.format='md')
 opts_chunk$set(prompt=TRUE, comment='', results='markup')
 # See yihui.name/knitr/options for more Knitr options.
@@ -10,13 +11,14 @@ opts_chunk$set(prompt=TRUE, comment='', results='markup')
 # end setup chunk
 ```
 # Data format conversions
+
 Usually, your data is arranged in matrix format with rows and columns 
 representing observations and variables, respectively. This is the common case 
 not only for R, but also for many other statistical software packages, including 
 Excel and SPSS. 
 However, certain R packages, including visualization via **ggplot2**, are easier to handle when 
 using a long data format rather than a wide one, thus requiring a "rearrangement of the form, but not the content, of the 
-data" `r citep("http://www.jstatsoft.org/v21/i12")` according to so-called 
+data" `r citep(mybib[[grep("Wickham", mybib)]])` according to so-called 
 identifier (or ID) and measured variables. Here's a simple example taken from 
 [Cookbook for R](http://www.cookbook-r.com/Manipulating_data/Converting_data_between_wide_and_long_format/) 
 to illustrate this point. Let's start off with the wide format:

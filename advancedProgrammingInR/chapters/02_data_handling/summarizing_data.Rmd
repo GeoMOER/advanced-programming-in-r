@@ -5,9 +5,96 @@ opts_knit$set(base.dir='./', fig.path='', out.format='md')
 opts_chunk$set(prompt=TRUE, comment='', results='markup')
 # See yihui.name/knitr/options for more Knitr options.
 ##### Put other setup R code here
-
+library(ggplot2)
 
 # end setup chunk
 ```
 # Summarizing data
 
+The **dplyr** package is a marvelous and very intuitive set of tools to perform 
+fast and easy data manipulation and summarization in preparation e.g. for 
+visualization. In the following, we'll guide you through a selection of 
+operations you may find helpful within the course of future R workflows on the 
+basis of the 'diamonds' dataset. Based on a very comprehensive 
+[RPubs tutorial](https://rpubs.com/justmarkham/dplyr-tutorial), these include
+
+* `filter`, 
+* `select`, 
+* `arrange`, 
+* `mutate`, 
+* `summarise` and 
+* `group_by`, 
+
+each of which will be accompanied by an equivalent base-R approach.
+
+### A brief note on `tbl_df`
+You probably noticed earlier that 'diamonds' consists of a rather large number 
+of observations. 
+
+```{r diamonds_dim}
+## number of columns and rows of 'diamonds'
+dim(diamonds)
+```
+
+Unless you are willing to stumble into truncated console output when typing 
+`diamonds` (please don't do that), you are inevitably required to perform 
+`head(diamonds)` or `str(diamonds)` in order to get an impression of the data 
+you are dealing with. Along with **dplyr** comes a function called `tbl_df` that 
+helps to overcome such ritual-like investigation procedures. 
+
+```{r tbl_df}
+## required package
+library(dplyr)
+
+## create a local data frame
+tbl_df(diamonds)
+```
+
+Notice that not only the class and the dimensions of the dataset are displayed, 
+but also the variable types of the single columns. Furthermore, the console 
+output is truncated after the first 10 rows (which would also apply to the 
+displayed columns if we were dealing with a somewhat wider dataset). Practically, 
+this means that the appropriate use of `tbl_df` lets you kill two birds with one 
+stone compared with the 2-step approach via `head` and `str` shown above. 
+
+### Subsetting data via `filter`
+Just like base-R `subset` or simply indexing via conditional expressions 
+included in square brackets, `filter` creates a subset of your data based on 
+some user-defined criteria. For the time being, let's have a look at your 
+subsetting abilities.
+
+##### Task #2: base-R subsetting
+Suppose we want to create a subset of 'diamonds' keeping all D-, E- or F-colored 
+specimen with a 'Premium' or 'Ideal' cut quality and a weight of more than 3 
+carat. Try to figure out two different solutions, one <u>with</u> and one 
+<u>without</u> using `subset`. 
+
+<center>
+  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+</center>
+
+```{r subset, echo = FALSE, eval = FALSE}
+subset(diamonds, carat > 3 & 
+         (cut == "Premium" | cut == "Ideal") & 
+         (color == "D" | color == "E" | color == "F"))
+
+subset(diamonds, carat > 3 &
+         cut %in% c("Premium", "Ideal") &
+         color %in% c("D", "E", "F"))
+
+diamonds[diamonds$carat > 3 & 
+           diamonds$cut %in% c("Premium", "Ideal") &
+           diamonds$color %in% c("D", "E", "F"), ]
+```
+
+Using `filter` is straightforward and very similar to `subset`. The first 
+argument represents the data frame, whereas any subsequent argument represents a 
+logical expression to filter particular rows. Note that in contrast to the 
+direct subsetting via square brackets, you are not required to repeat the name 
+of the data frame with every single condition.
+
+```{r filter}
+filter(diamonds, carat > 3 &
+         cut %in% c("Premium", "Ideal") &
+         color %in% c("D", "E", "F"))
+```

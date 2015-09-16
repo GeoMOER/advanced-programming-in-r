@@ -1,12 +1,13 @@
 
 # Data format conversions
+
 Usually, your data is arranged in matrix format with rows and columns 
 representing observations and variables, respectively. This is the common case 
 not only for R, but also for many other statistical software packages, including 
 Excel and SPSS. 
 However, certain R packages, including visualization via **ggplot2**, are easier to handle when 
 using a long data format rather than a wide one, thus requiring a "rearrangement of the form, but not the content, of the 
-data" (, 2015) according to so-called 
+data" (Wickham, 2007) according to so-called 
 identifier (or ID) and measured variables. Here's a simple example taken from 
 [Cookbook for R](http://www.cookbook-r.com/Manipulating_data/Converting_data_between_wide_and_long_format/) 
 to illustrate this point. Let's start off with the wide format:

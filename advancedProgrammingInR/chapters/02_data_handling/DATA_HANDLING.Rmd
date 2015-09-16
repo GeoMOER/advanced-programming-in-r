@@ -48,3 +48,20 @@ includes, amongst others,
 Assuming that you're already familiar with the basics of data manipulation, we'll 
 primarily focus on the latter point which represents an essential step towards 
 conveying your results clearly and vividly to a broader audience. 
+
+### The 'diamonds' dataset
+In the following, we'll demonstrate the essentials of data restructuring in R on 
+the basis of the `diamonds` dataset included in **ggplot2**. In case you're not 
+already familiar with the dataset, just take a minute to have a brief look at 
+what it's all about. Also, feel free to try out `?diamonds` in order to get a 
+more detailed description of the single variables.
+
+```{r diamonds}
+## load 'ggplot2' package
+library(ggplot2)
+
+## show the first 6 rows of 'diamonds'
+head(diamonds)
+## show the structure of 'diamonds'
+str(diamonds)
+```
