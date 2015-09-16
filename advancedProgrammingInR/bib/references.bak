@@ -1,0 +1,22 @@
+% This file was created with JabRef 2.11b3.
+% Encoding: Cp1252
+
+
+@Article{Wickham2007,
+  Title                    = {Reshaping Data with the reshape Package},
+  Author                   = {Wickham, Hadley},
+  Journal                  = {Journal of Statistical Software},
+  Year                     = {2007},
+
+  Month                    = {November},
+  Number                   = {12},
+  Pages                    = {1--20},
+  Volume                   = {21},
+
+  File                     = {:Wickham - 2007.pdf:PDF},
+  Keywords                 = {data reshaping, contingency table, tabulation, aggregation, R},
+  Owner                    = {Florian Detsch},
+  Timestamp                = {2015.09.16},
+  Url                      = {http://www.jstatsoft.org/v21/i12}
+}
+
