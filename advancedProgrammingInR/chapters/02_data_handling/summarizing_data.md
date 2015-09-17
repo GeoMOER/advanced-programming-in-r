@@ -206,7 +206,7 @@ or nested function calls which are usually hard to read.
 
 **dplyr** introduces the `%>%` operator which is meant to bridge a set of 
 connected processing steps, thus eliminating the need for intermediary 
-variables ('diamonds_sub') or nested functions. Just think of `%>%` as "then" 
+variables ('diamonds_sub') or nested functions. Just think of `%>%` as a "then" 
 connecting two parts of a sentence.
 
 
@@ -231,3 +231,51 @@ Note that chaining comes in handy when performing multiple operations at once,
 rendering your code much more elegant and reducing the accumulated overhead 
 significantly. The single worksteps can be read from left to right and from top 
 to bottom, just like you would read the pages of a book. 
+
+### Reordering data frames via `arrange`
+`arrange` ensures a fast and easy rearrangement of rows based on certain 
+variables. Although this can be done using base-R, its necessity soon becomes 
+clear when dealing with rearrangements based on multiple variables as the **dplyr** 
+approach requires far less typing.
+
+##### Task #3: base-R rearrangement of rows
+Here's a tricky one. Let's assume we wanted to rearrange the rows of a subset of 
+'diamonds' (color, price, carat) according to color, with the best color (D) on 
+top. Since we're also interested in a preferably low price, the diamonds of 
+uniform color should be sorted according to their price, with cheapest ones on 
+top. Finally, for each set of diamonds with a specified color and price, we want 
+their weights arranged in descending order, with the heaviest specimen on top.
+
+<center>
+  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+</center>
+
+
+
+Again, the **dplyr** approach is much simpler as it doesn't require to repeat 
+the name of the data frame with each newly added variable inside `order`. 
+
+
+```r
+> diamonds %>%
++   select(color, price, carat) %>%
++   arrange(color, price, desc(carat))
+```
+
+```
+Source: local data frame [53,940 x 3]
+
+    color price carat
+   (fctr) (int) (dbl)
+1       D   357  0.23
+2       D   357  0.23
+3       D   361  0.32
+4       D   362  0.23
+5       D   367  0.24
+6       D   367  0.20
+7       D   367  0.20
+8       D   367  0.20
+9       D   373  0.24
+10      D   373  0.23
+..    ...   ...   ...
+```
