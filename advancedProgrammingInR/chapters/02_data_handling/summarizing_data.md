@@ -11,9 +11,8 @@ basis of the 'diamonds' dataset. Based on a very comprehensive
 * `filter`, 
 * `select`, 
 * `arrange`, 
-* `mutate`, 
-* `summarise` and 
-* `group_by`, 
+* `mutate` and 
+* `summarise` (incl. `group_by`) 
 
 each of which will be accompanied by an equivalent base-R approach.
 
@@ -309,3 +308,66 @@ Source: local data frame [53,940 x 5]
 10      H  0.23   338 1469.565 1469.57
 ..    ...   ...   ...      ...     ...
 ```
+
+### Summarise values via `summarise`
+Similar to `plyr::summarise`, the **dplyr** version of `summarise` lets you melt 
+a data frame into a single row depending on the supplied function. The function 
+works quite similar as base-R `aggregate`. However, the ease of use is definitely 
+on the side of `summarise`. 
+
+##### Task #4: base-R data aggregation
+In order to demonstrate **dplyr**'s ease of use in terms of data summarization, 
+try to `aggregate` diamonds in such a fashion that you end up with a data frame 
+showing the minimum, mean and maximum price per diamond color.
+
+<center>
+  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+</center>
+
+
+
+As for the **dplyr** solution, the `group_by` function comes in handy when 
+trying to calculate metrics from sub-groups of data, e.g. depending on the 
+diamonds' color, rather than from the entire data frame.
+
+
+```r
+> diamonds %>% 
++   group_by(color) %>%
++   summarise(MIN = min(price), MEAN = mean(price), MAX = max(price))
+```
+
+```
+Source: local data frame [7 x 4]
+
+   color   MIN     MEAN   MAX
+  (fctr) (int)    (dbl) (int)
+1      D   357 3169.954 18693
+2      E   326 3076.752 18731
+3      F   342 3724.886 18791
+4      G   354 3999.136 18818
+5      H   337 4486.669 18803
+6      I   334 5091.875 18823
+7      J   335 5323.818 18710
+```
+
+In order to summarize an entire variable into one single value, just drop the 
+`group_by` function. 
+
+
+```r
+> summarise(diamonds, min = min(price), mean = mean(price), max = max(price))
+```
+
+```
+Source: local data frame [1 x 3]
+
+    min   mean   max
+  (int)  (dbl) (int)
+1   326 3932.8 18823
+```
+
+Now that you're familiar with the basics of data manipulation via **dplyr** and 
+before moving on to actual data visualization via **ggplot2**, it's time to have 
+a brief look at data format conversion from wide to long format which is essential 
+for displaying numerous groups of data in one single plot.
