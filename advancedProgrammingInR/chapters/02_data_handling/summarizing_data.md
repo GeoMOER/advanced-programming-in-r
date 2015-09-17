@@ -252,8 +252,7 @@ their weights arranged in descending order, with the heaviest specimen on top.
 
 
 
-Again, the **dplyr** approach is much simpler as it doesn't require to repeat 
-the name of the data frame with each newly added variable inside `order`. 
+Again, the **dplyr** approach is much simpler and can be done in one go. 
 
 
 ```r
@@ -278,4 +277,35 @@ Source: local data frame [53,940 x 3]
 9       D   373  0.24
 10      D   373  0.23
 ..    ...   ...   ...
+```
+
+### Add new columns via `mutate`
+`mutate` lets you add new variables to an existing data frame. It is basically 
+an extended version of base-R `transform` in the sense that it allows you to 
+directly work with columns you've just created. 
+
+
+```r
+> diamonds %>%
++   select(color, carat, price) %>%
++   mutate(ppc = price / carat, 
++          ppc_rnd = round(ppc, 2))
+```
+
+```
+Source: local data frame [53,940 x 5]
+
+    color carat price      ppc ppc_rnd
+   (fctr) (dbl) (int)    (dbl)   (dbl)
+1       E  0.23   326 1417.391 1417.39
+2       E  0.21   326 1552.381 1552.38
+3       E  0.23   327 1421.739 1421.74
+4       I  0.29   334 1151.724 1151.72
+5       J  0.31   335 1080.645 1080.65
+6       J  0.24   336 1400.000 1400.00
+7       I  0.24   336 1400.000 1400.00
+8       H  0.26   337 1296.154 1296.15
+9       E  0.22   337 1531.818 1531.82
+10      H  0.23   338 1469.565 1469.57
+..    ...   ...   ...      ...     ...
 ```

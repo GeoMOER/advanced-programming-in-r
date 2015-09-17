@@ -201,3 +201,15 @@ diamonds %>%
   select(color, price, carat) %>%
   arrange(color, price, desc(carat))
 ```
+
+### Add new columns via `mutate`
+`mutate` lets you add new variables to an existing data frame. It is basically 
+an extended version of base-R `transform` in the sense that it allows you to 
+directly work with columns you've just created. 
+
+```{r mutate}
+diamonds %>%
+  select(color, carat, price) %>%
+  mutate(ppc = price / carat, 
+         ppc_rnd = round(ppc, 2))
+```
