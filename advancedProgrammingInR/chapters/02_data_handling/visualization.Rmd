@@ -86,3 +86,76 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
   labs(x = "Carat", y = "Price ($)") +
   theme_bw()
 ```
+
+
+### Box and whisker plots
+
+Box and whisker plots drawn with **ggplot2** look quite nice and, in contrast to **lattice**, do not require the user to exhaustively modify graphical parameter settings in order to get an acceptable result. But see for yourselves (using the default settings).
+
+```{r gg_bw, tidy = FALSE, fig.cap = fn("a basic ggplot2 bw-plot"), fig.align = 'center'}
+## basic frame
+p <- ggplot(aes(x = color, y = price), data = diamonds)
+
+## add boxplot
+p_bw <- p + geom_boxplot()
+
+## print
+print(p_bw)
+```
+
+Note that this time, we stored the basic frame of our plot in a variable `p` and added the desired `geom_boxplot()` layer afterwards. In order to keep a clear structure (and not to get in trouble with Tim), this is possibly the ideal way to create graphics using **ggplot2** - so stick to it! 
+
+As we've already seen, the facetting is also just one more line of code.
+
+```{r gg_bw_facet, tidy = FALSE, fig.cap = fn("ggplot2 panel bw-plot"), fig.align = 'center'}
+## add faceted boxplots
+p_bw <- p + 
+  geom_boxplot(fill = "grey90") +
+  facet_wrap(~ cut) +
+  theme_bw()
+
+print(p_bw)
+```
+
+
+## Histograms and densityplots
+
+Much like with the box and whisker plot, **ggplot2** produces quite nice histograms and densityplots when using the default settings.
+
+```{r gg_hist, tidy = FALSE, fig.cap = fn("a basic histogram produced with ggplot2"), fig.align = 'center', message=FALSE}
+## new basic frame
+p <- ggplot(aes(x = price), data = diamonds)
+
+## add histogram
+p_hist <- p + geom_histogram()
+
+print(p_hist)
+```
+
+When working with **ggplot2** densityplots, it is quite easy to fill the area under the curve which really contributes to the visual representation of the data.
+
+```{r gg dens, tidy = FALSE, fig.cap = fn("a basic density plot produced with ggplot2"), fig.align = 'center'}
+## add densityplot
+p_dens <- p +  geom_density(fill = "black", alpha = 0.5)
+
+print(p_dens)
+```
+
+In addition to `theme_bw` which you already encountered before, there's a lot of different `theme` settings that let you customize your plots at will. For instance, let us slightly rotate the tick labels on the x-axis and move them horizontally a little bit. `element_text` is an essential function to achieve such things as it allows you to modify, amongst others, 
+
+* font `family` and `face` (e.g. 'bold'),
+* text `colour` and `size`,
+* horizontal (`hjust`) and vertical (`vjust`) justification as well as 
+* `angle` of the tick labels. 
+
+(In case you prefer American English, `element_text` also understands `color` instead of `colour` &#9786;)
+
+```{r gg facet density, tidy = FALSE, fig.cap = fn("a ggplot2 panel density plot conditioned according to 2 variables"), fig.align = 'center'}
+p_dens <- p +
+  geom_density(fill = "black", alpha = 0.5) +
+  facet_grid(color ~ cut) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(p_dens)
+```
