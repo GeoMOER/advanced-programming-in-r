@@ -1,2 +1,87 @@
 
 # Visualizing data using **ggplot2**
+
+Now that you've grown familiar with the basics of data manipulation using 
+**dplyr** and **reshape2**, the next logical step in our workflow is to 
+visualize the data that we've exhaustively prepared. Be aware that there are 
+plenty of marvellous graphics packages available in R depending on which tasks 
+you'd like to perform. Within the scope of our short course, **ggplot2** will do 
+just fine not least because it is closely linked to the previously performed 
+manipulation tasks (maybe because of the same author). 
+
+
+```r
+> ## load 'ggplot2' package
+> library(ggplot2)
+```
+
+In **ggplot2**, every plot we want to draw consists of subsequent calls on how 
+to represent the individual plot components (basically `x` and `y`). This means 
+a much more consistent way of *building* visualizations as compared, for 
+instance, to the much more conventional style of **lattice**, but 
+it also means that things are rather different from what you might have learned 
+about syntax and structure of (plotting) objects in R so far.
+
+Note also that the brief examples shown below are mainly taken from Tim's course 
+on [Creating publication quality graphs in R](http://moc.environmentalinformatics-marburg.de/gitbooks/publicationQualityGraphics/_book/index.html). 
+Feel free to browse the text tutorial or the accompanying [course slides](http://moc.environmentalinformatics-marburg.de/doku.php?id=courses:sp:pqgr) 
+in case you're not entirely satisfied with the rather shallow introduction given 
+here or if you wish to learn more about **lattice**-style figures. 
+
+### Scatter plots
+
+Scatter plots are produced by invoking `geom_points`. If we wanted to plot 
+variables 'price' and 'carat' from the 'diamonds' dataset against each other, 
+the `ggplot` call would be as follows.
+
+
+```r
+> ggplot(aes(x = carat, y = price), data = diamonds) + 
++   geom_point()
+```
+
+<img src="figure/gg_scat-1.png" title="Figure 1: A basic scatter plot created with ggplot2" alt="Figure 1: A basic scatter plot created with ggplot2" style="display: block; margin: auto;" />
+
+Let's look at the above code in a little more detail. The first line is the fundamental definition of **what** we want to plot. We provide the 'aesthetics' for the plot (`aes()`) and state that we want the values on the `x`-axis (`y`-axis) to represent 'carat' ('price'). The `data` to take these variables from is the 'diamonds' dataset. That's basically it, and this will not change a hell of a lot in the subsequent plotting routines.
+
+What will change in the code chunks that follow is **how** we want the relationship between these variables to be represented in our plot. This is done by defining so-called geometries (`geom_...()`). In this first case we stated that we want the relationship between `x` and `y` to be rpresented as points, hence we used `geom_point()`.
+
+For the sake of practicing, let's add another layer to our plot. In order to provide the regression line, for instance, we need a function called `stat_smooth()`. Note that we also specify the smoothing `method` and the line `colour`, `size` and `linetype`. `se = FALSE` tells the function not to display confidence intervals for the moment. See `?stat_smooth` for a more detailed overview of costumization possibilities.
+
+
+```r
+> ggplot(aes(x = carat, y = price), data = diamonds) + 
++   geom_point() +
++   stat_smooth(method = "lm", se = FALSE, 
++               colour = "red", size = 1.5, linetype = "dashed")
+```
+
+![Figure 2: A scatter plot incl. regression line.](figure/gg_scat_stat-1.png) 
+
+If we wanted to provide a plot showing the relationship between 'price' and 'carat' in panels representing the quality of the diamonds, we need what in **ggplot2** is called facetting (similar to panels in **lattice**). To achive this, we simply repeat our plotting call from earlier and add another layer to the call which does the facetting. Note that this time, confidence intervals are included via `se = TRUE` and `fill`-ed grey.
+
+
+```r
+> ggplot(aes(x = carat, y = price), data = diamonds) + 
++   geom_point() +
++   stat_smooth(method = "lm", se = TRUE, 
++               colour = "red", fill = "grey35") + 
++   facet_wrap(~ cut)
+```
+
+<img src="figure/gg_scat_facet-1.png" title="Figure 3: ggplot2 version of a facetted plot" alt="Figure 3: ggplot2 version of a facetted plot" style="display: block; margin: auto;" />
+
+One thing that some people dislike about the default settings in **ggplot2** is the grey background of the plots. This grey background is, in our opinion, a good idea when colors are involved as it tends to increase the contrast of the colors. If, however, the plot is a simple black-and-white scatter plot, a white facet background seems more reasonable. We can easily change this using a pre-defined theme called `theme_bw()`. Note that in the following, we also change the axis titles (`labs`) and the number of rows (`nrow`) and columns (`ncol`) into which the facets should be arranged - simple and straightforward.
+
+
+```r
+> ggplot(aes(x = carat, y = price), data = diamonds) + 
++   geom_point(colour = "grey65") +
++   stat_smooth(method = "lm", se = TRUE, 
++               colour = "black", fill = "grey35") +
++   facet_wrap(~ cut, nrow = 2, ncol = 3) +
++   labs(x = "Carat", y = "Price ($)") +
++   theme_bw()
+```
+
+<img src="figure/gg_scat_facet_bw-1.png" title="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" alt="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" style="display: block; margin: auto;" />
