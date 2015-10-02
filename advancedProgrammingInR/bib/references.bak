@@ -15,7 +15,7 @@
 
   File                     = {:Wickham - 2007.pdf:PDF},
   Keywords                 = {data reshaping, contingency table, tabulation, aggregation, R},
-  Owner                    = {Florian Detsch},
+  Owner                    = {fdetsch},
   Timestamp                = {2015.09.16},
   Url                      = {http://www.jstatsoft.org/v21/i12}
 }

@@ -1,18 +1,25 @@
-% This file was created with JabRef 2.11b3.
+% This file was created with JabRef 2.11b4.
 % Encoding: Cp1252
 
+
+@Manual{,
+  Title                    = {Getting Started with doParallel and foreach},
+  Author                   = {Weston, Steve and Calaway, Rich},
+  Organization             = {Revolution Analytics},
+  Owner                    = {fdetsch},
+  Timestamp                = {2015.10.02},
+  Url                      = {https://cran.r-project.org/web/packages/doParallel/vignettes/gettingstartedParallel.pdf}
+}
 
 @Article{Wickham2007,
   Title                    = {Reshaping Data with the reshape Package},
   Author                   = {Wickham, Hadley},
   Journal                  = {Journal of Statistical Software},
   Year                     = {2007},
-
   Month                    = {November},
   Number                   = {12},
   Pages                    = {1--20},
   Volume                   = {21},
-
   File                     = {:Wickham - 2007.pdf:PDF},
   Keywords                 = {data reshaping, contingency table, tabulation, aggregation, R},
   Owner                    = {fdetsch},
