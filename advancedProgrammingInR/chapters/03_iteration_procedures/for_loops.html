@@ -137,7 +137,7 @@ The class of colom 10 is numeric </code></pre>
 +   st &lt;- indx_start[i]
 +   nd &lt;- indx_end[i]
 +   
-+   ## data based on indeces
++   ## subset data based on row indeces
 +   dat &lt;- diamonds[st:nd, ]
 +   
 +   ## create unique name for iteration data
@@ -148,6 +148,14 @@ The class of colom 10 is numeric </code></pre>
 +   ## write to disk
 +   write.csv(dat, nm)
 + }</code></pre>
+<p><code>for</code>-loops are great for iterative operations that do not require assignment of their output to an object, e.g. the example above of saving data or producing plots. If we want the outcome of a loop to be assigned to an object and use this for further analysis, R has much more convenient structures which we will see in the next chapter.</p>
+<p>Finally, there are more pieces related to iteration procedures in R:</p>
+<ul>
+<li><code>while</code>-loops to do semthing while some condition is met (e.g. while a certain value is below a certain threshold or thelike)</li>
+<li><code>break</code> allows you to create a condition so that once it is met, the loop will stop</li>
+<li><code>next</code> allows you to create a condition so that if it is met, the execution of the current iteration is skipped and the loop procedes to the next iteration without breaking the loop</li>
+<li><code>if</code>-statements can also be helpful to prevent errors within loops</li>
+</ul>
 </div>
 </div>
 
