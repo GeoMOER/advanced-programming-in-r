@@ -12,14 +12,16 @@ opts_chunk$set(prompt=TRUE, comment='', results='markup')
 ```
 # Parallelization
 
-There's actually a whole bunch of packages that allow you to split particular 
-tasks to multiple cores on your local machine. Out of those, we decided to focus 
-on **doParallel** (in conjunction with **foreach**) as it represents a straightforward 
-solution that does not require the user to manually export objects from the 
-global environment to the single nodes (e.g. required by **parallel**).
+As regards multi-core operations, there's actually a whole bunch of packages 
+that allow you to distribute particular processing steps to multiple cores on 
+your local machine. Out of those, we decided to focus on **doParallel** (in 
+conjunction with **foreach**) as it represents a straightforward solution that 
+does not require the user to manually export objects from the global environment 
+to the single nodes (e.g. required by **parallel**).
 
-Let's start with detecting the number of cores available on your machine by 
-running the following piece of code. 
+Let's start straight away with detecting the number of cores available on your 
+machine via `detectCores`. In the end, there's no use in trying to split a 
+certain task into 5 parts when there are only 4 horses available, is it? &#128521; 
 
 ```{r ncores, message=FALSE}
 ## load 'doParallel' package
@@ -29,13 +31,16 @@ library(doParallel)
 detectCores()
 ```
 
-In my particular case, there are 4 nodes available for parallelization. However, 
-this number typically varies between computers. Note also that `library(doParallel)` 
-automatically attaches the **foreach** package which we will require later on. 
-Next, let's create and register a socket cluster for parallel processing. Just think of 
-this as a set of workers among which a particular work step should be divided 
-equally. With `registerDoParallel`, we tell R that it should use the created 
-cluster for any further multi-core operations performed with `foreach`.
+In our case, there are 4 nodes available for parallelization among which 
+iteration procedures may be divided. Note that this number typically varies 
+between computers. Note also that `library(doParallel)` automatically attaches 
+the **foreach** package which we will require later on. 
+
+Next, let's create a socket cluster for parallel processing via `makeCluster`. 
+Think of this as a set of workers among which a particular work step should be 
+divided equally - just like in the image on the previous page. With 
+`registerDoParallel`, we tell R that it should use the created cluster for any 
+further multi-core operations performed with `foreach`.
 
 ```{r cluster}
 ## create parallel socket cluster
@@ -45,13 +50,12 @@ cl <- makeCluster(3)
 registerDoParallel(cl)
 ```
 
-You will probably notice that we told R to use 3 nodes to work with. Why's he 
-doing that?, you might wonder since our machine is equipped with 4 nodes in 
-total. Well, parallel processing distributed among all nodes available tends to 
-slow down your computer considerably. Since we'd possibly like to perform some 
-other actions while R is occupied (e.g. browsing the internet, checking e-mails, 
-etc.), we should leave some remaining computational power for such operations as 
-well.  
+You will probably notice that we told R to use 3 nodes to work with. Why not use  
+all 4 nodes?, you might wonder. Well, parallel processing distributed among all 
+nodes available tends to slow down your computer considerably. Since we'd 
+possibly like to perform some other actions while R is occupied (e.g. browsing 
+the internet, checking e-mails, etc.), it is wise to leave some remaining 
+computational power for such operations as well.  
 
 Now that we're set up properly, it's time to give our cluster something to work 
 with. Remember the previous example on calculating the linear relationship 

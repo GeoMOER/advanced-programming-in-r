@@ -1,2 +1,56 @@
 
 # Speeding up iteration procedures
+
+At this stage, we assume that you've grown familiar with R's most relevant loop 
+constructs, including `for` loops and the `*apply` family of functions. Yet, 
+there's two other packages we'd like to introduce within the scope of this short 
+course due to their convenient performance when it comes to accelerating certain 
+operations. But first things first... here's the topics (and the related 
+packages) that we're gonna cover in the upcoming section on speeding up 
+iteration procedures in R.
+
+### Parallelization via `doParallel` (and `foreach`)
+
+Just a bit of theory ahead.
+
+<blockquote>
+"Speedup is a common measure of the performance gain from a parallel processor. 
+It is defined as the ratio of the time required to complete the job with one 
+processor to the time required to complete the job with <i>N</i> processors. 
+[...] In a machine where work can be dynamically assigned to available 
+processors, it is attained as long as the number of pieces of work ready for 
+processing is at least <i>N</i>." (Denning and Tichy, 1990)
+</blockquote>
+
+Or, to cut a long story short, if you're performing one and the same iteration 
+again and again, you may as well distribute an equal amount of sub-iterations to 
+each processor available on your local machine. In theory, distributing an 
+operation to <i>N</i> nodes would result in a 10-fold speed gain. 
+
+<center>
+  <img src="https://i2.wp.com/gforge.se/wp-content/uploads/2015/02/Horse_power_smudge_9000.jpg" alt="horses" style="width: 500px;"/>
+</center>
+
+Enough theory - let's proceed to actual practice. We'll have a brief look at R's 
+capabilities in terms of parallel processing using the **doParallel** package 
+along with **foreach** (an other package to deal with loop constructs). Be 
+aware, however, that there are plenty of opportunities to ["go parallel" in R](http://www.r-bloggers.com/how-to-go-parallel-in-r-basics-tips/) which you 
+might want to have a look at.
+
+### "Cross-lingual" programming via `Rcpp`
+
+The **Rcpp** package offers a seamless integration of C++ functionality in R. 
+The underlying reason why such a thing exists in the first place is rather easy 
+to explain: sometimes R code is just not fast enough. But don't be afraid if you 
+haven't gotten in touch with C++ so far: we're barely gonna scratch the surface 
+of what is possibly when combining those two languages. In fact, our short 
+excursion on the topic is merely meant to raise awareness of such things 
+slumbering in the depth of the R universe. In case you'd like to learn more 
+about the subject, we recommend to have a closer look at Hadley Wickham's 
+comprehensive [Rcpp tutorial on Advanced R](http://adv-r.had.co.nz/Rcpp.html) or, 
+if you're a fan of hard copies, Dirk Eddelbuettel's book about "Seamless R and 
+C++ Integration with Rcpp". 
+
+<center>
+  <img src="http://www.rcpp.org/book/seamless.png" alt="rcpp" style="width: 300px;"/>
+</center>
