@@ -1,10 +1,99 @@
 ```{r knitsetup, echo=FALSE, results='hide', warning=FALSE, message=FALSE, cache=FALSE}
+library(knitr)
 opts_knit$set(base.dir='./', fig.path='', out.format='md')
 opts_chunk$set(prompt=TRUE, comment='', results='markup')
 # See yihui.name/knitr/options for more Knitr options.
 ##### Put other setup R code here
 
-
+library(ggplot2)
 # end setup chunk
 ```
 # *for* loops
+
+Maybe the most important part of any advanced analysis workflow is to avoid (code) repetition. If you need to perform a certain task many times, propper interation structures are far more desirable than the classical copy and paste approach. 
+
+Why? Because they
+
+* help you avoid errors (as each copy of any code chunk increases the risk of error introduction)
+* make debugging a lot easier as you only have to debug once
+* make your code a lot shorter and more readable
+* save you time coding
+* ...
+
+The classical iteration structure is the so-called _for loop_. Classic, because it is the back-bone of any and all programming languages. The basic concept is simple
+
+```
+for (a certain amount of iterations)
+  do this
+```
+
+The way the iteration sequence is specified differs between languages, but the basic principle is always the same.
+
+The sequence is usually specified via some placeholder - most popular of which is i for iteration - which usually represents an integer sequence, though you can also iterate over character strings. Here's a very simple loop:
+
+```{r print loop}
+for (i in 1:5) print(i)
+```
+
+Make sure you code clearly so that you can easily understand what your code is doing. Therefore, when using iteration structures, try to provide meaningful placeholder names.
+
+```{r name loop1}
+for (name in names(diamonds)) print(name)
+```
+
+Another way to specify an iteration is via the `seq()` function which can be used to create a sequence of integers based on the length of an object.
+
+```{r names loop2}
+for (i in seq(names(diamonds))) cat("The class of colom", i, "is",  class(diamonds[, i]), "\n")
+```
+
+Did you spot the spelling mistake in the above example? It is easy to debug this, as we only need to correct the error once, not `r length(names(diamonds))` times.
+
+### Task #1: Looping the mean, meaning the loop
+Take the above `for`-loop and modify so that instead of the class it prints out the mean of each column.
+
+<center>
+  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+</center>
+
+
+Obviously, we are usually not interested in simply printing something to the console (though this can be a great way of keeping track of where you're computation is in case of long running loops). Most of the time we want to actually run some computations/statistical analyses. The principle remains the same. 
+
+You may have heard the notion that `for`-loops in R are slow and should be avoided. This is true in many situations. As a general rule, 
+
+* __you should avoid `for`-loops whenever you want to do calculations on parts of an object. This can be achieved much more efficiently with indexing in R__
+* __if you have multiple objects and you want to carry out the same operation on each of them or you have one object and want to carry out different types of calculations on this same object, there is nothing wrong with using `for`-loops.__
+
+One common scenario is to work with different data sources. Here, `for`-loops can be quite useful. To highlight this, let's create a few data sources and save them to disk (we will load these again later).
+
+Instead of reusing the same lines of code, we dynamically subset the data, build suitable names for saving and finally save each part of the data.
+
+```{r save loop, eval = FALSE}
+## index for start and end rows to be extracted
+indx_start <- seq(1, nrow(diamonds), 2000)
+indx_end <- c(indx_start[-1] - 1, nrow(diamonds))
+
+## create new directory to save files to
+dir_nm <- "results"
+dir.create(dir_nm, showWarnings = FALSE)
+
+## looping through the files
+for (i in seq(indx_start)) {
+  
+  ## actual indeces for current iteration
+  st <- indx_start[i]
+  nd <- indx_end[i]
+  
+  ## data based on indeces
+  dat <- diamonds[st:nd, ]
+  
+  ## create unique name for iteration data
+  nm <- paste0(dir_nm, "/", "diamonds_subset_", 
+               sprintf("%05.0f", st), "_", 
+               sprintf("%05.0f", nd), ".csv")
+  
+  ## write to disk
+  write.csv(dat, nm)
+}
+```
+
