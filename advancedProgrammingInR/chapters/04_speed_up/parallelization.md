@@ -138,23 +138,11 @@ package is just the right thing for such an operation.
 ```
 
 ```
-Warning: closing unused connection 10 (<-localhost:11160)
-```
-
-```
-Warning: closing unused connection 9 (<-localhost:11160)
-```
-
-```
-Warning: closing unused connection 8 (<-localhost:11160)
-```
-
-```
 Unit: milliseconds
-                                                              expr      min       lq     mean
- {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 51.06636 51.41955 52.12576
+                                                              expr      min       lq    mean
+ {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 56.28832 56.92526 59.2284
    median       uq      max neval
- 51.82103 52.27765 54.32115    20
+ 57.50784 58.51387 78.03688    20
 ```
 
 Hm, quite some time. Let's see how long it takes on when using multiple cores. 
@@ -173,9 +161,9 @@ much faster, right?
 ```
 Unit: milliseconds
                                                                  expr      min       lq     mean
- {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 138.7644 151.5377 210.7941
-   median       uq     max neval
- 177.3854 191.2622 916.877    20
+ {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 165.2157 190.2062 271.8289
+   median       uq      max neval
+ 226.1027 239.6801 1321.968    20
 ```
 
 Oops, what's going on now? Obviously, this action doesn't perform faster at all 
@@ -197,6 +185,9 @@ Using `foreach` (or `lapply`), the referring code would roughly look as follows.
 
 
 ```r
+> ## load 'party' package
+> library(party)
+> 
 > system.time({
 +   
 +   ## conditional inference trees 
@@ -213,11 +204,6 @@ Using `foreach` (or `lapply`), the referring code would roughly look as follows.
 +                                    maxdepth = 3))
 +   }
 + })
-```
-
-```
-   user  system elapsed 
- 24.482   0.010  24.483 
 ```
 
 `ctree` performs rather slowly, which is particularly owing to `nresample` that 
@@ -247,11 +233,6 @@ time!
 + })
 ```
 
-```
-   user  system elapsed 
-  4.230   0.408  20.828 
-```
-
 Of course, this is seconds we are talking about. Nonetheless, everyone of you 
 will eventually end up with quite big datasets upon which computationally 
 expensive operations need to be performed in an iterative manner. It might be 
@@ -274,13 +255,10 @@ currently open connections to the R console.
 
 ```
    description         class            mode  text     isopen   can read can write
-3  "<-localhost:11160" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-4  "<-localhost:11160" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-5  "<-localhost:11160" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-7  "output"            "textConnection" "wr"  "text"   "opened" "no"     "yes"    
-11 "<-localhost:11160" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-12 "<-localhost:11160" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-13 "<-localhost:11160" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+4  "output"            "textConnection" "wr"  "text"   "opened" "no"     "yes"    
+8  "<-localhost:11393" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+9  "<-localhost:11393" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+10 "<-localhost:11393" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
 ```
 
 There's 3 socket connections (i.e. cores) registered at the moment, just as we 
