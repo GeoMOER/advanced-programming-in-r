@@ -1,0 +1,575 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Visualizing data using ggplot2 | Advanced Programming in R</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.4.0">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../../chapters/03_iteration_procedures/ITERATION_PROCEDURES.html" />
+    
+    
+    <link rel="prev" href="../../chapters/02_data_handling/format_conversions.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="2.3" data-basepath="../.." data-revision="Tue Oct 06 2015 14:39:10 GMT+0200 (CEST)">
+    
+
+<div class="book-summary">
+    <div class="book-search" role="search">
+        <input type="text" placeholder="Type to search" class="form-control" />
+    </div>
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Introduction
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="chapters/01_structured_workflow/STRUCTURED_WORKFLOW.html">
+            
+                
+                    <a href="../../chapters/01_structured_workflow/STRUCTURED_WORKFLOW.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Towards a structured workflow
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="chapters/01_structured_workflow/projects.html">
+            
+                
+                    <a href="../../chapters/01_structured_workflow/projects.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.1.</b>
+                        
+                        RStudio projects
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="chapters/01_structured_workflow/version_control.html">
+            
+                
+                    <a href="../../chapters/01_structured_workflow/version_control.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.2.</b>
+                        
+                        GitHub version control
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="chapters/02_data_handling/DATA_HANDLING.html">
+            
+                
+                    <a href="../../chapters/02_data_handling/DATA_HANDLING.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Data handling and visualization
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1" data-path="chapters/02_data_handling/summarizing_data.html">
+            
+                
+                    <a href="../../chapters/02_data_handling/summarizing_data.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.</b>
+                        
+                        Summarizing data
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="chapters/02_data_handling/format_conversions.html">
+            
+                
+                    <a href="../../chapters/02_data_handling/format_conversions.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.</b>
+                        
+                        Data format conversions
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.3" data-path="chapters/02_data_handling/visualization.html">
+            
+                
+                    <a href="../../chapters/02_data_handling/visualization.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.</b>
+                        
+                        Visualizing data using ggplot2
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="chapters/03_iteration_procedures/ITERATION_PROCEDURES.html">
+            
+                
+                    <a href="../../chapters/03_iteration_procedures/ITERATION_PROCEDURES.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Iteration procedures
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="chapters/03_iteration_procedures/for_loops.html">
+            
+                
+                    <a href="../../chapters/03_iteration_procedures/for_loops.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        for loops
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="chapters/03_iteration_procedures/apply.html">
+            
+                
+                    <a href="../../chapters/03_iteration_procedures/apply.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        The *apply family
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="chapters/03_iteration_procedures/functional_programming.html">
+            
+                
+                    <a href="../../chapters/03_iteration_procedures/functional_programming.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        Functional programming
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="chapters/04_speed_up/SPEED_UP.html">
+            
+                
+                    <a href="../../chapters/04_speed_up/SPEED_UP.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        Speeding up iteration procedures
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1" data-path="chapters/04_speed_up/parallelization.html">
+            
+                
+                    <a href="../../chapters/04_speed_up/parallelization.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.1.</b>
+                        
+                        Parallelization
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="chapters/04_speed_up/rcpp.html">
+            
+                
+                    <a href="../../chapters/04_speed_up/rcpp.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.</b>
+                        
+                        C++ interconnectivity via Rcpp
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="chapters/05_final_remarks/FINAL_REMARKS.html">
+            
+                
+                    <a href="../../chapters/05_final_remarks/FINAL_REMARKS.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Final remarks
+                    </a>
+            
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">Serif</button>
+        <button type="button" data-font="1" class="button">Sans</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">White</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">Sepia</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="Share"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Google"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../" >Advanced Programming in R</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h1 id="visualizing-data-using-ggplot2">Visualizing data using <strong>ggplot2</strong></h1>
+<p>Now that you&apos;ve grown familiar with the basics of data manipulation using 
+<strong>dplyr</strong> and <strong>reshape2</strong>, the next logical step in our workflow is to 
+visualize the data that we&apos;ve exhaustively prepared. Be aware that there are 
+plenty of marvellous graphics packages available in R depending on which tasks 
+you&apos;d like to perform. Within the scope of our short course, <strong>ggplot2</strong> will do 
+just fine not least because it is closely linked to the previously performed 
+manipulation tasks (maybe because of the same author). </p>
+<pre><code class="lang-r">&gt; <span class="hljs-comment">## load &apos;ggplot2&apos; package</span>
+&gt; <span class="hljs-keyword">library</span>(ggplot2)
+</code></pre>
+<p>In <strong>ggplot2</strong>, every plot we want to draw consists of subsequent calls on how 
+to represent the individual plot components (basically <code>x</code> and <code>y</code>). This means 
+a much more consistent way of <em>building</em> visualizations as compared, for 
+instance, to the much more conventional style of <strong>lattice</strong>, but 
+it also means that things are rather different from what you might have learned 
+about syntax and structure of (plotting) objects in R so far.</p>
+<p>Note also that the brief examples shown below are mainly taken from Tim&apos;s course 
+on <a href="http://moc.environmentalinformatics-marburg.de/gitbooks/publicationQualityGraphics/_book/index.html" target="_blank">Creating publication quality graphs in R</a>. 
+Feel free to browse the text tutorial or the accompanying <a href="http://moc.environmentalinformatics-marburg.de/doku.php?id=courses:sp:pqgr" target="_blank">course slides</a> 
+in case you&apos;re not entirely satisfied with the rather shallow introduction given 
+here or if you wish to learn more about <strong>lattice</strong>-style figures. </p>
+<h3 id="scatter-plots">Scatter plots</h3>
+<p>Scatter plots are produced by invoking <code>geom_points</code>. If we wanted to plot 
+variables &apos;price&apos; and &apos;carat&apos; from the &apos;diamonds&apos; dataset against each other, 
+the <code>ggplot</code> call would be as follows.</p>
+<pre><code class="lang-r">&gt; ggplot(aes(x = carat, y = price), data = diamonds) + 
++   geom_point()
+</code></pre>
+<p><img src="figure/gg_scat-1.png" title="Figure 1: A basic scatter plot created with ggplot2" alt="Figure 1: A basic scatter plot created with ggplot2" style="display: block; margin: auto;"></p>
+<p>Let&apos;s look at the above code in a little more detail. The first line is the fundamental definition of <strong>what</strong> we want to plot. We provide the &apos;aesthetics&apos; for the plot (<code>aes()</code>) and state that we want the values on the <code>x</code>-axis (<code>y</code>-axis) to represent &apos;carat&apos; (&apos;price&apos;). The <code>data</code> to take these variables from is the &apos;diamonds&apos; dataset. That&apos;s basically it, and this will not change a hell of a lot in the subsequent plotting routines.</p>
+<p>What will change in the code chunks that follow is <strong>how</strong> we want the relationship between these variables to be represented in our plot. This is done by defining so-called geometries (<code>geom_...()</code>). In this first case we stated that we want the relationship between <code>x</code> and <code>y</code> to be rpresented as points, hence we used <code>geom_point()</code>.</p>
+<p>For the sake of practicing, let&apos;s add another layer to our plot. In order to provide the regression line, for instance, we need a function called <code>stat_smooth()</code>. Note that we also specify the smoothing <code>method</code> and the line <code>colour</code>, <code>size</code> and <code>linetype</code>. <code>se = FALSE</code> tells the function not to display confidence intervals for the moment. See <code>?stat_smooth</code> for a more detailed overview of costumization possibilities.</p>
+<pre><code class="lang-r">&gt; ggplot(aes(x = carat, y = price), data = diamonds) + 
++   geom_point() +
++   stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">FALSE</span>, 
++               colour = <span class="hljs-string">&quot;red&quot;</span>, size = <span class="hljs-number">1.5</span>, linetype = <span class="hljs-string">&quot;dashed&quot;</span>)
+</code></pre>
+<p><img src="figure/gg_scat_stat-1.png" alt="Figure 2: A scatter plot incl. regression line."> </p>
+<p>If we wanted to provide a plot showing the relationship between &apos;price&apos; and &apos;carat&apos; in panels representing the quality of the diamonds, we need what in <strong>ggplot2</strong> is called facetting (similar to panels in <strong>lattice</strong>). To achive this, we simply repeat our plotting call from earlier and add another layer to the call which does the facetting. Note that this time, confidence intervals are included via <code>se = TRUE</code> and <code>fill</code>-ed grey.</p>
+<pre><code class="lang-r">&gt; ggplot(aes(x = carat, y = price), data = diamonds) + 
++   geom_point() +
++   stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">TRUE</span>, 
++               colour = <span class="hljs-string">&quot;red&quot;</span>, fill = <span class="hljs-string">&quot;grey35&quot;</span>) + 
++   facet_wrap(~ cut)
+</code></pre>
+<p><img src="figure/gg_scat_facet-1.png" title="Figure 3: ggplot2 version of a facetted plot" alt="Figure 3: ggplot2 version of a facetted plot" style="display: block; margin: auto;"></p>
+<p>One thing that some people dislike about the default settings in <strong>ggplot2</strong> is the grey background of the plots. This grey background is, in our opinion, a good idea when colors are involved as it tends to increase the contrast of the colors. If, however, the plot is a simple black-and-white scatter plot, a white facet background seems more reasonable. We can easily change this using a pre-defined theme called <code>theme_bw()</code>. Note that in the following, we also change the axis titles (<code>labs</code>) and the number of rows (<code>nrow</code>) and columns (<code>ncol</code>) into which the facets should be arranged - simple and straightforward.</p>
+<pre><code class="lang-r">&gt; ggplot(aes(x = carat, y = price), data = diamonds) + 
++   geom_point(colour = <span class="hljs-string">&quot;grey65&quot;</span>) +
++   stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">TRUE</span>, 
++               colour = <span class="hljs-string">&quot;black&quot;</span>, fill = <span class="hljs-string">&quot;grey35&quot;</span>) +
++   facet_wrap(~ cut, nrow = <span class="hljs-number">2</span>, ncol = <span class="hljs-number">3</span>) +
++   labs(x = <span class="hljs-string">&quot;Carat&quot;</span>, y = <span class="hljs-string">&quot;Price ($)&quot;</span>) +
++   theme_bw()
+</code></pre>
+<p><img src="figure/gg_scat_facet_bw-1.png" title="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" alt="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" style="display: block; margin: auto;"></p>
+<h3 id="box-and-whisker-plots">Box and whisker plots</h3>
+<p>Box and whisker plots drawn with <strong>ggplot2</strong> look quite nice and, in contrast to <strong>lattice</strong>, do not require the user to exhaustively modify graphical parameter settings in order to get an acceptable result. But see for yourselves (using the default settings).</p>
+<pre><code class="lang-r">&gt; <span class="hljs-comment">## basic frame</span>
+&gt; p &lt;- ggplot(aes(x = color, y = price), data = diamonds)
+&gt; 
+&gt; <span class="hljs-comment">## add boxplot</span>
+&gt; p_bw &lt;- p + geom_boxplot()
+&gt; 
+&gt; <span class="hljs-comment">## print</span>
+&gt; print(p_bw)
+</code></pre>
+<p><img src="figure/gg_bw-1.png" title="Figure 5: a basic ggplot2 bw-plot" alt="Figure 5: a basic ggplot2 bw-plot" style="display: block; margin: auto;"></p>
+<p>Note that this time, we stored the basic frame of our plot in a variable <code>p</code> and added the desired <code>geom_boxplot()</code> layer afterwards. In order to keep a clear structure (and not to get in trouble with Tim), this is possibly the ideal way to create graphics using <strong>ggplot2</strong> - so stick to it! </p>
+<p>As we&apos;ve already seen, the facetting is also just one more line of code.</p>
+<pre><code class="lang-r">&gt; <span class="hljs-comment">## add faceted boxplots</span>
+&gt; p_bw &lt;- p + 
++   geom_boxplot(fill = <span class="hljs-string">&quot;grey90&quot;</span>) +
++   facet_wrap(~ cut) +
++   theme_bw()
+&gt; 
+&gt; print(p_bw)
+</code></pre>
+<p><img src="figure/gg_bw_facet-1.png" title="Figure 6: ggplot2 panel bw-plot" alt="Figure 6: ggplot2 panel bw-plot" style="display: block; margin: auto;"></p>
+<h2 id="histograms-and-densityplots">Histograms and densityplots</h2>
+<p>Much like with the box and whisker plot, <strong>ggplot2</strong> produces quite nice histograms and densityplots when using the default settings.</p>
+<pre><code class="lang-r">&gt; <span class="hljs-comment">## new basic frame</span>
+&gt; p &lt;- ggplot(aes(x = price), data = diamonds)
+&gt; 
+&gt; <span class="hljs-comment">## add histogram</span>
+&gt; p_hist &lt;- p + geom_histogram()
+&gt; 
+&gt; print(p_hist)
+</code></pre>
+<p><img src="figure/gg_hist-1.png" title="Figure 7: a basic histogram produced with ggplot2" alt="Figure 7: a basic histogram produced with ggplot2" style="display: block; margin: auto;"></p>
+<p>When working with <strong>ggplot2</strong> densityplots, it is quite easy to fill the area under the curve which really contributes to the visual representation of the data.</p>
+<pre><code class="lang-r">&gt; <span class="hljs-comment">## add densityplot</span>
+&gt; p_dens &lt;- p +  geom_density(fill = <span class="hljs-string">&quot;black&quot;</span>, alpha = <span class="hljs-number">0.5</span>)
+&gt; 
+&gt; print(p_dens)
+</code></pre>
+<p><img src="figure/gg dens-1.png" title="Figure 8: a basic density plot produced with ggplot2" alt="Figure 8: a basic density plot produced with ggplot2" style="display: block; margin: auto;"></p>
+<p>In addition to <code>theme_bw</code> which you already encountered before, there&apos;s a lot of different <code>theme</code> settings that let you customize your plots at will. For instance, let us slightly rotate the tick labels on the x-axis and move them horizontally a little bit. <code>element_text</code> is an essential function to achieve such things as it allows you to modify, amongst others, </p>
+<ul>
+<li>font <code>family</code> and <code>face</code> (e.g. &apos;bold&apos;),</li>
+<li>text <code>colour</code> and <code>size</code>,</li>
+<li>horizontal (<code>hjust</code>) and vertical (<code>vjust</code>) justification as well as </li>
+<li><code>angle</code> of the tick labels. </li>
+</ul>
+<p>(In case you prefer American English, <code>element_text</code> also understands <code>color</code> instead of <code>colour</code> &#x263A;)</p>
+<pre><code class="lang-r">&gt; p_dens &lt;- p +
++   geom_density(fill = <span class="hljs-string">&quot;black&quot;</span>, alpha = <span class="hljs-number">0.5</span>) +
++   facet_grid(color ~ cut) +
++   theme_bw() +
++   theme(axis.text.x = element_text(angle = <span class="hljs-number">45</span>, hjust = <span class="hljs-number">1</span>))
+&gt; 
+&gt; print(p_dens)
+</code></pre>
+<p><img src="figure/gg facet density-1.png" title="Figure 9: a ggplot2 panel density plot conditioned according to 2 variables" alt="Figure 9: a ggplot2 panel density plot conditioned according to 2 variables" style="display: block; margin: auto;"></p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../../chapters/02_data_handling/format_conversions.html" class="navigation navigation-prev " aria-label="Previous page: Data format conversions"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../../chapters/03_iteration_procedures/ITERATION_PROCEDURES.html" class="navigation navigation-next " aria-label="Next page: Iteration procedures"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../../gitbook/app.js"></script>
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

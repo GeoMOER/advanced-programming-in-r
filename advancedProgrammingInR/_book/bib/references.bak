@@ -1,0 +1,47 @@
+% This file was created with JabRef 2.10b2.
+% Encoding: UTF-8
+
+
+@TechReport{Denning1990,
+  Title                    = {Highly Parallel Computation},
+  Author                   = {Denning, Peter J. and Tichy, Walter F.},
+  Institution              = {Research Institute for Advanced Computer Science, NASA Ames Research Center},
+  Year                     = {1990},
+  Month                    = {August},
+  Number                   = {TR-90.35},
+  Type                     = {RIACS Technical Report},
+
+  Owner                    = {fdetsch},
+  Timestamp                = {2015.10.05},
+  Url                      = {http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19920002480.pdf}
+}
+
+@Manual{,
+  Title                    = {Getting Started with doParallel and foreach},
+  Author                   = {Weston, Steve and Calaway, Rich},
+  Organization             = {Revolution Analytics},
+  Year                     = {2014},
+
+  Owner                    = {fdetsch},
+  Timestamp                = {2015.10.02},
+  Url                      = {https://cran.r-project.org/web/packages/doParallel/vignettes/gettingstartedParallel.pdf}
+}
+
+@Article{Wickham2007,
+  Title                    = {Reshaping Data with the reshape Package},
+  Author                   = {Wickham, Hadley},
+  Journal                  = {Journal of Statistical Software},
+  Year                     = {2007},
+
+  Month                    = {November},
+  Number                   = {12},
+  Pages                    = {1--20},
+  Volume                   = {21},
+
+  File                     = {:Wickham - 2007.pdf:PDF},
+  Keywords                 = {data reshaping, contingency table, tabulation, aggregation, R},
+  Owner                    = {fdetsch},
+  Timestamp                = {2015.09.16},
+  Url                      = {http://www.jstatsoft.org/v21/i12}
+}
+

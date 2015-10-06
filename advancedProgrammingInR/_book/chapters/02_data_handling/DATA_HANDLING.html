@@ -1,0 +1,539 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Data handling and visualization | Advanced Programming in R</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.4.0">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../../chapters/02_data_handling/summarizing_data.html" />
+    
+    
+    <link rel="prev" href="../../chapters/01_structured_workflow/version_control.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="2" data-basepath="../.." data-revision="Tue Oct 06 2015 14:39:10 GMT+0200 (CEST)">
+    
+
+<div class="book-summary">
+    <div class="book-search" role="search">
+        <input type="text" placeholder="Type to search" class="form-control" />
+    </div>
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Introduction
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="chapters/01_structured_workflow/STRUCTURED_WORKFLOW.html">
+            
+                
+                    <a href="../../chapters/01_structured_workflow/STRUCTURED_WORKFLOW.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Towards a structured workflow
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="chapters/01_structured_workflow/projects.html">
+            
+                
+                    <a href="../../chapters/01_structured_workflow/projects.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.1.</b>
+                        
+                        RStudio projects
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="chapters/01_structured_workflow/version_control.html">
+            
+                
+                    <a href="../../chapters/01_structured_workflow/version_control.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.2.</b>
+                        
+                        GitHub version control
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter active" data-level="2" data-path="chapters/02_data_handling/DATA_HANDLING.html">
+            
+                
+                    <a href="../../chapters/02_data_handling/DATA_HANDLING.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Data handling and visualization
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1" data-path="chapters/02_data_handling/summarizing_data.html">
+            
+                
+                    <a href="../../chapters/02_data_handling/summarizing_data.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.</b>
+                        
+                        Summarizing data
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="chapters/02_data_handling/format_conversions.html">
+            
+                
+                    <a href="../../chapters/02_data_handling/format_conversions.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.</b>
+                        
+                        Data format conversions
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="chapters/02_data_handling/visualization.html">
+            
+                
+                    <a href="../../chapters/02_data_handling/visualization.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.</b>
+                        
+                        Visualizing data using ggplot2
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="chapters/03_iteration_procedures/ITERATION_PROCEDURES.html">
+            
+                
+                    <a href="../../chapters/03_iteration_procedures/ITERATION_PROCEDURES.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Iteration procedures
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="chapters/03_iteration_procedures/for_loops.html">
+            
+                
+                    <a href="../../chapters/03_iteration_procedures/for_loops.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        for loops
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="chapters/03_iteration_procedures/apply.html">
+            
+                
+                    <a href="../../chapters/03_iteration_procedures/apply.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        The *apply family
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="chapters/03_iteration_procedures/functional_programming.html">
+            
+                
+                    <a href="../../chapters/03_iteration_procedures/functional_programming.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        Functional programming
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="chapters/04_speed_up/SPEED_UP.html">
+            
+                
+                    <a href="../../chapters/04_speed_up/SPEED_UP.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        Speeding up iteration procedures
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1" data-path="chapters/04_speed_up/parallelization.html">
+            
+                
+                    <a href="../../chapters/04_speed_up/parallelization.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.1.</b>
+                        
+                        Parallelization
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="chapters/04_speed_up/rcpp.html">
+            
+                
+                    <a href="../../chapters/04_speed_up/rcpp.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.</b>
+                        
+                        C++ interconnectivity via Rcpp
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="chapters/05_final_remarks/FINAL_REMARKS.html">
+            
+                
+                    <a href="../../chapters/05_final_remarks/FINAL_REMARKS.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Final remarks
+                    </a>
+            
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">Serif</button>
+        <button type="button" data-font="1" class="button">Sans</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">White</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">Sepia</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="Share"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Google"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../" >Advanced Programming in R</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h1 id="data-handling-and-visualization">Data handling and visualization</h1>
+<p>As noted earlier in this guide, an R workflow basically consists of performing 
+calculations and/or visualizing your data which has previously been imported into 
+R. In the majority of cases, this workflow usually includes an intermediary step 
+referred to as data manipulation meant to get your data into shape for 
+visualization. Note that some packages even require you to provide the data to 
+be displayed in a particular format (of which more later on).  </p>
+<p>Within the scope of this short course, we&apos;ll simply assume that you already 
+heard a lot about importing your data into R. Even if this were not the case, 
+there&apos;s plenty of tutorials on the internet demonstrating the use of <code>read.table</code> 
+and the like. Help on this topic may be found e.g. on 
+<a href="http://www.statmethods.net/input/importingdata.html" target="_blank">Quick-R</a>, 
+<a href="https://cran.r-project.org/doc/manuals/r-release/R-data.html" target="_blank">CRAN</a>, 
+<a href="http://www.r-tutor.com/r-introduction/data-frame/data-import" target="_blank">R-Tutor</a> and so 
+forth. Just remember, Google is your friend &#x263A;</p>
+<h3 id="data-manipulation">Data manipulation</h3>
+<p>A hodgepodge of typical data manipulation steps including illustrative examples 
+is given at <a href="http://www.cookbook-r.com/Manipulating_data/" target="_blank">Cookbook for R</a> and 
+includes, amongst others,</p>
+<ul>
+<li><strong>General operations</strong><ul>
+<li>Sorting</li>
+<li>Converting between vector types</li>
+<li>Dealing with duplicate records and missing values</li>
+</ul>
+</li>
+<li><strong>Factor operations</strong><ul>
+<li>Renaming and re-computing factor levels</li>
+<li>Reordering factor levels (which comes in quite handy when it comes to plotting)</li>
+</ul>
+</li>
+<li><strong>Data frame operations</strong><ul>
+<li>Adding and removing columns</li>
+<li>Reordering columns</li>
+<li>Merging data frames</li>
+</ul>
+</li>
+<li><strong>Restructuring data</strong><ul>
+<li>Data format conversions</li>
+<li>Summarizing data</li>
+</ul>
+</li>
+</ul>
+<p>Assuming that you&apos;re already familiar with the basics of data manipulation, we&apos;ll 
+primarily focus on the latter point which represents an essential step towards 
+conveying your results clearly and vividly to a broader audience. </p>
+<h3 id="the-diamonds-dataset">The &apos;diamonds&apos; dataset</h3>
+<p>In the following, we&apos;ll demonstrate the essentials of data restructuring in R on 
+the basis of the <code>diamonds</code> dataset included in <strong>ggplot2</strong>. In case you&apos;re not 
+already familiar with the dataset, just take a minute to have a brief look at 
+what it&apos;s all about. Also, feel free to try out <code>?diamonds</code> in order to get a 
+more detailed description of the single variables.</p>
+<pre><code class="lang-r">&gt; <span class="hljs-comment">## load &apos;ggplot2&apos; package</span>
+&gt; <span class="hljs-keyword">library</span>(ggplot2)
+&gt; 
+&gt; <span class="hljs-comment">## show the first 6 rows of &apos;diamonds&apos;</span>
+&gt; head(diamonds)
+</code></pre>
+<pre><code>  carat       cut color clarity depth table price    x    y    z
+1  0.23     Ideal     E     SI2  61.5    55   326 3.95 3.98 2.43
+2  0.21   Premium     E     SI1  59.8    61   326 3.89 3.84 2.31
+3  0.23      Good     E     VS1  56.9    65   327 4.05 4.07 2.31
+4  0.29   Premium     I     VS2  62.4    58   334 4.20 4.23 2.63
+5  0.31      Good     J     SI2  63.3    58   335 4.34 4.35 2.75
+6  0.24 Very Good     J    VVS2  62.8    57   336 3.94 3.96 2.48
+</code></pre><pre><code class="lang-r">&gt; <span class="hljs-comment">## show the structure of &apos;diamonds&apos;</span>
+&gt; str(diamonds)
+</code></pre>
+<pre><code>&apos;data.frame&apos;:    53940 obs. of  10 variables:
+ $ carat  : num  0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
+ $ cut    : Ord.factor w/ 5 levels &quot;Fair&quot;&lt;&quot;Good&quot;&lt;..: 5 4 2 4 2 3 3 3 1 3 ...
+ $ color  : Ord.factor w/ 7 levels &quot;D&quot;&lt;&quot;E&quot;&lt;&quot;F&quot;&lt;&quot;G&quot;&lt;..: 2 2 2 6 7 7 6 5 2 5 ...
+ $ clarity: Ord.factor w/ 8 levels &quot;I1&quot;&lt;&quot;SI2&quot;&lt;&quot;SI1&quot;&lt;..: 2 3 5 4 2 6 7 3 4 5 ...
+ $ depth  : num  61.5 59.8 56.9 62.4 63.3 62.8 62.3 61.9 65.1 59.4 ...
+ $ table  : num  55 61 65 58 58 57 57 55 61 61 ...
+ $ price  : int  326 326 327 334 335 336 336 337 337 338 ...
+ $ x      : num  3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
+ $ y      : num  3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
+ $ z      : num  2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...
+</code></pre>
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../../chapters/01_structured_workflow/version_control.html" class="navigation navigation-prev " aria-label="Previous page: GitHub version control"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../../chapters/02_data_handling/summarizing_data.html" class="navigation navigation-next " aria-label="Next page: Summarizing data"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../../gitbook/app.js"></script>
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>
