@@ -56,10 +56,16 @@ diamonds_num <- diamonds[, -c(2:4)]
 ## apply function mean to all columns of diamonds
 col_means <- apply(diamonds_num, 2, mean, na.rm = TRUE)
 col_means
-
-## for rows use MARGIN = 1
-row_sd <- apply(diamonds_num, 1, sd, na.rm = TRUE)
 ```
+
+
+### Task #1: apply sd to rows
+Similar to the example above, calculate the standard deviation for each row of diamonds.
+
+<center>
+  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+</center>
+
 
 In R, `apply()` is the classical function to be used with data in matrix-like form to quickly iterate over one dimension (rows or columns). It is optimized for this kind of action and is much quicker than looping over rows/columns with a `for`-loop which is the satndard way in other languages such as Pyhton or C++.
 
@@ -128,6 +134,56 @@ Also, recombining these individual data frames back into one is tsraight forward
 ```{r do.call dfs}
 diamonds_df <- do.call("rbind", dat_lst)
 str(diamonds_df)
-identical(diamonds, diamonds_df)
 ```
 
+Fianlly, let's look at a slightly more involved example of how to use `lapply()`. A standard analysis workflow likely involves some sort of statistical analysis + the visualisation of the results in some way. Here, we will create linear models between 'carat' and 'price' and the corresponding scatterplots for all levels of 'cut' but only for those diamonds of 'color = D'.
+
+```{r lapply final}
+## split diamonds by cut
+cut_lst <- split(diamonds, f = diamonds$cut)
+
+my_result_list <- lapply(seq(cut_lst), function(i) {
+  
+  ## subset to color = D
+  dat <- cut_lst[[i]]
+  dat_d <- subset(dat, dat$color == "D")
+  
+  ## calculate linear model
+  lm1 <- lm(price ~ carat, data = dat_d)
+  
+  ## create scatterplot
+  scatter_ggplot <- ggplot(aes(x = carat, y = price), data = dat_d)
+  g_sc <- scatter_ggplot + 
+    geom_point(colour = "grey60") +
+    theme_bw() +
+    stat_smooth(method = "lm", se = TRUE, 
+                fill = "black", colour = "black") +
+     geom_text(data = NULL, 
+               x = min(dat_d$carat, na.rm = TRUE) + 0.2,  
+               y = max(dat_d$price, na.rm = TRUE) * 0.98, 
+               label = unique(dat_d$cut))
+  
+  ## return both the linear model and the plot as a list
+  return(list(linmod = lm1,
+              plt = g_sc))
+})
+
+## set names of list for clarity
+names(my_result_list) <- names(cut_lst)
+
+str(my_result_list, 2)
+```
+
+This let's us now quickly access each of the analyses individually. To view the scatterplot for diamonds of 'cut = Premium' we simply navigate down to the respective entry (Note, given that we have set the names for the resulting lists we can now use the common `$` notation for the navigation):
+
+```{r list scatter}
+my_result_list$Premium$plt
+```
+
+We can, hovever still navigate using `[[]]`. To get the summary of the linear model for 'cut = Ideal':
+
+```{r list lm}
+summary(my_result_list[[5]][[1]])
+```
+
+I hope this highlights how useful and flexible `lapply()` can be. Another scenario that is quite common is to carry out different calculations/computations on the same set of data. This can easily be done using `lapply()` by iterating over the different functions and calling them on the same data set within the `lapply()` loop.
