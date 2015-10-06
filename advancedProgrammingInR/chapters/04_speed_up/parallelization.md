@@ -15,11 +15,11 @@ certain task into 5 parts when there are only 4 horses available, is it? &#12852
 
 
 ```r
-> ## load 'doParallel' package
-> library(doParallel)
-> 
-> ## no. of local cores
-> detectCores()
+## load 'doParallel' package
+library(doParallel)
+
+## no. of local cores
+detectCores()
 ```
 
 ```
@@ -42,11 +42,11 @@ further multi-core operations performed with `foreach`.
 
 
 ```r
-> ## create parallel socket cluster
-> cl <- makeCluster(3)
-> 
-> ## register parallel backend
-> registerDoParallel(cl)
+## create parallel socket cluster
+cl <- makeCluster(3)
+
+## register parallel backend
+registerDoParallel(cl)
 ```
 
 You will probably notice that we told R to use 3 nodes to work with. Why not use  
@@ -66,8 +66,8 @@ Have a look at the following example.
 
 
 ```r
-> ## calculate square root, return list
-> foreach(i = 1:4) %do% sqrt(i)
+## calculate square root, return list
+foreach(i = 1:4) %do% sqrt(i)
 ```
 
 ```
@@ -95,8 +95,8 @@ the results of the single iterations via
 
 
 ```r
-> ## calculate sqare root, return vector
-> foreach(i = 1:4, .combine = "c") %do% sqrt(i)
+## calculate sqare root, return vector
+foreach(i = 1:4, .combine = "c") %do% sqrt(i)
 ```
 
 ```
@@ -124,25 +124,25 @@ package is just the right thing for such an operation.
 
 
 ```r
-> ## load 'microbenchmark' package
-> library(microbenchmark)
-> 
-> ## load 'ggplot2' and split 'diamonds' dataset
-> library(ggplot2)
-> ls_diamonds <- split(diamonds, f = diamonds$cut)
-> 
-> ## speed test (this might take some time)
-> microbenchmark({
-+   foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i)
-+ }, times = 20L) # number of times to evaluate the expression
+## load 'microbenchmark' package
+library(microbenchmark)
+
+## load 'ggplot2' and split 'diamonds' dataset
+library(ggplot2)
+ls_diamonds <- split(diamonds, f = diamonds$cut)
+
+## speed test (this might take some time)
+microbenchmark({
+  foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i)
+}, times = 20L) # number of times to evaluate the expression
 ```
 
 ```
 Unit: milliseconds
-                                                              expr      min       lq    mean
- {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 56.28832 56.92526 59.2284
+                                                              expr      min       lq     mean
+ {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 46.95132 49.71469 50.99942
    median       uq      max neval
- 57.50784 58.51387 78.03688    20
+ 51.81826 52.22522 53.89055    20
 ```
 
 Hm, quite some time. Let's see how long it takes on when using multiple cores. 
@@ -153,17 +153,17 @@ much faster, right?
 
 
 ```r
-> microbenchmark({
-+   foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i)
-+ }, times = 20L)
+microbenchmark({
+  foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i)
+}, times = 20L)
 ```
 
 ```
 Unit: milliseconds
                                                                  expr      min       lq     mean
- {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 165.2157 190.2062 271.8289
+ {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 176.5104 207.1189 276.6854
    median       uq      max neval
- 226.1027 239.6801 1321.968    20
+ 219.3691 231.4421 1374.321    20
 ```
 
 Oops, what's going on now? Obviously, this action doesn't perform faster at all 
@@ -185,25 +185,25 @@ Using `foreach` (or `lapply`), the referring code would roughly look as follows.
 
 
 ```r
-> ## load 'party' package
-> library(party)
-> 
-> system.time({
-+   
-+   ## conditional inference trees 
-+   ls_ct <- foreach(i = c("cut", "color", "carat")) %do% {
-+   
-+     # formula
-+     frml <- as.formula(paste(i, ".", sep = " ~ "))
-+   
-+     # classification
-+     ctree(frml, data = diamonds,
-+           controls = ctree_control(testtype = "MonteCarlo",
-+                                    nresample = 999,
-+                                    mincriterion = 0.999,
-+                                    maxdepth = 3))
-+   }
-+ })
+## load 'party' package
+library(party)
+
+system.time({
+  
+  ## conditional inference trees 
+  ls_ct <- foreach(i = c("cut", "color", "carat")) %do% {
+  
+    # formula
+    frml <- as.formula(paste(i, ".", sep = " ~ "))
+  
+    # classification
+    ctree(frml, data = diamonds,
+          controls = ctree_control(testtype = "MonteCarlo",
+                                   nresample = 999,
+                                   mincriterion = 0.999,
+                                   maxdepth = 3))
+  }
+})
 ```
 
 `ctree` performs rather slowly, which is particularly owing to `nresample` that 
@@ -214,23 +214,23 @@ time!
 
 
 ```r
-> system.time({
-+   
-+   ## conditional inference trees 
-+   ls_ct <- foreach(i = c("cut", "color", "carat"), 
-+                    .packages = c("ggplot2", "party")) %dopar% {
-+   
-+     # formula
-+     frml <- as.formula(paste(i, ".", sep = " ~ "))
-+   
-+     # classification
-+     ctree(frml, data = diamonds,
-+           controls = ctree_control(testtype = "MonteCarlo",
-+                                    nresample = 999,
-+                                    mincriterion = 0.999,
-+                                    maxdepth = 3))
-+   }
-+ })
+system.time({
+  
+  ## conditional inference trees 
+  ls_ct <- foreach(i = c("cut", "color", "carat"), 
+                   .packages = c("ggplot2", "party")) %dopar% {
+  
+    # formula
+    frml <- as.formula(paste(i, ".", sep = " ~ "))
+  
+    # classification
+    ctree(frml, data = diamonds,
+          controls = ctree_control(testtype = "MonteCarlo",
+                                   nresample = 999,
+                                   mincriterion = 0.999,
+                                   maxdepth = 3))
+  }
+})
 ```
 
 Of course, this is seconds we are talking about. Nonetheless, everyone of you 
@@ -250,15 +250,15 @@ currently open connections to the R console.
 
 
 ```r
-> showConnections()
+showConnections()
 ```
 
 ```
-   description         class            mode  text     isopen   can read can write
-4  "output"            "textConnection" "wr"  "text"   "opened" "no"     "yes"    
-8  "<-localhost:11393" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-9  "<-localhost:11393" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-10 "<-localhost:11393" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+  description         class            mode  text     isopen   can read can write
+4 "output"            "textConnection" "wr"  "text"   "opened" "no"     "yes"    
+5 "<-localhost:11736" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+6 "<-localhost:11736" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+7 "<-localhost:11736" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
 ```
 
 There's 3 socket connections (i.e. cores) registered at the moment, just as we 
@@ -268,7 +268,7 @@ simply perform
 
 
 ```r
-> stopImplicitCluster()
+stopImplicitCluster()
 ```
 
 which explicitly deregisters the implicitly created cluster.

@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="2.2" data-basepath="../.." data-revision="Tue Oct 06 2015 14:39:10 GMT+0200 (CEST)">
+    <div class="book" data-level="2.2" data-basepath="../.." data-revision="Tue Oct 06 2015 14:54:48 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -437,20 +437,20 @@ data&quot; (Wickham, 2007) according to so-called
 identifier (or ID) and measured variables. Here&apos;s a simple example taken from 
 <a href="http://www.cookbook-r.com/Manipulating_data/Converting_data_between_wide_and_long_format/" target="_blank">Cookbook for R</a> 
 to illustrate this point. Let&apos;s start off with the wide format:</p>
-<pre><code class="lang-r">&gt; olddata_wide &lt;- read.table(header = <span class="hljs-literal">TRUE</span>, text = <span class="hljs-string">&apos;
-+  subject sex control cond1 cond2
-+        1   M     7.9  12.3  10.7
-+        2   F     6.3  10.6  11.1
-+        3   F     9.5  13.1  13.8
-+        4   M    11.5  13.4  12.9
-+ &apos;</span>)
+<pre><code class="lang-r">olddata_wide &lt;- read.table(header = <span class="hljs-literal">TRUE</span>, text = <span class="hljs-string">&apos;
+ subject sex control cond1 cond2
+       1   M     7.9  12.3  10.7
+       2   F     6.3  10.6  11.1
+       3   F     9.5  13.1  13.8
+       4   M    11.5  13.4  12.9
+&apos;</span>)
 </code></pre>
 <p>Notice the strict structure of the <code>data.frame</code> with observations of subjects 
 1-4 (two males and two females) arranged in rows and measured variables (&apos;control&apos;, 
 &apos;cond1&apos;, &apos;cond2&apos;) in columns? Now, let&apos;s see what the long version of the 
 dataset would look like:</p>
-<pre><code class="lang-r">&gt; <span class="hljs-keyword">library</span>(reshape2)
-&gt; melt(olddata_wide, id.vars = c(<span class="hljs-string">&quot;subject&quot;</span>, <span class="hljs-string">&quot;sex&quot;</span>))
+<pre><code class="lang-r"><span class="hljs-keyword">library</span>(reshape2)
+melt(olddata_wide, id.vars = c(<span class="hljs-string">&quot;subject&quot;</span>, <span class="hljs-string">&quot;sex&quot;</span>))
 </code></pre>
 <pre><code>   subject sex variable value
 1        1   M  control   7.9

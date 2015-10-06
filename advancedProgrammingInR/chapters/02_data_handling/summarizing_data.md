@@ -22,8 +22,8 @@ of observations.
 
 
 ```r
-> ## number of columns and rows of 'diamonds'
-> dim(diamonds)
+## number of columns and rows of 'diamonds'
+dim(diamonds)
 ```
 
 ```
@@ -38,12 +38,27 @@ helps to overcome such ritual-like investigation procedures.
 
 
 ```r
-> ## required package
-> library(dplyr)
-> 
-> ## create a local data frame
-> diamonds <- tbl_df(diamonds)
-> diamonds
+## required package
+library(dplyr)
+```
+
+```
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+```
+
+```r
+## create a local data frame
+diamonds <- tbl_df(diamonds)
+diamonds
 ```
 
 ```
@@ -97,9 +112,9 @@ of the data frame with every single condition.
 
 
 ```r
-> filter(diamonds, carat > 3 &
-+          cut %in% c("Premium", "Ideal") &
-+          color %in% c("D", "E", "F"))
+filter(diamonds, carat > 3 &
+         cut %in% c("Premium", "Ideal") &
+         color %in% c("D", "E", "F"))
 ```
 
 ```
@@ -119,7 +134,7 @@ names (without double quotes).
 
 
 ```r
-> select(diamonds, carat, cut, color, clarity)
+select(diamonds, carat, cut, color, clarity)
 ```
 
 ```
@@ -148,7 +163,7 @@ rather wide datasets.
 
 
 ```r
-> select(diamonds, carat:clarity, price)
+select(diamonds, carat:clarity, price)
 ```
 
 ```
@@ -181,26 +196,26 @@ generating otherwise unnecessary intermediate results, via
 
 
 ```r
-> ## first, create subset
-> diamonds_sub <- filter(diamonds, carat > 3 &
-+                          cut %in% c("Premium", "Ideal") &
-+                          color %in% c("D", "E", "F"))
-> 
-> ## second, select columns
-> select(diamonds_sub, carat:clarity, price)
+## first, create subset
+diamonds_sub <- filter(diamonds, carat > 3 &
+                         cut %in% c("Premium", "Ideal") &
+                         color %in% c("D", "E", "F"))
+
+## second, select columns
+select(diamonds_sub, carat:clarity, price)
 ```
 
 or nested function calls which are usually hard to read.
 
 
 ```r
-> ## all-in-one nested solution
-> select(
-+   filter(diamonds, carat > 3 &
-+            cut %in% c("Premium", "Ideal") &
-+            color %in% c("D", "E", "F")), 
-+   carat:clarity, price
-+ )
+## all-in-one nested solution
+select(
+  filter(diamonds, carat > 3 &
+           cut %in% c("Premium", "Ideal") &
+           color %in% c("D", "E", "F")), 
+  carat:clarity, price
+)
 ```
 
 **dplyr** introduces the `%>%` operator which is meant to bridge a set of 
@@ -210,11 +225,11 @@ connecting two parts of a sentence.
 
 
 ```r
-> diamonds %>%
-+   filter(carat > 3 &
-+            cut %in% c("Premium", "Ideal") &
-+            color %in% c("D", "E", "F")) %>%
-+   select(carat:clarity, price)
+diamonds %>%
+  filter(carat > 3 &
+           cut %in% c("Premium", "Ideal") &
+           color %in% c("D", "E", "F")) %>%
+  select(carat:clarity, price)
 ```
 
 ```
@@ -255,9 +270,9 @@ Again, the **dplyr** approach is much simpler and can be done in one go.
 
 
 ```r
-> diamonds %>%
-+   select(color, price, carat) %>%
-+   arrange(color, price, desc(carat))
+diamonds %>%
+  select(color, price, carat) %>%
+  arrange(color, price, desc(carat))
 ```
 
 ```
@@ -285,10 +300,10 @@ directly work with columns you've just created.
 
 
 ```r
-> diamonds %>%
-+   select(color, carat, price) %>%
-+   mutate(ppc = price / carat, 
-+          ppc_rnd = round(ppc, 2))
+diamonds %>%
+  select(color, carat, price) %>%
+  mutate(ppc = price / carat, 
+         ppc_rnd = round(ppc, 2))
 ```
 
 ```
@@ -332,9 +347,9 @@ diamonds' color, rather than from the entire data frame.
 
 
 ```r
-> diamonds %>% 
-+   group_by(color) %>%
-+   summarise(MIN = min(price), MEAN = mean(price), MAX = max(price))
+diamonds %>% 
+  group_by(color) %>%
+  summarise(MIN = min(price), MEAN = mean(price), MAX = max(price))
 ```
 
 ```
@@ -356,7 +371,7 @@ In order to summarize an entire variable into one single value, just drop the
 
 
 ```r
-> summarise(diamonds, min = min(price), mean = mean(price), max = max(price))
+summarise(diamonds, min = min(price), mean = mean(price), max = max(price))
 ```
 
 ```

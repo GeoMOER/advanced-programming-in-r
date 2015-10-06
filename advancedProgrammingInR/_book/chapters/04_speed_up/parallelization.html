@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="4.1" data-basepath="../.." data-revision="Tue Oct 06 2015 14:39:10 GMT+0200 (CEST)">
+    <div class="book" data-level="4.1" data-basepath="../.." data-revision="Tue Oct 06 2015 14:54:48 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -437,11 +437,11 @@ to the single nodes (e.g. required by <code>par*apply</code> along with <strong>
 <p>Let&apos;s start straight away with detecting the number of cores available on your 
 machine via <code>detectCores</code>. In the end, there&apos;s no use in trying to split a 
 certain task into 5 parts when there are only 4 horses available, is it? &#x1F609; </p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## load &apos;doParallel&apos; package</span>
-&gt; <span class="hljs-keyword">library</span>(doParallel)
-&gt; 
-&gt; <span class="hljs-comment">## no. of local cores</span>
-&gt; detectCores()
+<pre><code class="lang-r"><span class="hljs-comment">## load &apos;doParallel&apos; package</span>
+<span class="hljs-keyword">library</span>(doParallel)
+
+<span class="hljs-comment">## no. of local cores</span>
+detectCores()
 </code></pre>
 <pre><code>[1] 4
 </code></pre><p>In our case, there are 4 nodes available for parallelization among which 
@@ -456,11 +456,11 @@ Think of this as a set of workers among which a particular work step should be
 divided equally - just like in the image on the previous page. With 
 <code>registerDoParallel</code>, we tell R that it should use the cluster &apos;cl&apos; for any 
 further multi-core operations performed with <code>foreach</code>.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## create parallel socket cluster</span>
-&gt; cl &lt;- makeCluster(<span class="hljs-number">3</span>)
-&gt; 
-&gt; <span class="hljs-comment">## register parallel backend</span>
-&gt; registerDoParallel(cl)
+<pre><code class="lang-r"><span class="hljs-comment">## create parallel socket cluster</span>
+cl &lt;- makeCluster(<span class="hljs-number">3</span>)
+
+<span class="hljs-comment">## register parallel backend</span>
+registerDoParallel(cl)
 </code></pre>
 <p>You will probably notice that we told R to use 3 nodes to work with. Why not use<br>all 4 nodes?, you might wonder. Well, parallel processing distributed among all 
 nodes available tends to slow down your computer considerably. Since we&apos;d 
@@ -474,8 +474,8 @@ between &apos;carat&apos; and &apos;price&apos; for each &apos;cut&apos; quality
 except this time it&apos;s <code>foreach</code> we&apos;ll be working with. Similar to <code>*apply</code>, 
 <code>foreach</code> requires a set of input data and a function to perform on the very same. 
 Have a look at the following example. </p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## calculate square root, return list</span>
-&gt; foreach(i = <span class="hljs-number">1</span>:<span class="hljs-number">4</span>) %do% sqrt(i)
+<pre><code class="lang-r"><span class="hljs-comment">## calculate square root, return list</span>
+foreach(i = <span class="hljs-number">1</span>:<span class="hljs-number">4</span>) %do% sqrt(i)
 </code></pre>
 <pre><code>[[1]]
 [1] 1
@@ -495,8 +495,8 @@ will notice later on that this syntax comes in quite handy when forwarding
 <code>foreach</code>-related operations to a parallel cluster. </p>
 <p>We may easily change the output type of <code>foreach</code> by telling R how to <code>.combine</code> 
 the results of the single iterations via </p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## calculate sqare root, return vector</span>
-&gt; foreach(i = <span class="hljs-number">1</span>:<span class="hljs-number">4</span>, .combine = <span class="hljs-string">&quot;c&quot;</span>) %do% sqrt(i)
+<pre><code class="lang-r"><span class="hljs-comment">## calculate sqare root, return vector</span>
+foreach(i = <span class="hljs-number">1</span>:<span class="hljs-number">4</span>, .combine = <span class="hljs-string">&quot;c&quot;</span>) %do% sqrt(i)
 </code></pre>
 <pre><code>[1] 1.000000 1.414214 1.732051 2.000000
 </code></pre><p>et voil&#xE0;, we transformed the <code>lapply</code>-style list output of our loop into an 
@@ -515,37 +515,37 @@ Remember to <code>split</code> the &apos;diamonds&apos; dataset first and pass t
 <h3 id="how-not-to-use-parallel-features">How <em>not</em> to use parallel features</h3>
 <p>Let&apos;s see how long this code chunk takes to perform. The <strong>microbenchmark</strong> 
 package is just the right thing for such an operation.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## load &apos;microbenchmark&apos; package</span>
-&gt; <span class="hljs-keyword">library</span>(microbenchmark)
-&gt; 
-&gt; <span class="hljs-comment">## load &apos;ggplot2&apos; and split &apos;diamonds&apos; dataset</span>
-&gt; <span class="hljs-keyword">library</span>(ggplot2)
-&gt; ls_diamonds &lt;- split(diamonds, f = diamonds$cut)
-&gt; 
-&gt; <span class="hljs-comment">## speed test (this might take some time)</span>
-&gt; microbenchmark({
-+   foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i)
-+ }, times = <span class="hljs-number">20L</span>) <span class="hljs-comment"># number of times to evaluate the expression</span>
+<pre><code class="lang-r"><span class="hljs-comment">## load &apos;microbenchmark&apos; package</span>
+<span class="hljs-keyword">library</span>(microbenchmark)
+
+<span class="hljs-comment">## load &apos;ggplot2&apos; and split &apos;diamonds&apos; dataset</span>
+<span class="hljs-keyword">library</span>(ggplot2)
+ls_diamonds &lt;- split(diamonds, f = diamonds$cut)
+
+<span class="hljs-comment">## speed test (this might take some time)</span>
+microbenchmark({
+  foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i)
+}, times = <span class="hljs-number">20L</span>) <span class="hljs-comment"># number of times to evaluate the expression</span>
 </code></pre>
 <pre><code>Unit: milliseconds
-                                                              expr      min       lq    mean
- {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 56.28832 56.92526 59.2284
+                                                              expr      min       lq     mean
+ {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 46.95132 49.71469 50.99942
    median       uq      max neval
- 57.50784 58.51387 78.03688    20
+ 51.81826 52.22522 53.89055    20
 </code></pre><p>Hm, quite some time. Let&apos;s see how long it takes on when using multiple cores. 
 The only thing that&apos;s required in order to let this operation run on multiple 
 cores is to replace <code>%do%</code> with <code>%dopar%</code>. In doing so (and distributing the 
 iterative <code>lm</code> calculation on multiple cores), the operation should perform 
 much faster, right?</p>
-<pre><code class="lang-r">&gt; microbenchmark({
-+   foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i)
-+ }, times = <span class="hljs-number">20L</span>)
+<pre><code class="lang-r">microbenchmark({
+  foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i)
+}, times = <span class="hljs-number">20L</span>)
 </code></pre>
 <pre><code>Unit: milliseconds
                                                                  expr      min       lq     mean
- {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 165.2157 190.2062 271.8289
+ {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 176.5104 207.1189 276.6854
    median       uq      max neval
- 226.1027 239.6801 1321.968    20
+ 219.3691 231.4421 1374.321    20
 </code></pre><p>Oops, what&apos;s going on now? Obviously, this action doesn&apos;t perform faster at all 
 although we told R to run in parallel via <code>%dopar%</code>. In fact, this is a bad 
 example for the parallelized use of <code>foreach</code>. <code>lm</code> is a highly optimized base-R 
@@ -560,48 +560,48 @@ computationally expensive and needs to be repeated at least a couple of times.
 For example, let&apos;s assume we wanted to separately predict &apos;cut&apos;, &apos;color&apos; and 
 &apos;carat&apos; for each specimen from &apos;diamonds&apos; based on all remaining variables. 
 Using <code>foreach</code> (or <code>lapply</code>), the referring code would roughly look as follows.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## load &apos;party&apos; package</span>
-&gt; <span class="hljs-keyword">library</span>(party)
-&gt; 
-&gt; system.time({
-+   
-+   <span class="hljs-comment">## conditional inference trees </span>
-+   ls_ct &lt;- foreach(i = c(<span class="hljs-string">&quot;cut&quot;</span>, <span class="hljs-string">&quot;color&quot;</span>, <span class="hljs-string">&quot;carat&quot;</span>)) %do% {
-+   
-+     <span class="hljs-comment"># formula</span>
-+     frml &lt;- as.formula(paste(i, <span class="hljs-string">&quot;.&quot;</span>, sep = <span class="hljs-string">&quot; ~ &quot;</span>))
-+   
-+     <span class="hljs-comment"># classification</span>
-+     ctree(frml, data = diamonds,
-+           controls = ctree_control(testtype = <span class="hljs-string">&quot;MonteCarlo&quot;</span>,
-+                                    nresample = <span class="hljs-number">999</span>,
-+                                    mincriterion = <span class="hljs-number">0.999</span>,
-+                                    maxdepth = <span class="hljs-number">3</span>))
-+   }
-+ })
+<pre><code class="lang-r"><span class="hljs-comment">## load &apos;party&apos; package</span>
+<span class="hljs-keyword">library</span>(party)
+
+system.time({
+
+  <span class="hljs-comment">## conditional inference trees </span>
+  ls_ct &lt;- foreach(i = c(<span class="hljs-string">&quot;cut&quot;</span>, <span class="hljs-string">&quot;color&quot;</span>, <span class="hljs-string">&quot;carat&quot;</span>)) %do% {
+
+    <span class="hljs-comment"># formula</span>
+    frml &lt;- as.formula(paste(i, <span class="hljs-string">&quot;.&quot;</span>, sep = <span class="hljs-string">&quot; ~ &quot;</span>))
+
+    <span class="hljs-comment"># classification</span>
+    ctree(frml, data = diamonds,
+          controls = ctree_control(testtype = <span class="hljs-string">&quot;MonteCarlo&quot;</span>,
+                                   nresample = <span class="hljs-number">999</span>,
+                                   mincriterion = <span class="hljs-number">0.999</span>,
+                                   maxdepth = <span class="hljs-number">3</span>))
+  }
+})
 </code></pre>
 <p><code>ctree</code> performs rather slowly, which is particularly owing to <code>nresample</code> that 
 tells the function to perform 1000 internal Monte-Carlo replications. Luckily, 
 we can easily split this operation into 3 parts, i.e. one node takes &apos;cut&apos; as 
 response variable, another node &apos;color&apos; and a third node &apos;carat&apos; - at the same 
 time!</p>
-<pre><code class="lang-r">&gt; system.time({
-+   
-+   <span class="hljs-comment">## conditional inference trees </span>
-+   ls_ct &lt;- foreach(i = c(<span class="hljs-string">&quot;cut&quot;</span>, <span class="hljs-string">&quot;color&quot;</span>, <span class="hljs-string">&quot;carat&quot;</span>), 
-+                    .packages = c(<span class="hljs-string">&quot;ggplot2&quot;</span>, <span class="hljs-string">&quot;party&quot;</span>)) %dopar% {
-+   
-+     <span class="hljs-comment"># formula</span>
-+     frml &lt;- as.formula(paste(i, <span class="hljs-string">&quot;.&quot;</span>, sep = <span class="hljs-string">&quot; ~ &quot;</span>))
-+   
-+     <span class="hljs-comment"># classification</span>
-+     ctree(frml, data = diamonds,
-+           controls = ctree_control(testtype = <span class="hljs-string">&quot;MonteCarlo&quot;</span>,
-+                                    nresample = <span class="hljs-number">999</span>,
-+                                    mincriterion = <span class="hljs-number">0.999</span>,
-+                                    maxdepth = <span class="hljs-number">3</span>))
-+   }
-+ })
+<pre><code class="lang-r">system.time({
+
+  <span class="hljs-comment">## conditional inference trees </span>
+  ls_ct &lt;- foreach(i = c(<span class="hljs-string">&quot;cut&quot;</span>, <span class="hljs-string">&quot;color&quot;</span>, <span class="hljs-string">&quot;carat&quot;</span>), 
+                   .packages = c(<span class="hljs-string">&quot;ggplot2&quot;</span>, <span class="hljs-string">&quot;party&quot;</span>)) %dopar% {
+
+    <span class="hljs-comment"># formula</span>
+    frml &lt;- as.formula(paste(i, <span class="hljs-string">&quot;.&quot;</span>, sep = <span class="hljs-string">&quot; ~ &quot;</span>))
+
+    <span class="hljs-comment"># classification</span>
+    ctree(frml, data = diamonds,
+          controls = ctree_control(testtype = <span class="hljs-string">&quot;MonteCarlo&quot;</span>,
+                                   nresample = <span class="hljs-number">999</span>,
+                                   mincriterion = <span class="hljs-number">0.999</span>,
+                                   maxdepth = <span class="hljs-number">3</span>))
+  }
+})
 </code></pre>
 <p>Of course, this is seconds we are talking about. Nonetheless, everyone of you 
 will eventually end up with quite big datasets upon which computationally 
@@ -616,18 +616,18 @@ you registered during your current session, especially when some error prevents
 your script from finishing. If you should ever find yourself in such a 
 situation, do not hesitate to use <code>showConnections</code> to print information on 
 currently open connections to the R console. </p>
-<pre><code class="lang-r">&gt; showConnections()
+<pre><code class="lang-r">showConnections()
 </code></pre>
-<pre><code>   description         class            mode  text     isopen   can read can write
-4  &quot;output&quot;            &quot;textConnection&quot; &quot;wr&quot;  &quot;text&quot;   &quot;opened&quot; &quot;no&quot;     &quot;yes&quot;    
-8  &quot;&lt;-localhost:11393&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
-9  &quot;&lt;-localhost:11393&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
-10 &quot;&lt;-localhost:11393&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;
+<pre><code>  description         class            mode  text     isopen   can read can write
+4 &quot;output&quot;            &quot;textConnection&quot; &quot;wr&quot;  &quot;text&quot;   &quot;opened&quot; &quot;no&quot;     &quot;yes&quot;    
+5 &quot;&lt;-localhost:11736&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
+6 &quot;&lt;-localhost:11736&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
+7 &quot;&lt;-localhost:11736&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;
 </code></pre><p>There&apos;s 3 socket connections (i.e. cores) registered at the moment, just as we 
 initially defined via <code>registerDoParallel</code>. In order to close these connections 
 (which we recommend to consider at the end of each parallelized R script), 
 simply perform </p>
-<pre><code class="lang-r">&gt; stopImplicitCluster()
+<pre><code class="lang-r">stopImplicitCluster()
 </code></pre>
 <p>which explicitly deregisters the implicitly created cluster.</p>
 

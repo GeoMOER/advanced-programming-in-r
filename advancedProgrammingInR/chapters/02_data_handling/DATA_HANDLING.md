@@ -50,11 +50,11 @@ more detailed description of the single variables.
 
 
 ```r
-> ## load 'ggplot2' package
-> library(ggplot2)
-> 
-> ## show the first 6 rows of 'diamonds'
-> head(diamonds)
+## load 'ggplot2' package
+library(ggplot2)
+
+## show the first 6 rows of 'diamonds'
+head(diamonds)
 ```
 
 ```
@@ -68,8 +68,8 @@ more detailed description of the single variables.
 ```
 
 ```r
-> ## show the structure of 'diamonds'
-> str(diamonds)
+## show the structure of 'diamonds'
+str(diamonds)
 ```
 
 ```

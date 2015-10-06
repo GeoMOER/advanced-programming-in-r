@@ -11,8 +11,8 @@ manipulation tasks (maybe because of the same author).
 
 
 ```r
-> ## load 'ggplot2' package
-> library(ggplot2)
+## load 'ggplot2' package
+library(ggplot2)
 ```
 
 In **ggplot2**, every plot we want to draw consists of subsequent calls on how 
@@ -36,8 +36,8 @@ the `ggplot` call would be as follows.
 
 
 ```r
-> ggplot(aes(x = carat, y = price), data = diamonds) + 
-+   geom_point()
+ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point()
 ```
 
 <img src="figure/gg_scat-1.png" title="Figure 1: A basic scatter plot created with ggplot2" alt="Figure 1: A basic scatter plot created with ggplot2" style="display: block; margin: auto;" />
@@ -50,10 +50,10 @@ For the sake of practicing, let's add another layer to our plot. In order to pro
 
 
 ```r
-> ggplot(aes(x = carat, y = price), data = diamonds) + 
-+   geom_point() +
-+   stat_smooth(method = "lm", se = FALSE, 
-+               colour = "red", size = 1.5, linetype = "dashed")
+ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point() +
+  stat_smooth(method = "lm", se = FALSE, 
+              colour = "red", size = 1.5, linetype = "dashed")
 ```
 
 ![Figure 2: A scatter plot incl. regression line.](figure/gg_scat_stat-1.png) 
@@ -62,11 +62,11 @@ If we wanted to provide a plot showing the relationship between 'price' and 'car
 
 
 ```r
-> ggplot(aes(x = carat, y = price), data = diamonds) + 
-+   geom_point() +
-+   stat_smooth(method = "lm", se = TRUE, 
-+               colour = "red", fill = "grey35") + 
-+   facet_wrap(~ cut)
+ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point() +
+  stat_smooth(method = "lm", se = TRUE, 
+              colour = "red", fill = "grey35") + 
+  facet_wrap(~ cut)
 ```
 
 <img src="figure/gg_scat_facet-1.png" title="Figure 3: ggplot2 version of a facetted plot" alt="Figure 3: ggplot2 version of a facetted plot" style="display: block; margin: auto;" />
@@ -75,13 +75,13 @@ One thing that some people dislike about the default settings in **ggplot2** is 
 
 
 ```r
-> ggplot(aes(x = carat, y = price), data = diamonds) + 
-+   geom_point(colour = "grey65") +
-+   stat_smooth(method = "lm", se = TRUE, 
-+               colour = "black", fill = "grey35") +
-+   facet_wrap(~ cut, nrow = 2, ncol = 3) +
-+   labs(x = "Carat", y = "Price ($)") +
-+   theme_bw()
+ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point(colour = "grey65") +
+  stat_smooth(method = "lm", se = TRUE, 
+              colour = "black", fill = "grey35") +
+  facet_wrap(~ cut, nrow = 2, ncol = 3) +
+  labs(x = "Carat", y = "Price ($)") +
+  theme_bw()
 ```
 
 <img src="figure/gg_scat_facet_bw-1.png" title="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" alt="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" style="display: block; margin: auto;" />
@@ -93,14 +93,14 @@ Box and whisker plots drawn with **ggplot2** look quite nice and, in contrast to
 
 
 ```r
-> ## basic frame
-> p <- ggplot(aes(x = color, y = price), data = diamonds)
-> 
-> ## add boxplot
-> p_bw <- p + geom_boxplot()
-> 
-> ## print
-> print(p_bw)
+## basic frame
+p <- ggplot(aes(x = color, y = price), data = diamonds)
+
+## add boxplot
+p_bw <- p + geom_boxplot()
+
+## print
+print(p_bw)
 ```
 
 <img src="figure/gg_bw-1.png" title="Figure 5: a basic ggplot2 bw-plot" alt="Figure 5: a basic ggplot2 bw-plot" style="display: block; margin: auto;" />
@@ -111,13 +111,13 @@ As we've already seen, the facetting is also just one more line of code.
 
 
 ```r
-> ## add faceted boxplots
-> p_bw <- p + 
-+   geom_boxplot(fill = "grey90") +
-+   facet_wrap(~ cut) +
-+   theme_bw()
-> 
-> print(p_bw)
+## add faceted boxplots
+p_bw <- p + 
+  geom_boxplot(fill = "grey90") +
+  facet_wrap(~ cut) +
+  theme_bw()
+
+print(p_bw)
 ```
 
 <img src="figure/gg_bw_facet-1.png" title="Figure 6: ggplot2 panel bw-plot" alt="Figure 6: ggplot2 panel bw-plot" style="display: block; margin: auto;" />
@@ -129,13 +129,13 @@ Much like with the box and whisker plot, **ggplot2** produces quite nice histogr
 
 
 ```r
-> ## new basic frame
-> p <- ggplot(aes(x = price), data = diamonds)
-> 
-> ## add histogram
-> p_hist <- p + geom_histogram()
-> 
-> print(p_hist)
+## new basic frame
+p <- ggplot(aes(x = price), data = diamonds)
+
+## add histogram
+p_hist <- p + geom_histogram()
+
+print(p_hist)
 ```
 
 <img src="figure/gg_hist-1.png" title="Figure 7: a basic histogram produced with ggplot2" alt="Figure 7: a basic histogram produced with ggplot2" style="display: block; margin: auto;" />
@@ -144,10 +144,10 @@ When working with **ggplot2** densityplots, it is quite easy to fill the area un
 
 
 ```r
-> ## add densityplot
-> p_dens <- p +  geom_density(fill = "black", alpha = 0.5)
-> 
-> print(p_dens)
+## add densityplot
+p_dens <- p +  geom_density(fill = "black", alpha = 0.5)
+
+print(p_dens)
 ```
 
 <img src="figure/gg dens-1.png" title="Figure 8: a basic density plot produced with ggplot2" alt="Figure 8: a basic density plot produced with ggplot2" style="display: block; margin: auto;" />
@@ -163,13 +163,13 @@ In addition to `theme_bw` which you already encountered before, there's a lot of
 
 
 ```r
-> p_dens <- p +
-+   geom_density(fill = "black", alpha = 0.5) +
-+   facet_grid(color ~ cut) +
-+   theme_bw() +
-+   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-> 
-> print(p_dens)
+p_dens <- p +
+  geom_density(fill = "black", alpha = 0.5) +
+  facet_grid(color ~ cut) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(p_dens)
 ```
 
 <img src="figure/gg facet density-1.png" title="Figure 9: a ggplot2 panel density plot conditioned according to 2 variables" alt="Figure 9: a ggplot2 panel density plot conditioned according to 2 variables" style="display: block; margin: auto;" />
