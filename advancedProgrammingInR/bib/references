@@ -16,6 +16,16 @@
   Url                      = {http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19920002480.pdf}
 }
 
+@Manual{Francois2015, 
+  Title			   = {<b>Rcpp</b> Quick Reference Guide}, 
+  Author		   = {Fran\c{c}ois, Romain and Eddelbuettel, Dirk}, 
+  Year			   = {2015}, 
+
+  Owner			   = {fdetsch}, 
+  Timestamp		   = {2015.10.06}, 
+  Url			   = {https://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-quickref.pdf}
+}
+
 @Manual{Weston2014,
   Title                    = {Getting Started with doParallel and foreach},
   Author                   = {Weston, Steve and Calaway, Rich},
