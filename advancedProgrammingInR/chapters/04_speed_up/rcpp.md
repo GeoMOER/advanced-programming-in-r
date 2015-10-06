@@ -162,9 +162,9 @@ run `sumR(1:1e6)` using `system.time` (or `microbenchmark`).
 ```
 Unit: milliseconds
           expr        min         lq       mean     median         uq        max neval
-  sum(1:1e+06)   1.834613   1.955828   2.212016   1.966451   2.100361   3.546679    20
- sumR(1:1e+06) 527.413713 551.184464 597.329475 564.459415 646.051141 857.613295    20
- sumC(1:1e+06)   3.095407   3.201716   4.458183   4.642807   4.798222   8.411581    20
+  sum(1:1e+06)   2.250275   2.345257   2.634286   2.572749   2.977201   3.011628    20
+ sumR(1:1e+06) 630.837690 646.427082 690.864701 659.452943 711.211584 988.941062    20
+ sumC(1:1e+06)   3.525168   3.730944   4.542325   4.355312   5.273231   5.855574    20
 ```
 
 As you can see, `sumC` runs more than 40 times faster than `sumR` and, at the 
@@ -238,7 +238,7 @@ end, our .cpp file should look as follows.
 + }
 ```
 
-Save the file in 'src/corC' and return to R, then run
+Save the file in 'src/corC.cpp' and return to R, then run
 
 
 ```r
@@ -255,8 +255,11 @@ Save the file in 'src/corC' and return to R, then run
 ```
 Unit: milliseconds
                                  expr      min       lq     mean   median       uq      max neval
-  cor(diamonds$carat, diamonds$price) 1.108154 1.233456 1.286688 1.298180 1.346215 1.412898    20
- corC(diamonds$carat, diamonds$price) 1.119541 1.162543 1.429623 1.214296 1.276313 4.939568    20
+  cor(diamonds$carat, diamonds$price) 1.297814 1.371015 1.426037 1.428050 1.462928 1.603937    20
+ corC(diamonds$carat, diamonds$price) 1.220967 1.442458 1.470849 1.502126 1.517216 1.654562    20
+ cld
+   a
+   a
 ```
 
 Note that, again, `corC` performs only slightly slower than the built-in `cor` 

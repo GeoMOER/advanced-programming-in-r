@@ -130,7 +130,7 @@ img {
 [[3]]
 function (x, ...) 
 UseMethod(&quot;mean&quot;)
-&lt;bytecode: 0x4334900&gt;
+&lt;bytecode: 0x44d2eb0&gt;
 &lt;environment: namespace:base&gt;
 
 [[4]]
@@ -141,17 +141,17 @@ function (x)
 x + 1
 
 [[6]]
-          col1        col2
-1  -1.18309767 0.177147469
-2   0.04573897 0.672747657
-3  -1.02573852 0.871139660
-4  -1.44447916 0.000845866
-5  -0.41824316 0.986427663
-6   2.41900823 0.143793022
-7   0.27789436 0.338511097
-8  -0.36523644 0.597562855
-9  -0.01785103 0.240047502
-10  2.14369968 0.007502750
+          col1       col2
+1   0.27113455 0.94337342
+2   0.26177170 0.66341461
+3   0.04668362 0.06534729
+4  -0.76805352 0.80445750
+5  -0.70557561 0.13056370
+6  -1.52475515 0.81186242
+7  -1.02469154 0.67328913
+8  -0.29288181 0.17662942
+9  -0.62471889 0.25746883
+10  0.37863284 0.72625837
 
 [[7]]
      [,1] [,2] [,3]
@@ -188,6 +188,8 @@ x + 1
 <pre><code>[1] 1 2 3 4 5</code></pre>
 <p>Getting a vector as a result is great if the calculation produces a vector, however this won’t work if the result is e.g. a function or a <code>ggplot2</code>-object or something along those lines. Therefore, <code>lapply()</code> is simply the more versatile of the two as it can handle any type of result.</p>
 <p>To highlight this, let’s use <code>lapply()</code> to read in the numerous chunks of data we have previously saved.</p>
+<pre class="r"><code>&gt; print(getwd())</code></pre>
+<pre><code>[1] &quot;/mnt/windows/Permanent/repositories/advanced-programming-in-r/advancedProgrammingInR/chapters/03_iteration_procedures&quot;</code></pre>
 <pre class="r"><code>&gt; fls &lt;- list.files(&quot;results&quot;, pattern = glob2rx(&quot;*subset*.csv&quot;),
 +                   full.names = TRUE)
 &gt; 
