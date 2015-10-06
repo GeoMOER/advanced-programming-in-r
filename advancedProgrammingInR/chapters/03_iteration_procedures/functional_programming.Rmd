@@ -1,4 +1,5 @@
 ```{r knitsetup, echo=FALSE, results='hide', warning=FALSE, message=FALSE, cache=FALSE}
+library(knitr)
 opts_knit$set(base.dir='./', fig.path='', out.format='md')
 opts_chunk$set(prompt=TRUE, comment='', results='markup')
 # See yihui.name/knitr/options for more Knitr options.
@@ -8,3 +9,57 @@ opts_chunk$set(prompt=TRUE, comment='', results='markup')
 # end setup chunk
 ```
 # Functional programming
+
+As mentioned in the previous chapter, R is at its core a functional programming language. Put more general, we can say that
+
+* everything that exists is an object
+* everything that happens is a function call
+
+### Custom functions
+
+The biggest draw-back of point-and-click statistics software is that they are usually limited in the functionality they provide. The provide you with a suite of pre-defined analysis tools and algorithms but usually it is rather tedious to extend these. R on the other hand is a full-blown programming language which means that there are next to no limits to what you can do. One of the most important features to expand existing functionality is to write your own functions. Functions that do not exist elsewhere. In fact, this is the main reason behind R package development.
+
+So, let's try and create a custom function. A function to calculate the Pythogorean Theorem does not exist in base R. Sure it may exist in some package somewhere, but I argue that it is much easier and quicker to write this yourself.
+
+```{r custom function}
+pythagoreanTheorem <- function(a, b) {
+  c <- sqrt(a*a + b*b)
+  return(c)
+}
+
+pythagoreanTheorem(3, 4)
+```
+
+Easy!
+
+Creating custom functions always follows the same procedure:
+
+1. provide a meaningful name and use `<-` to assign `function(x, y, z)` where
+2. `x, y, z` are an arbitrary number of named arguments (need not be x, y, z) that are needed for the calculation(s) in the 
+3. function body that does all the calculation(s) using the supplied arguments
+4. a `return()` call to specify what the function will return. If this is not supplied, the result of the last calculation is returned
+
+Now it is time for you to try this yourselves.
+
+### Task #1: write your own
+In R we can easily calculate a pupolations standard deviation around the the mean using `sd()` but there is no default implementation for the [standard error of the mean](https://en.wikipedia.org/wiki/Standard_error). Therefore, it is up to you to write one now. 
+
+Note, there are far more standard error statistics for which R does not provide standard base functions, such as the [root mean square error RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) or the [absolute error AE](https://en.wikipedia.org/wiki/Approximation_error). Therefore, if you're keen go ahead and practice writing functions to provide these.
+
+<center>
+  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+</center>
+
+-------
+
+### Functionals
+
+We've already seen functionals, functions that take other functions as arguments. However, so far we've only used these with standard base R functions. Let's try and supply a custom function to a functional.
+
+```{r custom functional}
+dat <- data.frame(a = c(3, 7, 11, 1, 24, 2),
+                  b = c(4, 3, 2, 3, 12, 5))
+
+sapply(seq(nrow(dat)), function(i) pythagoreanTheorem(dat[i, 1], dat[i, 2]))
+```
+

@@ -31,7 +31,7 @@ b
 
 You may wonder why this is relevant to understand `*apply`? 
 
-The one thing that all `*apply` functions have in common is that they are all so-called closures that can take a function as an argument. Usually, these closures take some object and some function as input and then apply the function to every entry of the object. The difference between the various `*apply` functions is basically the type of object they are designed for and hence each of these has slightly different requirements for the structure of the supplied function.
+The one thing that all `*apply` functions have in common is that they are all so-called functionals that can take a function as an argument. Usually, these functionals take some object and some function as input and then apply the function to every entry of the object. The difference between the various `*apply` functions is basically the type of object they are designed for and hence each of these has slightly different requirements for the structure of the supplied function.
 
 -------
 
