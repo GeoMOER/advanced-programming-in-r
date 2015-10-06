@@ -25,7 +25,7 @@ Let's start straight away with detecting the number of cores available on your
 machine via `detectCores`. In the end, there's no use in trying to split a 
 certain task into 5 parts when there are only 4 horses available, is it? &#128521; 
 
-```{r ncores, message=FALSE}
+```{r ncores, message=FALSE, warnings = FALSE}
 ## load 'doParallel' package
 library(doParallel)
 
@@ -47,7 +47,7 @@ divided equally - just like in the image on the previous page. With
 `registerDoParallel`, we tell R that it should use the cluster 'cl' for any 
 further multi-core operations performed with `foreach`.
 
-```{r cluster}
+```{r cluster, warnings = FALSE}
 ## create parallel socket cluster
 cl <- makeCluster(3)
 
@@ -70,7 +70,7 @@ except this time it's `foreach` we'll be working with. Similar to `*apply`,
 `foreach` requires a set of input data and a function to perform on the very same. 
 Have a look at the following example. 
 
-```{r foreach}
+```{r foreach, warning = FALSE}
 ## calculate square root, return list
 foreach(i = 1:4) %do% sqrt(i)
 ```
@@ -84,7 +84,7 @@ will notice later on that this syntax comes in quite handy when forwarding
 We may easily change the output type of `foreach` by telling R how to `.combine` 
 the results of the single iterations via 
 
-```{r combine}
+```{r combine, warning = FALSE}
 ## calculate sqare root, return vector
 foreach(i = 1:4, .combine = "c") %do% sqrt(i)
 ```
@@ -102,7 +102,7 @@ Remember to `split` the 'diamonds' dataset first and pass the thus created list
   <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
 </center>
 
-```{r lm_foreach, eval = FALSE, echo = FALSE}
+```{r lm_foreach, eval = FALSE, echo = FALSE, warnings = FALSE}
 ## load 'ggplot2' and split 'diamonds' dataset
 library(ggplot2)
 ls_diamonds <- split(diamonds, f = diamonds$cut)
@@ -120,7 +120,7 @@ rsq
 Let's see how long this code chunk takes to perform. The **microbenchmark** 
 package is just the right thing for such an operation.
 
-```{r lm_foreach_mb}
+```{r lm_foreach_mb, warning = FALSE}
 ## load 'microbenchmark' package
 library(microbenchmark)
 
@@ -140,7 +140,7 @@ cores is to replace `%do%` with `%dopar%`. In doing so (and distributing the
 iterative `lm` calculation on multiple cores), the operation should perform 
 much faster, right?
 
-```{r lm_foreach_par_mb}
+```{r lm_foreach_par_mb, warning = FALSE}
 microbenchmark({
   foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i)
 }, times = 20L)
@@ -163,7 +163,10 @@ For example, let's assume we wanted to separately predict 'cut', 'color' and
 Using `foreach` (or `lapply`), the referring code would roughly look as follows.
 
 
-```{r foreach_ctree}
+```{r foreach_ctree, eval = FALSE, message = FALSE, warnings = FALSE}
+## load 'party' package
+library(party)
+
 system.time({
   
   ## conditional inference trees 
@@ -188,7 +191,7 @@ we can easily split this operation into 3 parts, i.e. one node takes 'cut' as
 response variable, another node 'color' and a third node 'carat' - at the same 
 time!
 
-```{r foreach_ctree_par}
+```{r foreach_ctree_par, eval = FALSE, warning = FALSE}
 system.time({
   
   ## conditional inference trees 
