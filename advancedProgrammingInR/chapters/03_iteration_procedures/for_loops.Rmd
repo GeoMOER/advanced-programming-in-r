@@ -68,7 +68,7 @@ One common scenario is to work with different data sources. Here, `for`-loops ca
 
 Instead of reusing the same lines of code, we dynamically subset the data, build suitable names for saving and finally save each part of the data.
 
-```{r save loop, eval = FALSE}
+```{r save loop, eval = TRUE}
 ## index for start and end rows to be extracted
 indx_start <- seq(1, nrow(diamonds), 2000)
 indx_end <- c(indx_start[-1] - 1, nrow(diamonds))
@@ -93,7 +93,7 @@ for (i in seq(indx_start)) {
                sprintf("%05.0f", nd), ".csv")
   
   ## write to disk
-  write.csv(dat, nm)
+  write.csv(dat, nm, row.names = FALSE)
 }
 ```
 

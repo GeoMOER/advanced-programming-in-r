@@ -10,7 +10,14 @@ library(ggplot2)
 ```
 # The *\*apply* family
 
-You may have heard of this family of functions and may have wondered what they are all about and how they differ from classic loop structures. First of all, we need to recognize that these structures are pretty much unique to R. The reason for this is that R is at its very core a so-called _functional programming language_. This means nothing else than "every operation in R is carried out by an appropriate function". In fact, even the classical `<-` assignment operator is defined in the same way as any other function as well.
+You may have heard of this family of functions and may have wondered what they are all about and how they differ from classic loop structures. 
+
+In this cóurse we will familiarize ourselves with 
+
+* `apply()`
+* `lapply()` and `sapply()`
+
+First of all, we need to recognize that these structures are pretty much unique to R. The reason for this is that R is at its very core a so-called _functional programming language_. This means nothing else than "every operation in R is carried out by an appropriate function". In fact, even the classical `<-` assignment operator is defined in the same way as any other function in R.
 
 ```{r assign}
 a <- 3
@@ -25,6 +32,10 @@ b
 You may wonder why this is relevant to understand `*apply`? 
 
 The one thing that all `*apply` functions have in common is that they are all so-called closures that can take a function as an argument. Usually, these closures take some object and some function as input and then apply the function to every entry of the object. The difference between the various `*apply` functions is basically the type of object they are designed for and hence each of these has slightly different requirements for the structure of the supplied function.
+
+-------
+
+### apply()
 
 First, let's have a look at `apply()`. It has three main arguments
 
@@ -41,6 +52,8 @@ data(diamonds)
 
 ## subset diamonds to only numerical columns
 diamonds_num <- diamonds[, -c(2:4)]
+
+## apply function mean to all columns of diamonds
 col_means <- apply(diamonds_num, 2, mean, na.rm = TRUE)
 col_means
 
@@ -48,11 +61,73 @@ col_means
 row_sd <- apply(diamonds_num, 1, sd, na.rm = TRUE)
 ```
 
-```{r rapply}
-dat_list <- as.list(diamonds)
-fun_list <- list("mean", rep("nchar", 3), rep("sd", 3), "median", "min", "var")
+In R, `apply()` is the classical function to be used with data in matrix-like form to quickly iterate over one dimension (rows or columns). It is optimized for this kind of action and is much quicker than looping over rows/columns with a `for`-loop which is the satndard way in other languages such as Pyhton or C++.
 
-tst <- rapply(diamonds, f = mean, classes = "numeric")
+-------
+
+### lapply()
+
+More powerful than `apply()` is `lapply()`. The 'l' stands for list and simply means that whatever is returned from an iterative process will be stored in a list. In R, lists are the most flexible way of storing things but their structure may need a little getting used to. Basically, you can store any combination of objects in lists. Matrices, for example, are much less versatile.
+
+Let's have a look at what these lists look like:
+
+```{r lists}
+lst <- list(1:10, 
+            "Hello", 
+            mean,
+            mean(1:10),
+            function(x) x + 1, 
+            data.frame(col1 = rnorm(10), col2 = runif(10)),
+            matrix(1:9, 3, 3))
+
+lst
 ```
 
-The most general of all `lapply()`. It can take 
+As you can see we can combine any odd type of objects. Note how each list entry is numbered. We could have supplied names as well, but it is less common to do so if your list is the result of an interative procedure. And accessing lists via their numbered entries is quite straight forward, yet a little different from the classical `$` notation of data frames. To 'navigate' to one of the entries we need to use double square brackets `[[x]]`. This is important as this will be the notion we need to keep in mind when iteration over lists.
+
+`lapply()` can basically be used just like a `for`-loop, though the semntics are a little different. The two main differences are 
+
+1. we can store the whole result of the `lapply()` call in an object (a list)
+2. we need to write the bit that does the calculation part as a function 
+
+So, if we were to recreate the first example from the previous chapter on `for`-loops
+
+```{r lapply names}
+result <- lapply(1:5, function(i) i)
+result
+```
+
+The only time we will use `sapply()` in his tutorial is right here. `sapply()` and `lapply()` are very similar, so that it is sufficient to cover only one in detail. The 's' stands for 'simplify' which means that `sapply()` will try to return and object of simple structure, such as a vector or a matrix. 
+
+Let's repeat the above with `sapply()`
+
+```{r sapply names}
+result <- sapply(1:5, function(i) i)
+result
+```
+
+Getting a vector as a result is great if the calculation produces a vector, however this won't work if the result is e.g. a function or a `ggplot2`-object or something along those lines. Therefore, `lapply()` is simply the more versatile of the two as it can handle any type of result. 
+
+To highlight this, let's use `lapply()` to read in the numerous chunks of data we have previously saved.
+
+```{r lapply read}
+fls <- list.files("results", pattern = glob2rx("*subset*.csv"),
+                  full.names = TRUE)
+
+dat_lst <- lapply(seq(fls), function(i) {
+  read.csv(fls[i])
+})
+
+str(dat_lst, 1)
+```
+
+Great, you might say, but now we have a list of multiple data frames instead of one complete data frame. In our case this seems rather silly, but think about situations where you want to analyse the same sort of data only from different dates or from different locations or patients or ...
+
+Also, recombining these individual data frames back into one is tsraight forward. 
+
+```{r do.call dfs}
+diamonds_df <- do.call("rbind", dat_lst)
+str(diamonds_df)
+identical(diamonds, diamonds_df)
+```
+

@@ -146,7 +146,7 @@ The class of colom 10 is numeric </code></pre>
 +                sprintf(&quot;%05.0f&quot;, nd), &quot;.csv&quot;)
 +   
 +   ## write to disk
-+   write.csv(dat, nm)
++   write.csv(dat, nm, row.names = FALSE)
 + }</code></pre>
 <p><code>for</code>-loops are great for iterative operations that do not require assignment of their output to an object, e.g. the example above of saving data or producing plots. If we want the outcome of a loop to be assigned to an object and use this for further analysis, R has much more convenient structures which we will see in the next chapter.</p>
 <p>Finally, there are more pieces related to iteration procedures in R:</p>
