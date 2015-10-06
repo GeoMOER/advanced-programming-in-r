@@ -113,7 +113,7 @@ Instead of reusing the same lines of code, we dynamically subset the data, build
 +   st <- indx_start[i]
 +   nd <- indx_end[i]
 +   
-+   ## data based on indeces
++   ## subset data based on row indeces
 +   dat <- diamonds[st:nd, ]
 +   
 +   ## create unique name for iteration data
@@ -122,7 +122,15 @@ Instead of reusing the same lines of code, we dynamically subset the data, build
 +                sprintf("%05.0f", nd), ".csv")
 +   
 +   ## write to disk
-+   write.csv(dat, nm)
++   write.csv(dat, nm, row.names = FALSE)
 + }
 ```
 
+`for`-loops are great for iterative operations that do not require assignment of their output to an object, e.g. the example above of saving data or producing plots. If we want the outcome of a loop to be assigned to an object and use this for further analysis, R has much more convenient structures which we will see in the next chapter.
+
+Finally, there are more pieces related to iteration procedures in R:
+
+* `while`-loops to do semthing while some condition is met (e.g. while a certain value is below a certain threshold or thelike)
+* `break` allows you to create a condition so that once it is met, the loop will stop
+* `next` allows you to create a condition so that if it is met, the execution of the current iteration is skipped and the loop procedes to the next iteration without breaking the loop
+* `if`-statements can also be helpful to prevent errors within loops
