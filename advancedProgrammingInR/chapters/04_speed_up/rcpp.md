@@ -130,6 +130,95 @@ numbers with decimal places instead of raw integers.
 [1] 5.5
 ```
 
+##### Matrix input, vector output
+**Rcpp** also comes with a number of so-called 'sugars' that help newcomers to 
+find their way by providing C++-equivalents of a number of built-in R functions. 
+A short overview of featured functions is e.g. given by 
+François and Eddelbuettel (2015). Amongst others, these include 
+
+* **math functions**, e.g. `abs`, `ceiling`, `floor`, `exp`, `log`
+* **scalar summaries**, e.g. `mean`, `min`, `max`, `sum`, `sd`, `var`
+* **vector summaries**, e.g. `cumsum`, `diff`
+* **finding utilities**, e.g. `which_max`, `which_min`, `match`
+* **finding duplicates**, e.g. `duplicated`, `unique`
+
+In order to demonstrate the proper use of such 'sugars' and, at the same time, 
+introduce `NumericMatrix` (`NumericVector`) as further input (output) variable 
+types, let's replicate the previous example on the use of `apply` to calculate 
+mean values from each single variable column of the 'diamonds' dataset using 
+**Rcpp** functionality. For the sake of simplicity of this demonstration, let's 
+again focus on the numeric columns only (note also the use of `sapply` to create 
+an index vector of (non-)numeric columns). 
+
+
+```r
+> ## subset with numeric columns only
+> num_cols <- sapply(1:ncol(diamonds), function(i) is.numeric(diamonds[, i]))
+> diamonds_sub <- as.matrix(diamonds[, num_cols])
+> 
+> ## c++-version of 'colMeans'
+> cppFunction("NumericVector colMeansC(NumericMatrix x) {
++   
++   // number of rows and columns
++   int nCol = x.ncol();
++   int nRow = x.nrow();
++   
++   // temporary variable of size nrow(x) to store column values in
++   NumericVector nVal(nRow);
++   
++   // initialize output vector
++   NumericVector out(nCol);
++   
++   // loop over each column
++   for (int i = 0; i < nCol; i++) {
++     
++     // values in current column
++     nVal = x(_, i);
++     
++     // store mean of current 'nVal' in 'out[i]'
++     out[i] = mean(nVal);
++   }
++   
++   return out;
++ }")
+> 
+> means <- colMeansC(diamonds_sub)
+> names(means) <- colnames(diamonds_sub)
+> means
+```
+
+```
+       carat        depth        table        price            x            y            z 
+   0.7979397   61.7494049   57.4571839 3932.7997219    5.7311572    5.7345260    3.5387338 
+```
+
+```r
+> ## speed check
+> microbenchmark(
++   val_apply <- apply(diamonds_sub, 2, mean), 
++   val_cpp <- colMeansC(diamonds_sub)
++ , times = 20L)
+```
+
+```
+Unit: milliseconds
+                                      expr      min       lq     mean   median       uq       max neval cld
+ val_apply <- apply(diamonds_sub, 2, mean) 5.536440 5.628907 7.175034 6.494315 7.963722 13.514506    20   b
+        val_cpp <- colMeansC(diamonds_sub) 1.090159 1.131318 1.291425 1.167399 1.293270  2.892384    20  a 
+```
+
+```r
+> ## similarity check
+> identical(val_apply, means)
+```
+
+```
+[1] TRUE
+```
+
+It's milliseconds we are talking about here, but still - `colMeansC` runs 
+more than 5 times faster as compared to the `apply` approach!
+
 ### What's the point of that?
 You might guess that we did not decide to include this chapter on C++ 
 interconnectivity just for fun. The actual reason is that C++ code performs much 
@@ -161,10 +250,10 @@ run `sumR(1:1e6)` using `system.time` (or `microbenchmark`).
 
 ```
 Unit: milliseconds
-          expr        min         lq       mean     median         uq        max neval
-  sum(1:1e+06)   2.250275   2.345257   2.634286   2.572749   2.977201   3.011628    20
- sumR(1:1e+06) 630.837690 646.427082 690.864701 659.452943 711.211584 988.941062    20
- sumC(1:1e+06)   3.525168   3.730944   4.542325   4.355312   5.273231   5.855574    20
+          expr        min         lq       mean     median         uq         max neval cld
+  sum(1:1e+06)   1.851144   1.892637   3.402629   2.127930   4.167919    8.386235    20  a 
+ sumR(1:1e+06) 560.903965 570.136748 796.447797 602.893967 642.852165 2587.781202    20   b
+ sumC(1:1e+06)   3.104084   3.281230  10.810696   4.545386   5.931914   96.864933    20  a 
 ```
 
 As you can see, `sumC` runs more than 40 times faster than `sumR` and, at the 
@@ -253,13 +342,10 @@ Save the file in 'src/corC.cpp' and return to R, then run
 ```
 
 ```
-Unit: milliseconds
-                                 expr      min       lq     mean   median       uq      max neval
-  cor(diamonds$carat, diamonds$price) 1.297814 1.371015 1.426037 1.428050 1.462928 1.603937    20
- corC(diamonds$carat, diamonds$price) 1.220967 1.442458 1.470849 1.502126 1.517216 1.654562    20
- cld
-   a
-   a
+Unit: microseconds
+                                 expr     min       lq     mean   median       uq      max neval cld
+  cor(diamonds$carat, diamonds$price) 895.721 976.5060 1180.628 1027.905 1073.448 4256.073    20   a
+ corC(diamonds$carat, diamonds$price) 967.680 978.4505 1090.836 1022.741 1102.113 1461.673    20   a
 ```
 
 Note that, again, `corC` performs only slightly slower than the built-in `cor` 

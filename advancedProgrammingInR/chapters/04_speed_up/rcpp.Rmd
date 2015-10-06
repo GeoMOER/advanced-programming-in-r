@@ -1,7 +1,10 @@
 ```{r knitsetup, echo=FALSE, results='hide', warning=FALSE, message=FALSE, cache=FALSE}
+library(knitr)
+library(knitcitations)
+mybib <- bibtex::read.bib("../../bib/references")
 opts_knit$set(base.dir='./', fig.path='', out.format='md')
 opts_chunk$set(prompt=TRUE, comment='', results='markup')
-options(width = 100)
+options(width = 110)
 # See yihui.name/knitr/options for more Knitr options.
 ##### Put other setup R code here
 
@@ -118,6 +121,74 @@ cppFunction('double sumC(NumericVector x) {
 
 sumC(seq(0, 1, 0.1))
 ```
+
+##### Matrix input, vector output
+**Rcpp** also comes with a number of so-called 'sugars' that help newcomers to 
+find their way by providing C++-equivalents of a number of built-in R functions. 
+A short overview of featured functions is e.g. given by 
+`r citet(mybib[[grep("Eddelbuettel", mybib)]])`. Amongst others, these include 
+
+* **math functions**, e.g. `abs`, `ceiling`, `floor`, `exp`, `log`
+* **scalar summaries**, e.g. `mean`, `min`, `max`, `sum`, `sd`, `var`
+* **vector summaries**, e.g. `cumsum`, `diff`
+* **finding utilities**, e.g. `which_max`, `which_min`, `match`
+* **finding duplicates**, e.g. `duplicated`, `unique`
+
+In order to demonstrate the proper use of such 'sugars' and, at the same time, 
+introduce `NumericMatrix` (`NumericVector`) as further input (output) variable 
+types, let's replicate the previous example on the use of `apply` to calculate 
+mean values from each single variable column of the 'diamonds' dataset using 
+**Rcpp** functionality. For the sake of simplicity of this demonstration, let's 
+again focus on the numeric columns only (note also the use of `sapply` to create 
+an index vector of (non-)numeric columns). 
+
+```{r colMeansC}
+## subset with numeric columns only
+num_cols <- sapply(1:ncol(diamonds), function(i) is.numeric(diamonds[, i]))
+diamonds_sub <- as.matrix(diamonds[, num_cols])
+
+## c++-version of 'colMeans'
+cppFunction("NumericVector colMeansC(NumericMatrix x) {
+  
+  // number of rows and columns
+  int nCol = x.ncol();
+  int nRow = x.nrow();
+  
+  // temporary variable of size nrow(x) to store column values in
+  NumericVector nVal(nRow);
+  
+  // initialize output vector
+  NumericVector out(nCol);
+  
+  // loop over each column
+  for (int i = 0; i < nCol; i++) {
+    
+    // values in current column
+    nVal = x(_, i);
+    
+    // store mean of current 'nVal' in 'out[i]'
+    out[i] = mean(nVal);
+  }
+  
+  return out;
+}")
+
+means <- colMeansC(diamonds_sub)
+names(means) <- colnames(diamonds_sub)
+means
+
+## speed check
+microbenchmark(
+  val_apply <- apply(diamonds_sub, 2, mean), 
+  val_cpp <- colMeansC(diamonds_sub)
+, times = 20L)
+
+## similarity check
+identical(val_apply, means)
+```
+
+It's milliseconds we are talking about here, but still - `colMeansC` runs 
+more than 5 times faster as compared to the `apply` approach!
 
 ### What's the point of that?
 You might guess that we did not decide to include this chapter on C++ 
