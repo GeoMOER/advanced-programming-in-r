@@ -14,13 +14,13 @@ to illustrate this point. Let's start off with the wide format:
 
 
 ```r
-> olddata_wide <- read.table(header = TRUE, text = '
-+  subject sex control cond1 cond2
-+        1   M     7.9  12.3  10.7
-+        2   F     6.3  10.6  11.1
-+        3   F     9.5  13.1  13.8
-+        4   M    11.5  13.4  12.9
-+ ')
+olddata_wide <- read.table(header = TRUE, text = '
+ subject sex control cond1 cond2
+       1   M     7.9  12.3  10.7
+       2   F     6.3  10.6  11.1
+       3   F     9.5  13.1  13.8
+       4   M    11.5  13.4  12.9
+')
 ```
 
 Notice the strict structure of the `data.frame` with observations of subjects 
@@ -30,8 +30,8 @@ dataset would look like:
 
 
 ```r
-> library(reshape2)
-> melt(olddata_wide, id.vars = c("subject", "sex"))
+library(reshape2)
+melt(olddata_wide, id.vars = c("subject", "sex"))
 ```
 
 ```

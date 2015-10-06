@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="2.1" data-basepath="../.." data-revision="Tue Oct 06 2015 14:39:10 GMT+0200 (CEST)">
+    <div class="book" data-level="2.1" data-basepath="../.." data-revision="Tue Oct 06 2015 14:54:48 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -444,8 +444,8 @@ basis of the &apos;diamonds&apos; dataset. Based on a very comprehensive
 <h3 id="a-brief-note-on-tbl-df">A brief note on <code>tbl_df</code></h3>
 <p>You probably noticed earlier that &apos;diamonds&apos; consists of a rather large number 
 of observations. </p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## number of columns and rows of &apos;diamonds&apos;</span>
-&gt; dim(diamonds)
+<pre><code class="lang-r"><span class="hljs-comment">## number of columns and rows of &apos;diamonds&apos;</span>
+dim(diamonds)
 </code></pre>
 <pre><code>[1] 53940    10
 </code></pre><p>Unless you are willing to stumble into truncated console output when typing 
@@ -453,12 +453,22 @@ of observations. </p>
 <code>head(diamonds)</code> or <code>str(diamonds)</code> in order to get an impression of the data 
 you are dealing with. Along with <strong>dplyr</strong> comes a function called <code>tbl_df</code> that 
 helps to overcome such ritual-like investigation procedures. </p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## required package</span>
-&gt; <span class="hljs-keyword">library</span>(dplyr)
-&gt; 
-&gt; <span class="hljs-comment">## create a local data frame</span>
-&gt; diamonds &lt;- tbl_df(diamonds)
-&gt; diamonds
+<pre><code class="lang-r"><span class="hljs-comment">## required package</span>
+<span class="hljs-keyword">library</span>(dplyr)
+</code></pre>
+<pre><code>
+Attaching package: &apos;dplyr&apos;
+
+The following objects are masked from &apos;package:stats&apos;:
+
+    filter, lag
+
+The following objects are masked from &apos;package:base&apos;:
+
+    intersect, setdiff, setequal, union
+</code></pre><pre><code class="lang-r"><span class="hljs-comment">## create a local data frame</span>
+diamonds &lt;- tbl_df(diamonds)
+diamonds
 </code></pre>
 <pre><code>Source: local data frame [53,940 x 10]
 
@@ -502,9 +512,9 @@ argument represents the data frame, whereas any subsequent argument represents a
 logical expression to filter particular rows. Note that in contrast to the 
 direct subsetting via square brackets, you are not required to repeat the name 
 of the data frame with every single condition.</p>
-<pre><code class="lang-r">&gt; filter(diamonds, carat &gt; <span class="hljs-number">3</span> &amp;
-+          cut %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;Premium&quot;</span>, <span class="hljs-string">&quot;Ideal&quot;</span>) &amp;
-+          color %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;D&quot;</span>, <span class="hljs-string">&quot;E&quot;</span>, <span class="hljs-string">&quot;F&quot;</span>))
+<pre><code class="lang-r">filter(diamonds, carat &gt; <span class="hljs-number">3</span> &amp;
+         cut %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;Premium&quot;</span>, <span class="hljs-string">&quot;Ideal&quot;</span>) &amp;
+         color %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;D&quot;</span>, <span class="hljs-string">&quot;E&quot;</span>, <span class="hljs-string">&quot;F&quot;</span>))
 </code></pre>
 <pre><code>Source: local data frame [2 x 10]
 
@@ -517,7 +527,7 @@ of the data frame with every single condition.</p>
 <code>filter</code> and works analogous to SQL standards. Again, the first argument 
 represents the data frame under consideration followed by the desired column 
 names (without double quotes). </p>
-<pre><code class="lang-r">&gt; select(diamonds, carat, cut, color, clarity)
+<pre><code class="lang-r">select(diamonds, carat, cut, color, clarity)
 </code></pre>
 <pre><code>Source: local data frame [53,940 x 4]
 
@@ -539,7 +549,7 @@ as well as the need for double quotes became obsolete. In addition to this,
 column names may be treated analogous to numeric indices, eliminating the need 
 to count columns when desiring to extract several consecutive columns from a 
 rather wide datasets. </p>
-<pre><code class="lang-r">&gt; select(diamonds, carat:clarity, price)
+<pre><code class="lang-r">select(diamonds, carat:clarity, price)
 </code></pre>
 <pre><code>Source: local data frame [53,940 x 5]
 
@@ -564,32 +574,32 @@ case you needed any of them.</p>
 <p>Now suppose we wanted to select the same columns from the previously created 
 subset of data. Traditionally, this would either require a 2-step approach, 
 generating otherwise unnecessary intermediate results, via </p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## first, create subset</span>
-&gt; diamonds_sub &lt;- filter(diamonds, carat &gt; <span class="hljs-number">3</span> &amp;
-+                          cut %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;Premium&quot;</span>, <span class="hljs-string">&quot;Ideal&quot;</span>) &amp;
-+                          color %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;D&quot;</span>, <span class="hljs-string">&quot;E&quot;</span>, <span class="hljs-string">&quot;F&quot;</span>))
-&gt; 
-&gt; <span class="hljs-comment">## second, select columns</span>
-&gt; select(diamonds_sub, carat:clarity, price)
+<pre><code class="lang-r"><span class="hljs-comment">## first, create subset</span>
+diamonds_sub &lt;- filter(diamonds, carat &gt; <span class="hljs-number">3</span> &amp;
+                         cut %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;Premium&quot;</span>, <span class="hljs-string">&quot;Ideal&quot;</span>) &amp;
+                         color %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;D&quot;</span>, <span class="hljs-string">&quot;E&quot;</span>, <span class="hljs-string">&quot;F&quot;</span>))
+
+<span class="hljs-comment">## second, select columns</span>
+select(diamonds_sub, carat:clarity, price)
 </code></pre>
 <p>or nested function calls which are usually hard to read.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## all-in-one nested solution</span>
-&gt; select(
-+   filter(diamonds, carat &gt; <span class="hljs-number">3</span> &amp;
-+            cut %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;Premium&quot;</span>, <span class="hljs-string">&quot;Ideal&quot;</span>) &amp;
-+            color %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;D&quot;</span>, <span class="hljs-string">&quot;E&quot;</span>, <span class="hljs-string">&quot;F&quot;</span>)), 
-+   carat:clarity, price
-+ )
+<pre><code class="lang-r"><span class="hljs-comment">## all-in-one nested solution</span>
+select(
+  filter(diamonds, carat &gt; <span class="hljs-number">3</span> &amp;
+           cut %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;Premium&quot;</span>, <span class="hljs-string">&quot;Ideal&quot;</span>) &amp;
+           color %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;D&quot;</span>, <span class="hljs-string">&quot;E&quot;</span>, <span class="hljs-string">&quot;F&quot;</span>)), 
+  carat:clarity, price
+)
 </code></pre>
 <p><strong>dplyr</strong> introduces the <code>%&gt;%</code> operator which is meant to bridge a set of 
 connected processing steps, thus eliminating the need for intermediary 
 variables (&apos;diamonds_sub&apos;) or nested functions. Just think of <code>%&gt;%</code> as a &quot;then&quot; 
 connecting two parts of a sentence.</p>
-<pre><code class="lang-r">&gt; diamonds %&gt;%
-+   filter(carat &gt; <span class="hljs-number">3</span> &amp;
-+            cut %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;Premium&quot;</span>, <span class="hljs-string">&quot;Ideal&quot;</span>) &amp;
-+            color %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;D&quot;</span>, <span class="hljs-string">&quot;E&quot;</span>, <span class="hljs-string">&quot;F&quot;</span>)) %&gt;%
-+   select(carat:clarity, price)
+<pre><code class="lang-r">diamonds %&gt;%
+  filter(carat &gt; <span class="hljs-number">3</span> &amp;
+           cut %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;Premium&quot;</span>, <span class="hljs-string">&quot;Ideal&quot;</span>) &amp;
+           color %<span class="hljs-keyword">in</span>% c(<span class="hljs-string">&quot;D&quot;</span>, <span class="hljs-string">&quot;E&quot;</span>, <span class="hljs-string">&quot;F&quot;</span>)) %&gt;%
+  select(carat:clarity, price)
 </code></pre>
 <pre><code>Source: local data frame [2 x 5]
 
@@ -620,9 +630,9 @@ their weights arranged in descending order, with the heaviest specimen on top.</
 
 
 <p>Again, the <strong>dplyr</strong> approach is much simpler and can be done in one go. </p>
-<pre><code class="lang-r">&gt; diamonds %&gt;%
-+   select(color, price, carat) %&gt;%
-+   arrange(color, price, desc(carat))
+<pre><code class="lang-r">diamonds %&gt;%
+  select(color, price, carat) %&gt;%
+  arrange(color, price, desc(carat))
 </code></pre>
 <pre><code>Source: local data frame [53,940 x 3]
 
@@ -643,10 +653,10 @@ their weights arranged in descending order, with the heaviest specimen on top.</
 <p><code>mutate</code> lets you add new variables to an existing data frame. It is basically 
 an extended version of base-R <code>transform</code> in the sense that it allows you to 
 directly work with columns you&apos;ve just created. </p>
-<pre><code class="lang-r">&gt; diamonds %&gt;%
-+   select(color, carat, price) %&gt;%
-+   mutate(ppc = price / carat, 
-+          ppc_rnd = round(ppc, <span class="hljs-number">2</span>))
+<pre><code class="lang-r">diamonds %&gt;%
+  select(color, carat, price) %&gt;%
+  mutate(ppc = price / carat, 
+         ppc_rnd = round(ppc, <span class="hljs-number">2</span>))
 </code></pre>
 <pre><code>Source: local data frame [53,940 x 5]
 
@@ -681,9 +691,9 @@ showing the minimum, mean and maximum price per diamond color.</p>
 <p>As for the <strong>dplyr</strong> solution, the <code>group_by</code> function comes in handy when 
 trying to calculate metrics from sub-groups of data, e.g. depending on the 
 diamonds&apos; color, rather than from the entire data frame.</p>
-<pre><code class="lang-r">&gt; diamonds %&gt;% 
-+   group_by(color) %&gt;%
-+   summarise(MIN = min(price), MEAN = mean(price), MAX = max(price))
+<pre><code class="lang-r">diamonds %&gt;% 
+  group_by(color) %&gt;%
+  summarise(MIN = min(price), MEAN = mean(price), MAX = max(price))
 </code></pre>
 <pre><code>Source: local data frame [7 x 4]
 
@@ -698,7 +708,7 @@ diamonds&apos; color, rather than from the entire data frame.</p>
 7      J   335 5323.818 18710
 </code></pre><p>In order to summarize an entire variable into one single value, just drop the 
 <code>group_by</code> function. </p>
-<pre><code class="lang-r">&gt; summarise(diamonds, min = min(price), mean = mean(price), max = max(price))
+<pre><code class="lang-r">summarise(diamonds, min = min(price), mean = mean(price), max = max(price))
 </code></pre>
 <pre><code>Source: local data frame [1 x 3]
 

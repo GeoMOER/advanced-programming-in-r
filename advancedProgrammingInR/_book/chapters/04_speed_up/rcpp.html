@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="4.2" data-basepath="../.." data-revision="Tue Oct 06 2015 14:39:10 GMT+0200 (CEST)">
+    <div class="book" data-level="4.2" data-basepath="../.." data-revision="Tue Oct 06 2015 14:54:48 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -438,11 +438,11 @@ able to compile C++ functions and make them available in R. Further information
 on package development prerequisites can be found 
 <a href="https://support.rstudio.com/hc/en-us/articles/200486498-Package-Development-Prerequisites" target="_blank">here</a>. </p>
 <p>You may easily check if everything works by running the following code chunk.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## load &apos;Rcpp&apos; package</span>
-&gt; <span class="hljs-keyword">library</span>(Rcpp)
-&gt; 
-&gt; <span class="hljs-comment">## try to evaluate c++ expression</span>
-&gt; evalCpp(<span class="hljs-string">&quot;1 + 1&quot;</span>)
+<pre><code class="lang-r"><span class="hljs-comment">## load &apos;Rcpp&apos; package</span>
+<span class="hljs-keyword">library</span>(Rcpp)
+
+<span class="hljs-comment">## try to evaluate c++ expression</span>
+evalCpp(<span class="hljs-string">&quot;1 + 1&quot;</span>)
 </code></pre>
 <pre><code>[1] 2
 </code></pre><p>If this expression does <u>not</u> evaluate to &apos;2&apos;, there&apos;s something wrong with 
@@ -464,12 +464,12 @@ code, compile it and transform it into a proper R function. Imagine, for
 instance, the following code (which is heavily based on Hadley Wickham&apos;s 
 <a href="http://adv-r.had.co.nz/Rcpp.html" target="_blank">Advanced R. High performance functions with Rcpp</a> 
 tutorial). </p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## function that returns &apos;1&apos;</span>
-&gt; cppFunction(<span class="hljs-string">&apos;int one() {
-+   return 1;
-+ }&apos;</span>)
-&gt; 
-&gt; one()
+<pre><code class="lang-r"><span class="hljs-comment">## function that returns &apos;1&apos;</span>
+cppFunction(<span class="hljs-string">&apos;int one() {
+  return 1;
+}&apos;</span>)
+
+one()
 </code></pre>
 <pre><code>[1] 1
 </code></pre><p>Note that C++ requires you to specify the output type of <code>one()</code> which, in this 
@@ -481,18 +481,18 @@ and <code>bool</code> in C++ language. Let&apos;s move on to our next example.</
 type of your function, but also the type(s) of the input argument(s). The next 
 code chunk defines a function <code>signC</code> that takes an integer input <code>x</code> and, 
 depending on the arithmetic sign of <code>x</code>, returns one of &apos;1&apos;, &apos;0&apos; and &apos;-1&apos;. </p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## function that returns 1 if &apos;x&apos; is positive, -1 if &apos;x&apos; is negative, 0 otherwise</span>
-&gt; cppFunction(<span class="hljs-string">&apos;int signC(int x) {
-+   if (x &gt; 0) {
-+     return 1;
-+   } else if (x == 0) {
-+     return 0;
-+   } else {
-+     return -1;
-+   }
-+ }&apos;</span>)
-&gt; 
-&gt; signC(-<span class="hljs-number">10</span>)
+<pre><code class="lang-r"><span class="hljs-comment">## function that returns 1 if &apos;x&apos; is positive, -1 if &apos;x&apos; is negative, 0 otherwise</span>
+cppFunction(<span class="hljs-string">&apos;int signC(int x) {
+  if (x &gt; 0) {
+    return 1;
+  } else if (x == 0) {
+    return 0;
+  } else {
+    return -1;
+  }
+}&apos;</span>)
+
+signC(-<span class="hljs-number">10</span>)
 </code></pre>
 <pre><code>[1] -1
 </code></pre><p>Note also that <code>if</code> statements in C++ look very similar to their R equivalent. 
@@ -511,16 +511,16 @@ reasons. Similar to the different scalar inputs depicted above, base-R
 This time, it also makes sense to define the input type as <code>NumericVector</code> and, 
 accordingly, the output type as <code>double</code> since we&apos;d possibly like to supply 
 numbers with decimal places instead of raw integers.</p>
-<pre><code class="lang-r">&gt; cppFunction(<span class="hljs-string">&apos;double sumC(NumericVector x) {
-+   int n = x.size();
-+   double total = 0;
-+   for(int i = 0; i &lt; n; ++i) {
-+     total += x[i];
-+   }
-+   return total;
-+ }&apos;</span>)
-&gt; 
-&gt; sumC(seq(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.1</span>))
+<pre><code class="lang-r">cppFunction(<span class="hljs-string">&apos;double sumC(NumericVector x) {
+  int n = x.size();
+  double total = 0;
+  for(int i = 0; i &lt; n; ++i) {
+    total += x[i];
+  }
+  return total;
+}&apos;</span>)
+
+sumC(seq(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.1</span>))
 </code></pre>
 <pre><code>[1] 5.5
 </code></pre><h5 id="matrix-input-vector-output">Matrix input, vector output</h5>
@@ -542,54 +542,53 @@ mean values from each single variable column of the &apos;diamonds&apos; dataset
 <strong>Rcpp</strong> functionality. For the sake of simplicity of this demonstration, let&apos;s 
 again focus on the numeric columns only (note also the use of <code>sapply</code> to create 
 an index vector of (non-)numeric columns). </p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## subset with numeric columns only</span>
-&gt; num_cols &lt;- sapply(<span class="hljs-number">1</span>:ncol(diamonds), <span class="hljs-keyword">function</span>(i) is.numeric(diamonds[, i]))
-&gt; diamonds_sub &lt;- as.matrix(diamonds[, num_cols])
-&gt; 
-&gt; <span class="hljs-comment">## c++-version of &apos;colMeans&apos;</span>
-&gt; cppFunction(<span class="hljs-string">&quot;NumericVector colMeansC(NumericMatrix x) {
-+   
-+   // number of rows and columns
-+   int nCol = x.ncol();
-+   int nRow = x.nrow();
-+   
-+   // temporary variable of size nrow(x) to store column values in
-+   NumericVector nVal(nRow);
-+   
-+   // initialize output vector
-+   NumericVector out(nCol);
-+   
-+   // loop over each column
-+   for (int i = 0; i &lt; nCol; i++) {
-+     
-+     // values in current column
-+     nVal = x(_, i);
-+     
-+     // store mean of current &apos;nVal&apos; in &apos;out[i]&apos;
-+     out[i] = mean(nVal);
-+   }
-+   
-+   return out;
-+ }&quot;</span>)
-&gt; 
-&gt; means &lt;- colMeansC(diamonds_sub)
-&gt; names(means) &lt;- colnames(diamonds_sub)
-&gt; means
+<pre><code class="lang-r"><span class="hljs-comment">## subset with numeric columns only</span>
+num_cols &lt;- sapply(<span class="hljs-number">1</span>:ncol(diamonds), <span class="hljs-keyword">function</span>(i) is.numeric(diamonds[, i]))
+diamonds_sub &lt;- as.matrix(diamonds[, num_cols])
+
+<span class="hljs-comment">## c++-version of &apos;colMeans&apos;</span>
+cppFunction(<span class="hljs-string">&quot;NumericVector colMeansC(NumericMatrix x) {
+
+  // number of rows and columns
+  int nCol = x.ncol();
+  int nRow = x.nrow();
+
+  // temporary variable of size nrow(x) to store column values in
+  NumericVector nVal(nRow);
+
+  // initialize output vector
+  NumericVector out(nCol);
+
+  // loop over each column
+  for (int i = 0; i &lt; nCol; i++) {
+
+    // values in current column
+    nVal = x(_, i);
+
+    // store mean of current &apos;nVal&apos; in &apos;out[i]&apos;
+    out[i] = mean(nVal);
+  }
+
+  return out;
+}&quot;</span>)
+
+means &lt;- colMeansC(diamonds_sub)
+names(means) &lt;- colnames(diamonds_sub)
+means
 </code></pre>
-<pre><code>       carat        depth        table        price            x            y            z 
-   0.7979397   61.7494049   57.4571839 3932.7997219    5.7311572    5.7345260    3.5387338
-</code></pre><pre><code class="lang-r">&gt; <span class="hljs-comment">## speed check</span>
-&gt; microbenchmark(
-+   val_apply &lt;- apply(diamonds_sub, <span class="hljs-number">2</span>, mean), 
-+   val_cpp &lt;- colMeansC(diamonds_sub)
-+ , times = <span class="hljs-number">20L</span>)
+<pre><code>numeric(0)
+</code></pre><pre><code class="lang-r"><span class="hljs-comment">## speed check</span>
+microbenchmark(
+  val_apply &lt;- apply(diamonds_sub, <span class="hljs-number">2</span>, mean), 
+  val_cpp &lt;- colMeansC(diamonds_sub)
+, times = <span class="hljs-number">20L</span>)
 </code></pre>
-<pre><code>Unit: milliseconds
-                                      expr      min       lq     mean   median       uq       max neval cld
- val_apply &lt;- apply(diamonds_sub, 2, mean) 5.536440 5.628907 7.175034 6.494315 7.963722 13.514506    20   b
-        val_cpp &lt;- colMeansC(diamonds_sub) 1.090159 1.131318 1.291425 1.167399 1.293270  2.892384    20  a
-</code></pre><pre><code class="lang-r">&gt; <span class="hljs-comment">## similarity check</span>
-&gt; identical(val_apply, means)
+<pre><code>Unit: microseconds
+                                      expr      min       lq      mean   median       uq      max neval cld
+ val_apply &lt;- apply(diamonds_sub, 2, mean) 1094.562 1109.860 1157.9485 1116.984 1183.910 1469.513    20   b
+        val_cpp &lt;- colMeansC(diamonds_sub)   53.401   91.378   95.5936   97.382  103.882  118.056    20  a
+</code></pre><pre><code class="lang-r"><span class="hljs-comment">## similarity check</span>
+identical(val_apply, means)
 </code></pre>
 <pre><code>[1] TRUE
 </code></pre><p>It&apos;s milliseconds we are talking about here, but still - <code>colMeansC</code> runs 
@@ -612,18 +611,18 @@ run <code>sumR(1:1e6)</code> using <code>system.time</code> (or <code>microbench
 
 
 
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## speed check</span>
-&gt; microbenchmark(
-+   sum(<span class="hljs-number">1</span>:<span class="hljs-number">1e6</span>), <span class="hljs-comment"># built-in `sum` function</span>
-+   sumR(<span class="hljs-number">1</span>:<span class="hljs-number">1e6</span>), <span class="hljs-comment"># base-R version</span>
-+   sumC(<span class="hljs-number">1</span>:<span class="hljs-number">1e6</span>)  <span class="hljs-comment"># rcpp version</span>
-+ , times = <span class="hljs-number">20L</span>)
+<pre><code class="lang-r"><span class="hljs-comment">## speed check</span>
+microbenchmark(
+  sum(<span class="hljs-number">1</span>:<span class="hljs-number">1e6</span>), <span class="hljs-comment"># built-in `sum` function</span>
+  sumR(<span class="hljs-number">1</span>:<span class="hljs-number">1e6</span>), <span class="hljs-comment"># base-R version</span>
+  sumC(<span class="hljs-number">1</span>:<span class="hljs-number">1e6</span>)  <span class="hljs-comment"># rcpp version</span>
+, times = <span class="hljs-number">20L</span>)
 </code></pre>
 <pre><code>Unit: milliseconds
-          expr        min         lq       mean     median         uq         max neval cld
-  sum(1:1e+06)   1.851144   1.892637   3.402629   2.127930   4.167919    8.386235    20  a 
- sumR(1:1e+06) 560.903965 570.136748 796.447797 602.893967 642.852165 2587.781202    20   b
- sumC(1:1e+06)   3.104084   3.281230  10.810696   4.545386   5.931914   96.864933    20  a
+          expr        min         lq       mean     median         uq        max neval cld
+  sum(1:1e+06)   1.840383   1.883224   2.435301   1.923645   2.608507   4.349734    20  a 
+ sumR(1:1e+06) 533.454175 542.007388 587.183130 550.033199 644.815133 759.895094    20   b
+ sumC(1:1e+06)   3.054200   3.116862   4.049178   3.577073   4.441693   8.095296    20  a
 </code></pre><p>As you can see, <code>sumC</code> runs more than 40 times faster than <code>sumR</code> and, at the 
 same time, performs only slightly slower as compared to the highly optimized 
 (vectorized) built-in <code>sum</code> function. You cannot imagine what&apos;s possible with 
@@ -633,23 +632,23 @@ same time, performs only slightly slower as compared to the highly optimized
 we recommend to use <code>sourceCpp</code> when it comes to more complex C++ functions. 
 Take, for example, the following peace of C++ code that reproduces the built-in 
 <code>cor</code> function. </p>
-<pre><code class="lang-r">&gt; cppFunction(<span class="hljs-string">&apos;double corC(NumericVector x, NumericVector y) {
-+   int nx = x.size(), ny = y.size();
-+   
-+   if (nx != ny) stop(&quot;Input vectors must have equal length!&quot;);
-+   
-+   double sum_x = sum(x), sum_y = sum(y);
-+   
-+   NumericVector xy = x * y;
-+   NumericVector x_squ = x * x, y_squ = y * y;
-+   
-+   double sum_xy = sum(xy);
-+   double sum_x_squ = sum(x_squ), sum_y_squ = sum(y_squ);
-+   
-+   double out = ((nx * sum_xy) - (sum_x * sum_y)) / sqrt((nx * sum_x_squ - pow(sum_x, 2.0)) * (nx * sum_y_squ - pow(sum_y, 2.0)));
-+   
-+   return out;
-+ }&apos;</span>)
+<pre><code class="lang-r">cppFunction(<span class="hljs-string">&apos;double corC(NumericVector x, NumericVector y) {
+  int nx = x.size(), ny = y.size();
+
+  if (nx != ny) stop(&quot;Input vectors must have equal length!&quot;);
+
+  double sum_x = sum(x), sum_y = sum(y);
+
+  NumericVector xy = x * y;
+  NumericVector x_squ = x * x, y_squ = y * y;
+
+  double sum_xy = sum(xy);
+  double sum_x_squ = sum(x_squ), sum_y_squ = sum(y_squ);
+
+  double out = ((nx * sum_xy) - (sum_x * sum_y)) / sqrt((nx * sum_x_squ - pow(sum_x, 2.0)) * (nx * sum_y_squ - pow(sum_y, 2.0)));
+
+  return out;
+}&apos;</span>)
 </code></pre>
 <p>Quite confusing, isn&apos;t it? Not the least because the inline C++ is not formatted 
 properly. Luckily, RStudio comes with a C++ editor that allows you to write 
@@ -663,42 +662,42 @@ initially passed as <code>code</code> argument to <code>cppFunction</code>. </p>
 <p>In order to ensure compatibility with <strong>Rcpp</strong> and make the C++ function 
 available in R, we need to add a header to our .cpp file (see below). In the 
 end, our .cpp file should look as follows.</p>
-<pre><code class="lang-cpp">&gt; <span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;Rcpp.h&gt;</span></span>
-+ <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> Rcpp;
-+ 
-+ <span class="hljs-comment">// [[Rcpp::export]]</span>
-+ <span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">corC</span><span class="hljs-params">(NumericVector x, NumericVector y)</span> </span>{
-+   <span class="hljs-keyword">int</span> nx = x.size(), ny = y.size();
-+   
-+   <span class="hljs-keyword">if</span> (nx != ny) stop(<span class="hljs-string">&quot;Input vectors must have equal length!&quot;</span>);
-+   
-+   <span class="hljs-keyword">double</span> sum_x = sum(x), sum_y = sum(y);
-+   
-+   NumericVector xy = x * y;
-+   NumericVector x_squ = x * x, y_squ = y * y;
-+   
-+   <span class="hljs-keyword">double</span> sum_xy = sum(xy);
-+   <span class="hljs-keyword">double</span> sum_x_squ = sum(x_squ), sum_y_squ = sum(y_squ);
-+   
-+   <span class="hljs-keyword">double</span> out = ((nx * sum_xy) - (sum_x * sum_y)) / <span class="hljs-built_in">sqrt</span>((nx * sum_x_squ - <span class="hljs-built_in">pow</span>(sum_x, <span class="hljs-number">2.0</span>)) * (nx * sum_y_squ - <span class="hljs-built_in">pow</span>(sum_y, <span class="hljs-number">2.0</span>)));
-+   
-+   <span class="hljs-keyword">return</span> out;
-+ }
+<pre><code class="lang-cpp"><span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;Rcpp.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> Rcpp;
+
+<span class="hljs-comment">// [[Rcpp::export]]</span>
+<span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">corC</span><span class="hljs-params">(NumericVector x, NumericVector y)</span> </span>{
+  <span class="hljs-keyword">int</span> nx = x.size(), ny = y.size();
+
+  <span class="hljs-keyword">if</span> (nx != ny) stop(<span class="hljs-string">&quot;Input vectors must have equal length!&quot;</span>);
+
+  <span class="hljs-keyword">double</span> sum_x = sum(x), sum_y = sum(y);
+
+  NumericVector xy = x * y;
+  NumericVector x_squ = x * x, y_squ = y * y;
+
+  <span class="hljs-keyword">double</span> sum_xy = sum(xy);
+  <span class="hljs-keyword">double</span> sum_x_squ = sum(x_squ), sum_y_squ = sum(y_squ);
+
+  <span class="hljs-keyword">double</span> out = ((nx * sum_xy) - (sum_x * sum_y)) / <span class="hljs-built_in">sqrt</span>((nx * sum_x_squ - <span class="hljs-built_in">pow</span>(sum_x, <span class="hljs-number">2.0</span>)) * (nx * sum_y_squ - <span class="hljs-built_in">pow</span>(sum_y, <span class="hljs-number">2.0</span>)));
+
+  <span class="hljs-keyword">return</span> out;
+}
 </code></pre>
 <p>Save the file in &apos;src/corC.cpp&apos; and return to R, then run</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## source &apos;corC&apos; function (remember to adjust the path)</span>
-&gt; sourceCpp(<span class="hljs-string">&quot;../../../src/corC.cpp&quot;</span>)
-&gt; 
-&gt; <span class="hljs-comment">## correlation of &apos;carat&apos; and &apos;price&apos;  </span>
-&gt; microbenchmark(
-+   cor(diamonds$carat, diamonds$price), 
-+   corC(diamonds$carat, diamonds$price) 
-+ , times = <span class="hljs-number">20L</span>)
+<pre><code class="lang-r"><span class="hljs-comment">## source &apos;corC&apos; function (remember to adjust the path)</span>
+sourceCpp(<span class="hljs-string">&quot;../../../src/corC.cpp&quot;</span>)
+
+<span class="hljs-comment">## correlation of &apos;carat&apos; and &apos;price&apos;  </span>
+microbenchmark(
+  cor(diamonds$carat, diamonds$price), 
+  corC(diamonds$carat, diamonds$price) 
+, times = <span class="hljs-number">20L</span>)
 </code></pre>
 <pre><code>Unit: microseconds
-                                 expr     min       lq     mean   median       uq      max neval cld
-  cor(diamonds$carat, diamonds$price) 895.721 976.5060 1180.628 1027.905 1073.448 4256.073    20   a
- corC(diamonds$carat, diamonds$price) 967.680 978.4505 1090.836 1022.741 1102.113 1461.673    20   a
+                                 expr     min        lq     mean   median       uq      max neval cld
+  cor(diamonds$carat, diamonds$price) 837.035  900.3845 1015.371 1001.847 1089.547 1317.683    20  a 
+ corC(diamonds$carat, diamonds$price) 988.046 1028.1385 1394.055 1105.118 1516.771 4284.448    20   b
 </code></pre><p>Note that, again, <code>corC</code> performs only slightly slower than the built-in <code>cor</code> 
 function. Just imagine the speed gain as compared to a possible <code>corR</code> function!</p>
 

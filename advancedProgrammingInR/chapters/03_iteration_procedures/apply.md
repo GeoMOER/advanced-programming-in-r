@@ -74,10 +74,14 @@ Let's try this
    5.7345260    3.5387338 
 ```
 
-```r
-> ## for rows use MARGIN = 1
-> row_sd <- apply(diamonds_num, 1, sd, na.rm = TRUE)
-```
+
+### Task #1: apply sd to rows
+Similar to the example above, calculate the standard deviation for each row of diamonds.
+
+<center>
+  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+</center>
+
 
 In R, `apply()` is the classical function to be used with data in matrix-like form to quickly iterate over one dimension (rows or columns). It is optimized for this kind of action and is much quicker than looping over rows/columns with a `for`-loop which is the satndard way in other languages such as Pyhton or C++.
 
@@ -121,20 +125,20 @@ UseMethod("mean")
 [[5]]
 function (x) 
 x + 1
-<environment: 0x4984a10>
+<environment: 0x5520948>
 
 [[6]]
-          col1       col2
-1  -0.58081775 0.37537537
-2   0.69154731 0.04005559
-3   0.37557379 0.26295442
-4   0.31654256 0.55896480
-5  -0.92313242 0.60534570
-6   1.68473822 0.73198264
-7   0.01773219 0.58050039
-8   0.62018965 0.42238648
-9  -1.05936748 0.58890778
-10 -0.13536340 0.29228919
+          col1        col2
+1  -0.06994666 0.008871252
+2   1.59420793 0.511249244
+3   1.34607289 0.209437487
+4  -0.20454582 0.341059641
+5  -1.61213628 0.359951670
+6   0.15652572 0.339529983
+7   1.60990176 0.551703913
+8   1.05878520 0.248480722
+9  -1.57253210 0.559103560
+10  1.00703014 0.838352553
 
 [[7]]
      [,1] [,2] [,3]
@@ -260,11 +264,109 @@ Also, recombining these individual data frames back into one is tsraight forward
  $ z      : num  2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...
 ```
 
+Fianlly, let's look at a slightly more involved example of how to use `lapply()`. A standard analysis workflow likely involves some sort of statistical analysis + the visualisation of the results in some way. Here, we will create linear models between 'carat' and 'price' and the corresponding scatterplots for all levels of 'cut' but only for those diamonds of 'color = D'.
+
+
 ```r
-> identical(diamonds, diamonds_df)
+> ## split diamonds by cut
+> cut_lst <- split(diamonds, f = diamonds$cut)
+> 
+> my_result_list <- lapply(seq(cut_lst), function(i) {
++   
++   ## subset to color = D
++   dat <- cut_lst[[i]]
++   dat_d <- subset(dat, dat$color == "D")
++   
++   ## calculate linear model
++   lm1 <- lm(price ~ carat, data = dat_d)
++   
++   ## create scatterplot
++   scatter_ggplot <- ggplot(aes(x = carat, y = price), data = dat_d)
++   g_sc <- scatter_ggplot + 
++     geom_point(colour = "grey60") +
++     theme_bw() +
++     stat_smooth(method = "lm", se = TRUE, 
++                 fill = "black", colour = "black") +
++      geom_text(data = NULL, 
++                x = min(dat_d$carat, na.rm = TRUE) + 0.2,  
++                y = max(dat_d$price, na.rm = TRUE) * 0.98, 
++                label = unique(dat_d$cut))
++   
++   ## return both the linear model and the plot as a list
++   return(list(linmod = lm1,
++               plt = g_sc))
++ })
+> 
+> ## set names of list for clarity
+> names(my_result_list) <- names(cut_lst)
+> 
+> str(my_result_list, 2)
 ```
 
 ```
-[1] FALSE
+List of 5
+ $ Fair     :List of 2
+  ..$ linmod:List of 12
+  .. ..- attr(*, "class")= chr "lm"
+  ..$ plt   :List of 9
+  .. ..- attr(*, "class")= chr [1:2] "gg" "ggplot"
+ $ Good     :List of 2
+  ..$ linmod:List of 12
+  .. ..- attr(*, "class")= chr "lm"
+  ..$ plt   :List of 9
+  .. ..- attr(*, "class")= chr [1:2] "gg" "ggplot"
+ $ Very Good:List of 2
+  ..$ linmod:List of 12
+  .. ..- attr(*, "class")= chr "lm"
+  ..$ plt   :List of 9
+  .. ..- attr(*, "class")= chr [1:2] "gg" "ggplot"
+ $ Premium  :List of 2
+  ..$ linmod:List of 12
+  .. ..- attr(*, "class")= chr "lm"
+  ..$ plt   :List of 9
+  .. ..- attr(*, "class")= chr [1:2] "gg" "ggplot"
+ $ Ideal    :List of 2
+  ..$ linmod:List of 12
+  .. ..- attr(*, "class")= chr "lm"
+  ..$ plt   :List of 9
+  .. ..- attr(*, "class")= chr [1:2] "gg" "ggplot"
 ```
 
+This let's us now quickly access each of the analyses individually. To view the scatterplot for diamonds of 'cut = Premium' we simply navigate down to the respective entry (Note, given that we have set the names for the resulting lists we can now use the common `$` notation for the navigation):
+
+
+```r
+> my_result_list$Premium$plt
+```
+
+![plot of chunk list scatter](figure/list scatter-1.png) 
+
+We can, hovever still navigate using `[[]]`. To get the summary of the linear model for 'cut = Ideal':
+
+
+```r
+> summary(my_result_list[[5]][[1]])
+```
+
+```
+
+Call:
+lm(formula = price ~ carat, data = dat_d)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9239.6  -611.1   -38.9   419.5 10759.7 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -2490.89      51.89  -48.01   <2e-16 ***
+carat        9049.65      81.06  111.64   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1292 on 2832 degrees of freedom
+Multiple R-squared:  0.8148,	Adjusted R-squared:  0.8148 
+F-statistic: 1.246e+04 on 1 and 2832 DF,  p-value: < 2.2e-16
+```
+
+I hope this highlights how useful and flexible `lapply()` can be. Another scenario that is quite common is to carry out different calculations/computations on the same set of data. This can easily be done using `lapply()` by iterating over the different functions and calling them on the same data set within the `lapply()` loop.

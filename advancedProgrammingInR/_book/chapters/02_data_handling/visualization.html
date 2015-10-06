@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="2.3" data-basepath="../.." data-revision="Tue Oct 06 2015 14:39:10 GMT+0200 (CEST)">
+    <div class="book" data-level="2.3" data-basepath="../.." data-revision="Tue Oct 06 2015 14:54:48 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -434,8 +434,8 @@ plenty of marvellous graphics packages available in R depending on which tasks
 you&apos;d like to perform. Within the scope of our short course, <strong>ggplot2</strong> will do 
 just fine not least because it is closely linked to the previously performed 
 manipulation tasks (maybe because of the same author). </p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## load &apos;ggplot2&apos; package</span>
-&gt; <span class="hljs-keyword">library</span>(ggplot2)
+<pre><code class="lang-r"><span class="hljs-comment">## load &apos;ggplot2&apos; package</span>
+<span class="hljs-keyword">library</span>(ggplot2)
 </code></pre>
 <p>In <strong>ggplot2</strong>, every plot we want to draw consists of subsequent calls on how 
 to represent the individual plot components (basically <code>x</code> and <code>y</code>). This means 
@@ -452,76 +452,76 @@ here or if you wish to learn more about <strong>lattice</strong>-style figures. 
 <p>Scatter plots are produced by invoking <code>geom_points</code>. If we wanted to plot 
 variables &apos;price&apos; and &apos;carat&apos; from the &apos;diamonds&apos; dataset against each other, 
 the <code>ggplot</code> call would be as follows.</p>
-<pre><code class="lang-r">&gt; ggplot(aes(x = carat, y = price), data = diamonds) + 
-+   geom_point()
+<pre><code class="lang-r">ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point()
 </code></pre>
 <p><img src="figure/gg_scat-1.png" title="Figure 1: A basic scatter plot created with ggplot2" alt="Figure 1: A basic scatter plot created with ggplot2" style="display: block; margin: auto;"></p>
 <p>Let&apos;s look at the above code in a little more detail. The first line is the fundamental definition of <strong>what</strong> we want to plot. We provide the &apos;aesthetics&apos; for the plot (<code>aes()</code>) and state that we want the values on the <code>x</code>-axis (<code>y</code>-axis) to represent &apos;carat&apos; (&apos;price&apos;). The <code>data</code> to take these variables from is the &apos;diamonds&apos; dataset. That&apos;s basically it, and this will not change a hell of a lot in the subsequent plotting routines.</p>
 <p>What will change in the code chunks that follow is <strong>how</strong> we want the relationship between these variables to be represented in our plot. This is done by defining so-called geometries (<code>geom_...()</code>). In this first case we stated that we want the relationship between <code>x</code> and <code>y</code> to be rpresented as points, hence we used <code>geom_point()</code>.</p>
 <p>For the sake of practicing, let&apos;s add another layer to our plot. In order to provide the regression line, for instance, we need a function called <code>stat_smooth()</code>. Note that we also specify the smoothing <code>method</code> and the line <code>colour</code>, <code>size</code> and <code>linetype</code>. <code>se = FALSE</code> tells the function not to display confidence intervals for the moment. See <code>?stat_smooth</code> for a more detailed overview of costumization possibilities.</p>
-<pre><code class="lang-r">&gt; ggplot(aes(x = carat, y = price), data = diamonds) + 
-+   geom_point() +
-+   stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">FALSE</span>, 
-+               colour = <span class="hljs-string">&quot;red&quot;</span>, size = <span class="hljs-number">1.5</span>, linetype = <span class="hljs-string">&quot;dashed&quot;</span>)
+<pre><code class="lang-r">ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point() +
+  stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">FALSE</span>, 
+              colour = <span class="hljs-string">&quot;red&quot;</span>, size = <span class="hljs-number">1.5</span>, linetype = <span class="hljs-string">&quot;dashed&quot;</span>)
 </code></pre>
 <p><img src="figure/gg_scat_stat-1.png" alt="Figure 2: A scatter plot incl. regression line."> </p>
 <p>If we wanted to provide a plot showing the relationship between &apos;price&apos; and &apos;carat&apos; in panels representing the quality of the diamonds, we need what in <strong>ggplot2</strong> is called facetting (similar to panels in <strong>lattice</strong>). To achive this, we simply repeat our plotting call from earlier and add another layer to the call which does the facetting. Note that this time, confidence intervals are included via <code>se = TRUE</code> and <code>fill</code>-ed grey.</p>
-<pre><code class="lang-r">&gt; ggplot(aes(x = carat, y = price), data = diamonds) + 
-+   geom_point() +
-+   stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">TRUE</span>, 
-+               colour = <span class="hljs-string">&quot;red&quot;</span>, fill = <span class="hljs-string">&quot;grey35&quot;</span>) + 
-+   facet_wrap(~ cut)
+<pre><code class="lang-r">ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point() +
+  stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">TRUE</span>, 
+              colour = <span class="hljs-string">&quot;red&quot;</span>, fill = <span class="hljs-string">&quot;grey35&quot;</span>) + 
+  facet_wrap(~ cut)
 </code></pre>
 <p><img src="figure/gg_scat_facet-1.png" title="Figure 3: ggplot2 version of a facetted plot" alt="Figure 3: ggplot2 version of a facetted plot" style="display: block; margin: auto;"></p>
 <p>One thing that some people dislike about the default settings in <strong>ggplot2</strong> is the grey background of the plots. This grey background is, in our opinion, a good idea when colors are involved as it tends to increase the contrast of the colors. If, however, the plot is a simple black-and-white scatter plot, a white facet background seems more reasonable. We can easily change this using a pre-defined theme called <code>theme_bw()</code>. Note that in the following, we also change the axis titles (<code>labs</code>) and the number of rows (<code>nrow</code>) and columns (<code>ncol</code>) into which the facets should be arranged - simple and straightforward.</p>
-<pre><code class="lang-r">&gt; ggplot(aes(x = carat, y = price), data = diamonds) + 
-+   geom_point(colour = <span class="hljs-string">&quot;grey65&quot;</span>) +
-+   stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">TRUE</span>, 
-+               colour = <span class="hljs-string">&quot;black&quot;</span>, fill = <span class="hljs-string">&quot;grey35&quot;</span>) +
-+   facet_wrap(~ cut, nrow = <span class="hljs-number">2</span>, ncol = <span class="hljs-number">3</span>) +
-+   labs(x = <span class="hljs-string">&quot;Carat&quot;</span>, y = <span class="hljs-string">&quot;Price ($)&quot;</span>) +
-+   theme_bw()
+<pre><code class="lang-r">ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point(colour = <span class="hljs-string">&quot;grey65&quot;</span>) +
+  stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">TRUE</span>, 
+              colour = <span class="hljs-string">&quot;black&quot;</span>, fill = <span class="hljs-string">&quot;grey35&quot;</span>) +
+  facet_wrap(~ cut, nrow = <span class="hljs-number">2</span>, ncol = <span class="hljs-number">3</span>) +
+  labs(x = <span class="hljs-string">&quot;Carat&quot;</span>, y = <span class="hljs-string">&quot;Price ($)&quot;</span>) +
+  theme_bw()
 </code></pre>
 <p><img src="figure/gg_scat_facet_bw-1.png" title="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" alt="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" style="display: block; margin: auto;"></p>
 <h3 id="box-and-whisker-plots">Box and whisker plots</h3>
 <p>Box and whisker plots drawn with <strong>ggplot2</strong> look quite nice and, in contrast to <strong>lattice</strong>, do not require the user to exhaustively modify graphical parameter settings in order to get an acceptable result. But see for yourselves (using the default settings).</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## basic frame</span>
-&gt; p &lt;- ggplot(aes(x = color, y = price), data = diamonds)
-&gt; 
-&gt; <span class="hljs-comment">## add boxplot</span>
-&gt; p_bw &lt;- p + geom_boxplot()
-&gt; 
-&gt; <span class="hljs-comment">## print</span>
-&gt; print(p_bw)
+<pre><code class="lang-r"><span class="hljs-comment">## basic frame</span>
+p &lt;- ggplot(aes(x = color, y = price), data = diamonds)
+
+<span class="hljs-comment">## add boxplot</span>
+p_bw &lt;- p + geom_boxplot()
+
+<span class="hljs-comment">## print</span>
+print(p_bw)
 </code></pre>
 <p><img src="figure/gg_bw-1.png" title="Figure 5: a basic ggplot2 bw-plot" alt="Figure 5: a basic ggplot2 bw-plot" style="display: block; margin: auto;"></p>
 <p>Note that this time, we stored the basic frame of our plot in a variable <code>p</code> and added the desired <code>geom_boxplot()</code> layer afterwards. In order to keep a clear structure (and not to get in trouble with Tim), this is possibly the ideal way to create graphics using <strong>ggplot2</strong> - so stick to it! </p>
 <p>As we&apos;ve already seen, the facetting is also just one more line of code.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## add faceted boxplots</span>
-&gt; p_bw &lt;- p + 
-+   geom_boxplot(fill = <span class="hljs-string">&quot;grey90&quot;</span>) +
-+   facet_wrap(~ cut) +
-+   theme_bw()
-&gt; 
-&gt; print(p_bw)
+<pre><code class="lang-r"><span class="hljs-comment">## add faceted boxplots</span>
+p_bw &lt;- p + 
+  geom_boxplot(fill = <span class="hljs-string">&quot;grey90&quot;</span>) +
+  facet_wrap(~ cut) +
+  theme_bw()
+
+print(p_bw)
 </code></pre>
 <p><img src="figure/gg_bw_facet-1.png" title="Figure 6: ggplot2 panel bw-plot" alt="Figure 6: ggplot2 panel bw-plot" style="display: block; margin: auto;"></p>
 <h2 id="histograms-and-densityplots">Histograms and densityplots</h2>
 <p>Much like with the box and whisker plot, <strong>ggplot2</strong> produces quite nice histograms and densityplots when using the default settings.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## new basic frame</span>
-&gt; p &lt;- ggplot(aes(x = price), data = diamonds)
-&gt; 
-&gt; <span class="hljs-comment">## add histogram</span>
-&gt; p_hist &lt;- p + geom_histogram()
-&gt; 
-&gt; print(p_hist)
+<pre><code class="lang-r"><span class="hljs-comment">## new basic frame</span>
+p &lt;- ggplot(aes(x = price), data = diamonds)
+
+<span class="hljs-comment">## add histogram</span>
+p_hist &lt;- p + geom_histogram()
+
+print(p_hist)
 </code></pre>
 <p><img src="figure/gg_hist-1.png" title="Figure 7: a basic histogram produced with ggplot2" alt="Figure 7: a basic histogram produced with ggplot2" style="display: block; margin: auto;"></p>
 <p>When working with <strong>ggplot2</strong> densityplots, it is quite easy to fill the area under the curve which really contributes to the visual representation of the data.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## add densityplot</span>
-&gt; p_dens &lt;- p +  geom_density(fill = <span class="hljs-string">&quot;black&quot;</span>, alpha = <span class="hljs-number">0.5</span>)
-&gt; 
-&gt; print(p_dens)
+<pre><code class="lang-r"><span class="hljs-comment">## add densityplot</span>
+p_dens &lt;- p +  geom_density(fill = <span class="hljs-string">&quot;black&quot;</span>, alpha = <span class="hljs-number">0.5</span>)
+
+print(p_dens)
 </code></pre>
 <p><img src="figure/gg dens-1.png" title="Figure 8: a basic density plot produced with ggplot2" alt="Figure 8: a basic density plot produced with ggplot2" style="display: block; margin: auto;"></p>
 <p>In addition to <code>theme_bw</code> which you already encountered before, there&apos;s a lot of different <code>theme</code> settings that let you customize your plots at will. For instance, let us slightly rotate the tick labels on the x-axis and move them horizontally a little bit. <code>element_text</code> is an essential function to achieve such things as it allows you to modify, amongst others, </p>
@@ -532,13 +532,13 @@ the <code>ggplot</code> call would be as follows.</p>
 <li><code>angle</code> of the tick labels. </li>
 </ul>
 <p>(In case you prefer American English, <code>element_text</code> also understands <code>color</code> instead of <code>colour</code> &#x263A;)</p>
-<pre><code class="lang-r">&gt; p_dens &lt;- p +
-+   geom_density(fill = <span class="hljs-string">&quot;black&quot;</span>, alpha = <span class="hljs-number">0.5</span>) +
-+   facet_grid(color ~ cut) +
-+   theme_bw() +
-+   theme(axis.text.x = element_text(angle = <span class="hljs-number">45</span>, hjust = <span class="hljs-number">1</span>))
-&gt; 
-&gt; print(p_dens)
+<pre><code class="lang-r">p_dens &lt;- p +
+  geom_density(fill = <span class="hljs-string">&quot;black&quot;</span>, alpha = <span class="hljs-number">0.5</span>) +
+  facet_grid(color ~ cut) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = <span class="hljs-number">45</span>, hjust = <span class="hljs-number">1</span>))
+
+print(p_dens)
 </code></pre>
 <p><img src="figure/gg facet density-1.png" title="Figure 9: a ggplot2 panel density plot conditioned according to 2 variables" alt="Figure 9: a ggplot2 panel density plot conditioned according to 2 variables" style="display: block; margin: auto;"></p>
 

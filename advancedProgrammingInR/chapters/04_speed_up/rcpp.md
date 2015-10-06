@@ -16,11 +16,11 @@ You may easily check if everything works by running the following code chunk.
 
 
 ```r
-> ## load 'Rcpp' package
-> library(Rcpp)
-> 
-> ## try to evaluate c++ expression
-> evalCpp("1 + 1")
+## load 'Rcpp' package
+library(Rcpp)
+
+## try to evaluate c++ expression
+evalCpp("1 + 1")
 ```
 
 ```
@@ -52,12 +52,12 @@ tutorial).
 
 
 ```r
-> ## function that returns '1'
-> cppFunction('int one() {
-+   return 1;
-+ }')
-> 
-> one()
+## function that returns '1'
+cppFunction('int one() {
+  return 1;
+}')
+
+one()
 ```
 
 ```
@@ -77,18 +77,18 @@ depending on the arithmetic sign of `x`, returns one of '1', '0' and '-1'.
 
 
 ```r
-> ## function that returns 1 if 'x' is positive, -1 if 'x' is negative, 0 otherwise
-> cppFunction('int signC(int x) {
-+   if (x > 0) {
-+     return 1;
-+   } else if (x == 0) {
-+     return 0;
-+   } else {
-+     return -1;
-+   }
-+ }')
-> 
-> signC(-10)
+## function that returns 1 if 'x' is positive, -1 if 'x' is negative, 0 otherwise
+cppFunction('int signC(int x) {
+  if (x > 0) {
+    return 1;
+  } else if (x == 0) {
+    return 0;
+  } else {
+    return -1;
+  }
+}')
+
+signC(-10)
 ```
 
 ```
@@ -114,16 +114,16 @@ numbers with decimal places instead of raw integers.
 
 
 ```r
-> cppFunction('double sumC(NumericVector x) {
-+   int n = x.size();
-+   double total = 0;
-+   for(int i = 0; i < n; ++i) {
-+     total += x[i];
-+   }
-+   return total;
-+ }')
-> 
-> sumC(seq(0, 1, 0.1))
+cppFunction('double sumC(NumericVector x) {
+  int n = x.size();
+  double total = 0;
+  for(int i = 0; i < n; ++i) {
+    total += x[i];
+  }
+  return total;
+}')
+
+sumC(seq(0, 1, 0.1))
 ```
 
 ```
@@ -152,64 +152,63 @@ an index vector of (non-)numeric columns).
 
 
 ```r
-> ## subset with numeric columns only
-> num_cols <- sapply(1:ncol(diamonds), function(i) is.numeric(diamonds[, i]))
-> diamonds_sub <- as.matrix(diamonds[, num_cols])
-> 
-> ## c++-version of 'colMeans'
-> cppFunction("NumericVector colMeansC(NumericMatrix x) {
-+   
-+   // number of rows and columns
-+   int nCol = x.ncol();
-+   int nRow = x.nrow();
-+   
-+   // temporary variable of size nrow(x) to store column values in
-+   NumericVector nVal(nRow);
-+   
-+   // initialize output vector
-+   NumericVector out(nCol);
-+   
-+   // loop over each column
-+   for (int i = 0; i < nCol; i++) {
-+     
-+     // values in current column
-+     nVal = x(_, i);
-+     
-+     // store mean of current 'nVal' in 'out[i]'
-+     out[i] = mean(nVal);
-+   }
-+   
-+   return out;
-+ }")
-> 
-> means <- colMeansC(diamonds_sub)
-> names(means) <- colnames(diamonds_sub)
-> means
+## subset with numeric columns only
+num_cols <- sapply(1:ncol(diamonds), function(i) is.numeric(diamonds[, i]))
+diamonds_sub <- as.matrix(diamonds[, num_cols])
+
+## c++-version of 'colMeans'
+cppFunction("NumericVector colMeansC(NumericMatrix x) {
+  
+  // number of rows and columns
+  int nCol = x.ncol();
+  int nRow = x.nrow();
+  
+  // temporary variable of size nrow(x) to store column values in
+  NumericVector nVal(nRow);
+  
+  // initialize output vector
+  NumericVector out(nCol);
+  
+  // loop over each column
+  for (int i = 0; i < nCol; i++) {
+    
+    // values in current column
+    nVal = x(_, i);
+    
+    // store mean of current 'nVal' in 'out[i]'
+    out[i] = mean(nVal);
+  }
+  
+  return out;
+}")
+
+means <- colMeansC(diamonds_sub)
+names(means) <- colnames(diamonds_sub)
+means
 ```
 
 ```
-       carat        depth        table        price            x            y            z 
-   0.7979397   61.7494049   57.4571839 3932.7997219    5.7311572    5.7345260    3.5387338 
-```
-
-```r
-> ## speed check
-> microbenchmark(
-+   val_apply <- apply(diamonds_sub, 2, mean), 
-+   val_cpp <- colMeansC(diamonds_sub)
-+ , times = 20L)
-```
-
-```
-Unit: milliseconds
-                                      expr      min       lq     mean   median       uq       max neval cld
- val_apply <- apply(diamonds_sub, 2, mean) 5.536440 5.628907 7.175034 6.494315 7.963722 13.514506    20   b
-        val_cpp <- colMeansC(diamonds_sub) 1.090159 1.131318 1.291425 1.167399 1.293270  2.892384    20  a 
+numeric(0)
 ```
 
 ```r
-> ## similarity check
-> identical(val_apply, means)
+## speed check
+microbenchmark(
+  val_apply <- apply(diamonds_sub, 2, mean), 
+  val_cpp <- colMeansC(diamonds_sub)
+, times = 20L)
+```
+
+```
+Unit: microseconds
+                                      expr      min       lq      mean   median       uq      max neval cld
+ val_apply <- apply(diamonds_sub, 2, mean) 1094.562 1109.860 1157.9485 1116.984 1183.910 1469.513    20   b
+        val_cpp <- colMeansC(diamonds_sub)   53.401   91.378   95.5936   97.382  103.882  118.056    20  a 
+```
+
+```r
+## similarity check
+identical(val_apply, means)
 ```
 
 ```
@@ -240,20 +239,20 @@ run `sumR(1:1e6)` using `system.time` (or `microbenchmark`).
 
 
 ```r
-> ## speed check
-> microbenchmark(
-+   sum(1:1e6), # built-in `sum` function
-+   sumR(1:1e6), # base-R version
-+   sumC(1:1e6)  # rcpp version
-+ , times = 20L)
+## speed check
+microbenchmark(
+  sum(1:1e6), # built-in `sum` function
+  sumR(1:1e6), # base-R version
+  sumC(1:1e6)  # rcpp version
+, times = 20L)
 ```
 
 ```
 Unit: milliseconds
-          expr        min         lq       mean     median         uq         max neval cld
-  sum(1:1e+06)   1.851144   1.892637   3.402629   2.127930   4.167919    8.386235    20  a 
- sumR(1:1e+06) 560.903965 570.136748 796.447797 602.893967 642.852165 2587.781202    20   b
- sumC(1:1e+06)   3.104084   3.281230  10.810696   4.545386   5.931914   96.864933    20  a 
+          expr        min         lq       mean     median         uq        max neval cld
+  sum(1:1e+06)   1.840383   1.883224   2.435301   1.923645   2.608507   4.349734    20  a 
+ sumR(1:1e+06) 533.454175 542.007388 587.183130 550.033199 644.815133 759.895094    20   b
+ sumC(1:1e+06)   3.054200   3.116862   4.049178   3.577073   4.441693   8.095296    20  a 
 ```
 
 As you can see, `sumC` runs more than 40 times faster than `sumR` and, at the 
@@ -269,23 +268,23 @@ Take, for example, the following peace of C++ code that reproduces the built-in
 
 
 ```r
-> cppFunction('double corC(NumericVector x, NumericVector y) {
-+   int nx = x.size(), ny = y.size();
-+   
-+   if (nx != ny) stop("Input vectors must have equal length!");
-+   
-+   double sum_x = sum(x), sum_y = sum(y);
-+   
-+   NumericVector xy = x * y;
-+   NumericVector x_squ = x * x, y_squ = y * y;
-+   
-+   double sum_xy = sum(xy);
-+   double sum_x_squ = sum(x_squ), sum_y_squ = sum(y_squ);
-+   
-+   double out = ((nx * sum_xy) - (sum_x * sum_y)) / sqrt((nx * sum_x_squ - pow(sum_x, 2.0)) * (nx * sum_y_squ - pow(sum_y, 2.0)));
-+   
-+   return out;
-+ }')
+cppFunction('double corC(NumericVector x, NumericVector y) {
+  int nx = x.size(), ny = y.size();
+  
+  if (nx != ny) stop("Input vectors must have equal length!");
+  
+  double sum_x = sum(x), sum_y = sum(y);
+  
+  NumericVector xy = x * y;
+  NumericVector x_squ = x * x, y_squ = y * y;
+  
+  double sum_xy = sum(xy);
+  double sum_x_squ = sum(x_squ), sum_y_squ = sum(y_squ);
+  
+  double out = ((nx * sum_xy) - (sum_x * sum_y)) / sqrt((nx * sum_x_squ - pow(sum_x, 2.0)) * (nx * sum_y_squ - pow(sum_y, 2.0)));
+  
+  return out;
+}')
 ```
 
 Quite confusing, isn't it? Not the least because the inline C++ is not formatted 
@@ -304,48 +303,48 @@ end, our .cpp file should look as follows.
 
 
 ```cpp
-> #include <Rcpp.h>
-+ using namespace Rcpp;
-+ 
-+ // [[Rcpp::export]]
-+ double corC(NumericVector x, NumericVector y) {
-+   int nx = x.size(), ny = y.size();
-+   
-+   if (nx != ny) stop("Input vectors must have equal length!");
-+   
-+   double sum_x = sum(x), sum_y = sum(y);
-+   
-+   NumericVector xy = x * y;
-+   NumericVector x_squ = x * x, y_squ = y * y;
-+   
-+   double sum_xy = sum(xy);
-+   double sum_x_squ = sum(x_squ), sum_y_squ = sum(y_squ);
-+   
-+   double out = ((nx * sum_xy) - (sum_x * sum_y)) / sqrt((nx * sum_x_squ - pow(sum_x, 2.0)) * (nx * sum_y_squ - pow(sum_y, 2.0)));
-+   
-+   return out;
-+ }
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+double corC(NumericVector x, NumericVector y) {
+  int nx = x.size(), ny = y.size();
+  
+  if (nx != ny) stop("Input vectors must have equal length!");
+  
+  double sum_x = sum(x), sum_y = sum(y);
+  
+  NumericVector xy = x * y;
+  NumericVector x_squ = x * x, y_squ = y * y;
+  
+  double sum_xy = sum(xy);
+  double sum_x_squ = sum(x_squ), sum_y_squ = sum(y_squ);
+  
+  double out = ((nx * sum_xy) - (sum_x * sum_y)) / sqrt((nx * sum_x_squ - pow(sum_x, 2.0)) * (nx * sum_y_squ - pow(sum_y, 2.0)));
+  
+  return out;
+}
 ```
 
 Save the file in 'src/corC.cpp' and return to R, then run
 
 
 ```r
-> ## source 'corC' function (remember to adjust the path)
-> sourceCpp("../../../src/corC.cpp")
-> 
-> ## correlation of 'carat' and 'price'  
-> microbenchmark(
-+   cor(diamonds$carat, diamonds$price), 
-+   corC(diamonds$carat, diamonds$price) 
-+ , times = 20L)
+## source 'corC' function (remember to adjust the path)
+sourceCpp("../../../src/corC.cpp")
+
+## correlation of 'carat' and 'price'  
+microbenchmark(
+  cor(diamonds$carat, diamonds$price), 
+  corC(diamonds$carat, diamonds$price) 
+, times = 20L)
 ```
 
 ```
 Unit: microseconds
-                                 expr     min       lq     mean   median       uq      max neval cld
-  cor(diamonds$carat, diamonds$price) 895.721 976.5060 1180.628 1027.905 1073.448 4256.073    20   a
- corC(diamonds$carat, diamonds$price) 967.680 978.4505 1090.836 1022.741 1102.113 1461.673    20   a
+                                 expr     min        lq     mean   median       uq      max neval cld
+  cor(diamonds$carat, diamonds$price) 837.035  900.3845 1015.371 1001.847 1089.547 1317.683    20  a 
+ corC(diamonds$carat, diamonds$price) 988.046 1028.1385 1394.055 1105.118 1516.771 4284.448    20   b
 ```
 
 Note that, again, `corC` performs only slightly slower than the built-in `cor` 
