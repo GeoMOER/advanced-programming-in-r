@@ -19,3 +19,35 @@ Bug reports or feature requests should be filed at https://github.com/marburg-op
 
 In case you want to provide feedback, don't hesitate to contact [Florain Detsch](http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/florian-detsch/) or 
 [Tim Appelhans](http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/tim-appelhans/)
+
+
+```{r mapview, echo = FALSE, fig.height = 2.5, fig.width = 9.47, warning = FALSE, message = FALSE}
+library(mapview)
+library(jpeg)
+library(raster)
+
+### Flo
+flo_image <- "http://umweltinformatik-marburg.de/uploads/pics/portrait_header_fdetsch_01.jpg"
+flo_jpg <- readJPEG(readBin(flo_image, "raw", 1e6))
+
+# Convert imagedata to raster
+rst_blue <- raster(flo_jpg[, , 1])
+rst_green <- raster(flo_jpg[, , 2])
+rst_red <- raster(flo_jpg[, , 3])
+
+flo <- brick(rst_red, rst_green, rst_blue)
+
+### Tim
+tim_image <- "http://umweltinformatik-marburg.de/uploads/pics/portrait_header_tappelhans_02.jpg"
+tim_jpg <- readJPEG(readBin(tim_image, "raw", 1e6))
+
+# Convert imagedata to raster
+rst_blue <- raster(tim_jpg[, , 1])
+rst_green <- raster(tim_jpg[, , 2])
+rst_red <- raster(tim_jpg[, , 3])
+
+tim <- brick(rst_red, rst_green, rst_blue)
+
+m <- viewRGB(tim) + viewRGB(flo)
+m@map
+```
