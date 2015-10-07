@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="3.2" data-basepath="../.." data-revision="Tue Oct 06 2015 14:54:48 GMT+0200 (CEST)">
+    <div class="book" data-level="3.2" data-basepath="../.." data-revision="Wed Oct 07 2015 13:39:39 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -446,7 +446,7 @@
 </code></pre>
 <pre><code>[1] 18
 </code></pre><p>You may wonder why this is relevant to understand <code>*apply</code>? </p>
-<p>The one thing that all <code>*apply</code> functions have in common is that they are all so-called closures that can take a function as an argument. Usually, these closures take some object and some function as input and then apply the function to every entry of the object. The difference between the various <code>*apply</code> functions is basically the type of object they are designed for and hence each of these has slightly different requirements for the structure of the supplied function.</p>
+<p>The one thing that all <code>*apply</code> functions have in common is that they are all so-called functionals that can take a function as an argument. Usually, these functionals take some object and some function as input and then apply the function to every entry of the object. The difference between the various <code>*apply</code> functions is basically the type of object they are designed for and hence each of these has slightly different requirements for the structure of the supplied function.</p>
 <hr>
 <h3 id="apply">apply()</h3>
 <p>First, let&apos;s have a look at <code>apply()</code>. It has three main arguments</p>
@@ -501,7 +501,7 @@
 [[3]]
 function (x, ...) 
 UseMethod(&quot;mean&quot;)
-&lt;bytecode: 0x4f482f0&gt;
+&lt;bytecode: 0x6607180&gt;
 &lt;environment: namespace:base&gt;
 
 [[4]]
@@ -510,20 +510,20 @@ UseMethod(&quot;mean&quot;)
 [[5]]
 function (x) 
 x + 1
-&lt;environment: 0x5520948&gt;
+&lt;environment: 0x55fd768&gt;
 
 [[6]]
-          col1        col2
-1  -0.06994666 0.008871252
-2   1.59420793 0.511249244
-3   1.34607289 0.209437487
-4  -0.20454582 0.341059641
-5  -1.61213628 0.359951670
-6   0.15652572 0.339529983
-7   1.60990176 0.551703913
-8   1.05878520 0.248480722
-9  -1.57253210 0.559103560
-10  1.00703014 0.838352553
+          col1      col2
+1  -0.66920235 0.9371027
+2   0.61228094 0.2879396
+3  -0.95510649 0.6385464
+4   0.90511608 0.6641325
+5  -0.24258167 0.2516978
+6  -0.06707924 0.3756470
+7   1.52348955 0.7311695
+8  -0.37881577 0.5293244
+9   1.74211431 0.2957370
+10 -0.71419336 0.5645180
 
 [[7]]
      [,1] [,2] [,3]

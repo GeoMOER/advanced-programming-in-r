@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="3.3" data-basepath="../.." data-revision="Tue Oct 06 2015 14:54:48 GMT+0200 (CEST)">
+    <div class="book" data-level="3.3" data-basepath="../.." data-revision="Wed Oct 07 2015 13:39:39 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -427,6 +427,141 @@
                     <section class="normal" id="section-">
                     
                         <h1 id="functional-programming">Functional programming</h1>
+<p>As mentioned in the previous chapter, R is at its core a functional programming language. Put more general, we can say that</p>
+<ul>
+<li>everything that exists is an object</li>
+<li>everything that happens is a function call</li>
+</ul>
+<h3 id="custom-functions">Custom functions</h3>
+<p>The biggest draw-back of point-and-click statistics software is that they are usually limited in the functionality they provide. The provide you with a suite of pre-defined analysis tools and algorithms but usually it is rather tedious to extend these. R on the other hand is a full-blown programming language which means that there are next to no limits to what you can do. One of the most important features to expand existing functionality is to write your own functions. Functions that do not exist elsewhere. In fact, this is the main reason behind R package development.</p>
+<p>So, let&apos;s try and create a custom function. A function to calculate the Pythogorean Theorem does not exist in base R. Sure it may exist in some package somewhere, but I argue that it is much easier and quicker to write this yourself.</p>
+<pre><code class="lang-r">&gt; pythagoreanTheorem &lt;- <span class="hljs-keyword">function</span>(a, b) {
++   c &lt;- sqrt(a*a + b*b)
++   <span class="hljs-keyword">return</span>(c)
++ }
+&gt; 
+&gt; pythagoreanTheorem(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)
+</code></pre>
+<pre><code>[1] 5
+</code></pre><p>Easy!</p>
+<p>Creating custom functions always follows the same procedure:</p>
+<ol>
+<li>provide a meaningful name and use <code>&lt;-</code> to assign <code>function(x, y, z)</code> where</li>
+<li><code>x, y, z</code> are an arbitrary number of named arguments (need not be x, y, z) that are needed for the calculation(s) in the </li>
+<li>function body that does all the calculation(s) using the supplied arguments</li>
+<li>a <code>return()</code> call to specify what the function will return. If this is not supplied, the result of the last calculation is returned</li>
+</ol>
+<p>Now it is time for you to try this yourselves.</p>
+<h3 id="task-1-write-your-own">Task #1: write your own</h3>
+<p>In R we can easily calculate a pupolations standard deviation around the the mean using <code>sd()</code> but there is no default implementation for the <a href="https://en.wikipedia.org/wiki/Standard_error" target="_blank">standard error of the mean</a>. Therefore, it is up to you to write one now. </p>
+<p>Note, there are far more standard error statistics for which R does not provide standard base functions, such as the <a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation" target="_blank">root mean square error RMSE</a> or the <a href="https://en.wikipedia.org/wiki/Approximation_error" target="_blank">absolute error AE</a>. Therefore, if you&apos;re keen go ahead and practice writing functions to provide these.</p>
+<center>
+  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;">
+</center>
+
+<hr>
+<h3 id="functionals">Functionals</h3>
+<p>We&apos;ve already seen functionals, functions that take other functions as arguments. However, so far we&apos;ve only used these with standard base R functions. But we can also supply a custom function to a functional.</p>
+<pre><code class="lang-r">&gt; dat &lt;- data.frame(a = c(<span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">11</span>, <span class="hljs-number">1</span>, <span class="hljs-number">24</span>, <span class="hljs-number">2</span>),
++                   b = c(<span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">12</span>, <span class="hljs-number">5</span>))
+&gt; 
+&gt; sapply(seq(nrow(dat)), <span class="hljs-keyword">function</span>(i) pythagoreanTheorem(dat[i, <span class="hljs-number">1</span>], dat[i, <span class="hljs-number">2</span>]))
+</code></pre>
+<pre><code>[1]  5.000000  7.615773 11.180340  3.162278 26.832816  5.385165
+</code></pre><p>Given that R comes equipped with a great variety of <code>*apply()</code> functionals, it is usually not necessary to write a functional yourself. </p>
+<hr>
+<h3 id="closures">Closures</h3>
+<p>The counterpart to functionals are so-called closures. These are functions that return (or build) a function according to some supplied argument. To illustrate this, let&apos;s consider the following situation:</p>
+<p>We have a bunch of possible predictor variables and a bunch of response variables and we want to figure out the best combination in explaining the variances. </p>
+<pre><code class="lang-r">&gt; <span class="hljs-comment">### generate some random data</span>
+&gt; set.seed(<span class="hljs-number">123</span>)
+&gt; pred &lt;- data.frame(pred1 = rnorm(<span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>),
++                    pred2 = <span class="hljs-number">1</span>:<span class="hljs-number">100</span>,
++                    pred3 = rpois(<span class="hljs-number">100</span>, <span class="hljs-number">2</span>),
++                    pred4 = <span class="hljs-number">200</span>:<span class="hljs-number">101</span>)
+&gt; 
+&gt; set.seed(<span class="hljs-number">234</span>)
+&gt; resp &lt;- data.frame(resp1 = <span class="hljs-number">1</span>:<span class="hljs-number">100</span>,
++                    resp2 = rnorm(<span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>),
++                    resp3 = <span class="hljs-number">200</span>:<span class="hljs-number">101</span>,
++                    resp4 = rpois(<span class="hljs-number">100</span>, <span class="hljs-number">2</span>))
+</code></pre>
+<p>We could simply use copy and paste to claculate each combination.</p>
+<pre><code class="lang-r">&gt; summary(lm(resp$resp1 ~ pred$pred1))$r.squared
+&gt; summary(lm(resp$resp2 ~ pred$pred1))$r.squared
+&gt; summary(lm(resp$resp2 ~ pred$pred1))$r.squared
+&gt; summary(lm(resp$resp4 ~ pred$pred1))$r.squared
+&gt; 
+&gt; summary(lm(resp$resp1 ~ pred$pred2))$r.squared
+&gt; summary(lm(resp$resp2 ~ pred$pred2))$r.squared
+&gt; summary(lm(resp$resp3 ~ pred$pred2))$r.squared
+&gt; summary(lm(resp$resp4 ~ pred$pred3))$r.squared
+&gt; 
+&gt; <span class="hljs-comment">#.... and so forth</span>
+</code></pre>
+<p>This is far from being optimal. Despite the fact that we have to type a lot, we are very prone to introduce errors (can you spot them?) and it is particularly hard to debug. Here, defining a closure can be of great help.</p>
+<pre><code class="lang-r">&gt; <span class="hljs-comment">### define closure</span>
+&gt; calcRsq &lt;- <span class="hljs-keyword">function</span>(pred) {
++ 
++   <span class="hljs-keyword">function</span>(y) {
++     summary(lm(y ~ pred))$r.squared
++   }
++ 
++ }
+</code></pre>
+<p>We now have a universal way of defining functions to calculate R-squared values</p>
+<pre><code class="lang-r">&gt; <span class="hljs-comment">## create function using pred$v1 as predictor</span>
+&gt; calcRsq_pred1 &lt;- calcRsq(pred$pred1)
+&gt; 
+&gt; calcRsq_pred1(resp$resp1)
+</code></pre>
+<pre><code>[1] 0.006369369
+</code></pre><p>Using it explicitly like above doesn&apos;t really help us much, although we have made sure to not introduce any errors related to the respective predictor being used as this is now fixed within the function <code>calcRsq_pred1()</code>. However, given that we now have a function which calculates the R-squared value between a fixed predictor and whatever response we give it, we can now use a functional such as <code>apply()</code> to calculate the relationship between the predictor and a bunch of responses.</p>
+<pre><code class="lang-r">&gt; apply(resp, <span class="hljs-number">2</span>, calcRsq_pred1)
+</code></pre>
+<pre><code>      resp1       resp2       resp3       resp4 
+0.006369369 0.012977823 0.006369369 0.038727184
+</code></pre><p>But why stop here, taking advantage of <code>sapply()</code> we can calculate every possible combination in one go.</p>
+<pre><code class="lang-r">&gt; sapply(seq(ncol(pred)), <span class="hljs-keyword">function</span>(i) {
++   f &lt;- calcRsq(pred[, i])
++   apply(resp, <span class="hljs-number">2</span>, f)
++ })
+</code></pre>
+<pre><code>             [,1]        [,2]        [,3]        [,4]
+resp1 0.006369369 1.000000000 0.006326898 1.000000000
+resp2 0.012977823 0.012414970 0.006192994 0.012414970
+resp3 0.006369369 1.000000000 0.006326898 1.000000000
+resp4 0.038727184 0.002312083 0.007719519 0.002312083
+</code></pre><p>In words, we </p>
+<ol>
+<li>iterate over the columns of pred - <code>seq(ncol(pred))</code></li>
+<li>define a function <code>f</code> by setting the closure to use the column of the current iteration - <code>f &lt;- calcRsq(pred[, i])</code></li>
+<li>apply this function <code>f</code> to all columns of resp - <code>apply(resp, 2, f)</code></li>
+</ol>
+<p>The result is equivalent to what <code>cor(resp, pred)</code> produces.</p>
+<pre><code class="lang-r">&gt; cor(resp, pred)^<span class="hljs-number">2</span>
+</code></pre>
+<pre><code>            pred1       pred2       pred3       pred4
+resp1 0.006369369 1.000000000 0.006326898 1.000000000
+resp2 0.012977823 0.012414970 0.006192994 0.012414970
+resp3 0.006369369 1.000000000 0.006326898 1.000000000
+resp4 0.038727184 0.002312083 0.007719519 0.002312083
+</code></pre><p>So you see that the combination of functionals and closures is a powerful, flexible and elegant way of generalising computations. In fact, it is so flexible that we can now use the same functions for any data frames.</p>
+<pre><code class="lang-r">&gt; df1 &lt;- diamonds[, c(<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>)]
+&gt; df2 &lt;- diamonds[, <span class="hljs-number">7</span>:<span class="hljs-number">10</span>]
+&gt; 
+&gt; sapply(seq(ncol(df1)), <span class="hljs-keyword">function</span>(i) {
++   f &lt;- calcRsq(df1[, i])
++   apply(df2, <span class="hljs-number">2</span>, f)
++ })
+</code></pre>
+<pre><code>           [,1]         [,2]       [,3]
+price 0.8493305 0.0001133672 0.01616303
+x     0.9508088 0.0006395460 0.03815939
+y     0.9057751 0.0008608750 0.03376779
+z     0.9089475 0.0090105434 0.02277947
+</code></pre><p>This is especially valuable for large calculations that require iterating over a set of objects. A classic scenario for using closures in combination with functionals is to find a &apos;best&apos; value, i.e. some parameter that optimises a fit or something along those lines.</p>
+<p>A very detailed tutorial on how to use functional programming in R can be found in Hadley Wickham&apos;s book <a href="http://adv-r.had.co.nz/Functional-programming.html" target="_blank">Advanced R</a>. This goes quite a bit deeper than what is outlined here and has a rather neat example of how to use functional programming to flexibly deal with encodings for missing data (e.g. -99, -999, -9999, ...).</p>
 
                     
                     </section>

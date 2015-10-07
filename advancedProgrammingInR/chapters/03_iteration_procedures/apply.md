@@ -39,7 +39,7 @@ First of all, we need to recognize that these structures are pretty much unique 
 
 You may wonder why this is relevant to understand `*apply`? 
 
-The one thing that all `*apply` functions have in common is that they are all so-called closures that can take a function as an argument. Usually, these closures take some object and some function as input and then apply the function to every entry of the object. The difference between the various `*apply` functions is basically the type of object they are designed for and hence each of these has slightly different requirements for the structure of the supplied function.
+The one thing that all `*apply` functions have in common is that they are all so-called functionals that can take a function as an argument. Usually, these functionals take some object and some function as input and then apply the function to every entry of the object. The difference between the various `*apply` functions is basically the type of object they are designed for and hence each of these has slightly different requirements for the structure of the supplied function.
 
 -------
 
@@ -116,7 +116,7 @@ Let's have a look at what these lists look like:
 [[3]]
 function (x, ...) 
 UseMethod("mean")
-<bytecode: 0x4f482f0>
+<bytecode: 0x6607180>
 <environment: namespace:base>
 
 [[4]]
@@ -125,20 +125,20 @@ UseMethod("mean")
 [[5]]
 function (x) 
 x + 1
-<environment: 0x5520948>
+<environment: 0x55fd768>
 
 [[6]]
-          col1        col2
-1  -0.06994666 0.008871252
-2   1.59420793 0.511249244
-3   1.34607289 0.209437487
-4  -0.20454582 0.341059641
-5  -1.61213628 0.359951670
-6   0.15652572 0.339529983
-7   1.60990176 0.551703913
-8   1.05878520 0.248480722
-9  -1.57253210 0.559103560
-10  1.00703014 0.838352553
+          col1      col2
+1  -0.66920235 0.9371027
+2   0.61228094 0.2879396
+3  -0.95510649 0.6385464
+4   0.90511608 0.6641325
+5  -0.24258167 0.2516978
+6  -0.06707924 0.3756470
+7   1.52348955 0.7311695
+8  -0.37881577 0.5293244
+9   1.74211431 0.2957370
+10 -0.71419336 0.5645180
 
 [[7]]
      [,1] [,2] [,3]
