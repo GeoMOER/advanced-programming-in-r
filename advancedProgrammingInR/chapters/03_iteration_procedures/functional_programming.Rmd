@@ -54,7 +54,7 @@ Note, there are far more standard error statistics for which R does not provide 
 
 ### Functionals
 
-We've already seen functionals, functions that take other functions as arguments. However, so far we've only used these with standard base R functions. Let's try and supply a custom function to a functional.
+We've already seen functionals, functions that take other functions as arguments. However, so far we've only used these with standard base R functions. But we can also supply a custom function to a functional.
 
 ```{r custom functional}
 dat <- data.frame(a = c(3, 7, 11, 1, 24, 2),
@@ -62,4 +62,96 @@ dat <- data.frame(a = c(3, 7, 11, 1, 24, 2),
 
 sapply(seq(nrow(dat)), function(i) pythagoreanTheorem(dat[i, 1], dat[i, 2]))
 ```
+
+Given that R comes equipped with a great variety of `*apply()` functionals, it is usually not necessary to write a functional yourself. 
+
+-------
+
+### Closures
+
+The counterpart to functionals are so-called closures. These are functions that return (or build) a function according to some supplied argument. To illustrate this, let's consider the following situation:
+
+We have a bunch of possible predictor variables and a bunch of response variables and we want to figure out the best combination in explaining the variances. 
+
+```{r closure rsq}
+### generate some random data
+set.seed(123)
+pred <- data.frame(pred1 = rnorm(100, 2, 1),
+                   pred2 = 1:100,
+                   pred3 = rpois(100, 2),
+                   pred4 = 200:101)
+
+set.seed(234)
+resp <- data.frame(resp1 = 1:100,
+                   resp2 = rnorm(100, 2, 1),
+                   resp3 = 200:101,
+                   resp4 = rpois(100, 2))
+```
+
+We could simply use copy and paste to claculate each combination.
+
+```{r copy paste, eval = FALSE}
+summary(lm(resp$resp1 ~ pred$pred1))$r.squared
+summary(lm(resp$resp2 ~ pred$pred1))$r.squared
+summary(lm(resp$resp2 ~ pred$pred1))$r.squared
+summary(lm(resp$resp4 ~ pred$pred1))$r.squared
+
+summary(lm(resp$resp1 ~ pred$pred2))$r.squared
+summary(lm(resp$resp2 ~ pred$pred2))$r.squared
+summary(lm(resp$resp3 ~ pred$pred2))$r.squared
+summary(lm(resp$resp4 ~ pred$pred3))$r.squared
+
+#.... and so forth
+```
+
+This is far from being optimal. Despite the fact that we have to type a lot, we are very prone to introduce errors (can you spot them?) and it is particularly hard to debug. Here, defining a closure can be of great help.
+
+```{r calRsq}
+### define closure
+calcRsq <- function(pred) {
+
+  function(y) {
+    summary(lm(y ~ pred))$r.squared
+  }
+
+}
+```
+
+We now have a universal way of defining functions to calculate R-squared values
+
+```{r closure pred1}
+## create function using pred$v1 as predictor
+calcRsq_pred1 <- calcRsq(pred$pred1)
+
+calcRsq_pred1(resp$resp1)
+```
+
+Using it explicitly like above doesn't really help us much, although we have made sure to not introduce any errors related to the respective predictor being used as this is now fixed within the function `calcRsq_pred1()`. However, given that we now have a function which calculates the R-squared value between a fixed predictor and whatever response we give it, we can now use a functional such as `apply()` to calculate the relationship between the predictor and a bunch of responses.
+
+```{r apply calcRsq_pred1}
+apply(resp, 2, calcRsq_pred1)
+```
+
+But why stop here, taking advantage of `sapply()` we can calculate every possible combination in one go.
+
+```{r sapply clacRsq, warning = FALSE}
+sapply(seq(ncol(pred)), function(i) {
+  f <- calcRsq(pred[, i])
+  apply(resp, 2, f)
+})
+```
+
+In words, we 
+
+1. iterate over the columns of pred - `seq(ncol(pred))`
+2. define a function `f` by setting the closure to use the column of the current iteration - `f <- calcRsq(pred[, i])`
+3. apply this function `f` to all columns of resp - `apply(resp, 2, f)`
+
+The result is equivalent to what `cor(resp, pred)` produces.
+
+```{r cor}
+cor(resp, pred)^2
+```
+
+So you see that the combination of functionals and closures is a powerful, flexible and elegant way of generalising computations. This is especially valuable for large calculations that require iterating over a set of objects. A classic scenario for using closures in combination with functionals is to find a 'best' value, i.e. some parameter that optimises a fit or something along those lines.
 
