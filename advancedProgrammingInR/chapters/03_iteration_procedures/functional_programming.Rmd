@@ -5,7 +5,7 @@ opts_chunk$set(prompt=TRUE, comment='', results='markup')
 # See yihui.name/knitr/options for more Knitr options.
 ##### Put other setup R code here
 
-
+library(ggplot2)
 # end setup chunk
 ```
 # Functional programming
@@ -153,5 +153,18 @@ The result is equivalent to what `cor(resp, pred)` produces.
 cor(resp, pred)^2
 ```
 
-So you see that the combination of functionals and closures is a powerful, flexible and elegant way of generalising computations. This is especially valuable for large calculations that require iterating over a set of objects. A classic scenario for using closures in combination with functionals is to find a 'best' value, i.e. some parameter that optimises a fit or something along those lines.
+So you see that the combination of functionals and closures is a powerful, flexible and elegant way of generalising computations. In fact, it is so flexible that we can now use the same functions for any data frames.
 
+```{r closure diamonds}
+df1 <- diamonds[, c(1, 5, 6)]
+df2 <- diamonds[, 7:10]
+
+sapply(seq(ncol(df1)), function(i) {
+  f <- calcRsq(df1[, i])
+  apply(df2, 2, f)
+})
+```
+
+This is especially valuable for large calculations that require iterating over a set of objects. A classic scenario for using closures in combination with functionals is to find a 'best' value, i.e. some parameter that optimises a fit or something along those lines.
+
+A very detailed tutorial on how to use functional programming in R can be found in Hadley Wickham's book [Advanced R](http://adv-r.had.co.nz/Functional-programming.html). This goes quite a bit deeper than what is outlined here and has a rather neat example of how to use functional programming to flexibly deal with encodings for missing data (e.g. -99, -999, -9999, ...).
