@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="3" data-basepath="../.." data-revision="Wed Oct 07 2015 13:39:39 GMT+0200 (CEST)">
+    <div class="book" data-level="3" data-basepath="../.." data-revision="Wed Oct 07 2015 16:38:53 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -427,6 +427,41 @@
                     <section class="normal" id="section-">
                     
                         <h1 id="iteration-procedures">Iteration procedures</h1>
+<p>In computer programming the term iterative process usually refers to some block of code being repeated more than once to achieve a result. Two terms are frequently used in this context:</p>
+<ul>
+<li>Iteration</li>
+<li>Recursion</li>
+</ul>
+<p>In this part of the tutorial we will have a closer look at <strong>Iteration</strong> and how to achieve it in numerous ways in R. In general, Iteration executes a certain function or combination of functions repeatedly until some condition is met.</p>
+<ul>
+<li>The classical <code>for</code>-loop is common in pretty much all programming languages, </li>
+<li>while <code>*apply</code> is pretty exclusive to R. </li>
+<li>Finally, given that R is a so-called functional programming language, we will also see how we can use <code>functionals</code> and <code>closures</code> which are very elegant and flexible structures to iteratively achieve a certain aim.</li>
+</ul>
+<hr>
+<p><strong>Recursion</strong> is another aspect of repeated computation, however, we will not delve into any detail on this topic here. In contrast to Iteration, recursive structures define functions that call themselves until a certain condition is met. Below is a classical example of a recursive function, the so-called <code>quicksort</code> algorithm. This function sorts a numerical vector from small to large values by </p>
+<ul>
+<li>first selecting an arbitrary value from the vector (in the below case the first) called the pivot</li>
+<li>rearranging the remainding values so that all values smaller than pivot come before it and all larger values after it</li>
+<li>repeating this procedure within the function by calling itself for either side of the pivot.</li>
+</ul>
+<ul>
+<li>Once there are only single values left on either side of the pivot, the function stops</li>
+</ul>
+<p>Note, without the inherent stopping condition this function will run for eternity.</p>
+<p>This particular example of quicksort is adapted from <a href="http://rosettacode.org/wiki/Quicksort" target="_blank">Rosetta Code</a></p>
+<pre><code class="lang-r">&gt; qsort &lt;- <span class="hljs-keyword">function</span>(v) {
++   <span class="hljs-keyword">if</span> (length(v) &gt; <span class="hljs-number">1</span>) {
++     pivot &lt;- v[<span class="hljs-number">1</span>]
++     c(qsort(v[v &lt; pivot]), v[v == pivot], qsort(v[v &gt; pivot])) 
++   } <span class="hljs-keyword">else</span> v
++ }
+&gt; 
+&gt; qsort(rnorm(<span class="hljs-number">10</span>))
+</code></pre>
+<pre><code> [1] -1.72119831 -0.73929960 -0.23182798 -0.11550642 -0.04186827
+ [6]  0.11232527  0.11423741  0.30317116  0.35818397  0.39925118
+</code></pre><p>Because they call themselves, recursive functions are inherently hard to code, understand and debug. Therefore, we leave it at this small example and continue with the more understandable structures of iterative comutation, namely <code>for</code>-loops, <code>*apply</code> functions and <code>functional programming</code>.</p>
 
                     
                     </section>
