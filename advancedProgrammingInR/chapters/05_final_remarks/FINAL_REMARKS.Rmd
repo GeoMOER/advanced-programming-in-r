@@ -17,7 +17,7 @@ This sources of this tutorial are hosted at [GitHub](https://github.com/marburg-
 
 Bug reports or feature requests should be filed at https://github.com/marburg-open-courseware/advanced-programming-in-r/issues
 
-In case you want to provide feedback, don't hesitate to contact [Florain Detsch](http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/florian-detsch/) or 
+In case you want to provide feedback, don't hesitate to contact [Florian Detsch](http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/florian-detsch/) or 
 [Tim Appelhans](http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/tim-appelhans/)
 
 
