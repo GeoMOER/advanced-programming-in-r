@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="3.3" data-basepath="../.." data-revision="Thu Oct 08 2015 09:33:45 GMT+0200 (CEST)">
+    <div class="book" data-level="3.3" data-basepath="../.." data-revision="Thu Oct 08 2015 10:49:50 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -555,11 +555,7 @@ resp4 0.038727184 0.002312083 0.007719519 0.002312083
 +   apply(df2, <span class="hljs-number">2</span>, f)
 + })
 </code></pre>
-<pre><code>           [,1]         [,2]       [,3]
-price 0.8493305 0.0001133672 0.01616303
-x     0.9508088 0.0006395460 0.03815939
-y     0.9057751 0.0008608750 0.03376779
-z     0.9089475 0.0090105434 0.02277947
+<pre><code>Error in model.frame.default(formula = y ~ pred, drop.unused.levels = TRUE): invalid type (list) for variable &apos;pred&apos;
 </code></pre><p>This is especially valuable for large calculations that require iterating over a set of objects. A classic scenario for using closures in combination with functionals is to find a &apos;best&apos; value, i.e. some parameter that optimises a fit or something along those lines.</p>
 <p>A very detailed tutorial on how to use functional programming in R can be found in Hadley Wickham&apos;s book <a href="http://adv-r.had.co.nz/Functional-programming.html" target="_blank">Advanced R</a>. This goes quite a bit deeper than what is outlined here and has a rather neat example of how to use functional programming to flexibly deal with encodings for missing data (e.g. -99, -999, -9999, ...).</p>
 

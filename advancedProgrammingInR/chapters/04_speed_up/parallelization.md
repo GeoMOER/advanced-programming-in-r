@@ -140,9 +140,9 @@ microbenchmark({
 ```
 Unit: milliseconds
                                                               expr      min       lq     mean
- {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 46.95132 49.71469 50.99942
-   median       uq      max neval
- 51.81826 52.22522 53.89055    20
+ {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 156.6862 179.3401 208.3742
+   median     uq      max neval
+ 194.7486 213.65 441.9002    20
 ```
 
 Hm, quite some time. Let's see how long it takes on when using multiple cores. 
@@ -161,9 +161,9 @@ microbenchmark({
 ```
 Unit: milliseconds
                                                                  expr      min       lq     mean
- {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 176.5104 207.1189 276.6854
+ {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 454.8072 497.3229 829.2411
    median       uq      max neval
- 219.3691 231.4421 1374.321    20
+ 555.2486 683.9334 5506.991    20
 ```
 
 Oops, what's going on now? Obviously, this action doesn't perform faster at all 
@@ -256,9 +256,9 @@ showConnections()
 ```
   description         class            mode  text     isopen   can read can write
 4 "output"            "textConnection" "wr"  "text"   "opened" "no"     "yes"    
-5 "<-localhost:11736" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-6 "<-localhost:11736" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-7 "<-localhost:11736" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+6 "<-localhost:11991" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+7 "<-localhost:11991" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+8 "<-localhost:11991" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
 ```
 
 There's 3 socket connections (i.e. cores) registered at the moment, just as we 

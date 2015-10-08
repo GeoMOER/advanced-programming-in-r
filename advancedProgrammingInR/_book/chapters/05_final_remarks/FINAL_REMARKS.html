@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="5" data-basepath="../.." data-revision="Thu Oct 08 2015 09:33:45 GMT+0200 (CEST)">
+    <div class="book" data-level="5" data-basepath="../.." data-revision="Thu Oct 08 2015 10:49:50 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -430,6 +430,143 @@
 <p>Bug reports or feature requests should be filed at <a href="https://github.com/marburg-open-courseware/advanced-programming-in-r/issues" target="_blank">https://github.com/marburg-open-courseware/advanced-programming-in-r/issues</a></p>
 <p>In case you want to provide feedback, don&apos;t hesitate to contact <a href="http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/florian-detsch/" target="_blank">Florian Detsch</a> or 
 <a href="http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/tim-appelhans/" target="_blank">Tim Appelhans</a></p>
+<pre><code class="lang-r"><span class="hljs-keyword">library</span>(jpeg)
+<span class="hljs-keyword">library</span>(rstudioapi)
+
+dir &lt;- tempfile()
+dir.create(dir)
+img1 &lt;- readJPEG(<span class="hljs-string">&quot;../../inst/portrait_header_fdetsch_01.jpg&quot;</span>)
+img2 &lt;- readJPEG(<span class="hljs-string">&quot;../../inst/portrait_header_tappelhans_02.jpg&quot;</span>)
+fl1 &lt;- paste0(dir, <span class="hljs-string">&quot;/img1&quot;</span>, <span class="hljs-string">&quot;.png&quot;</span>)
+fl2 &lt;- paste0(dir, <span class="hljs-string">&quot;/img2&quot;</span>, <span class="hljs-string">&quot;.png&quot;</span>)
+png::writePNG(img1, fl1)
+png::writePNG(img2, fl2)
+htmlFile &lt;- file.path(dir, <span class="hljs-string">&quot;index.html&quot;</span>)
+pop &lt;- paste(readLines(<span class="hljs-string">&quot;../../inst/slider.html&quot;</span>), collapse = <span class="hljs-string">&quot;\n&quot;</span>)
+write(pop, htmlFile)
+</code></pre>
+<html>
+<head>
+<style>
+
+/* image slider */
+.photos {
+    cursor: ew-resize;
+    position:relative;
+    overflow:visible;
+    height: 100%;
+    width: 100%;
+    margin-top: 20px;
+}
+.photos, .photos .layer {
+    height: 100%;
+}
+
+/* actual vertical image slider */
+.photos .separator {
+    border-left: 0px solid #000;
+    border-right: 0px solid #000;
+    height: 100%;
+    left: -1px;
+    line-height: 20px;
+    overflow: visible;
+    position: absolute;
+    top: -20px;
+    width: 1px;
+    z-index: 2;
+}
+/* right slider name box */
+.photos .separator div {
+    background: rgba(97,78,153,0.6);
+    background: #333;
+    border-left: 1px solid #fff;
+    color: #F2EFE9;
+    font-family: 'Bree Serif', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 20px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    text-align: center;
+    width: 100px;
+    z-index: 9;
+    border-radius: 5px 50px 50px 5px
+}
+/* left slider name box */
+.photos .separator div.before {
+    left: -100px;
+    border-left: none;
+    border-right: 1px solid #fff;
+    border-radius: 50px 5px 5px 50px
+}
+
+#photo-before {
+    max-width:100%;
+    min-width:100%;
+    position:absolute;
+    background: url("http://umweltinformatik-marburg.de/uploads/pics/portrait_header_fdetsch_01.jpg") no-repeat;
+    background-size:100% auto !important;
+}
+#photo-after {
+    max-width:100%;
+    min-width:100%;
+    position:absolute;
+    background: url("http://umweltinformatik-marburg.de/uploads/pics/portrait_header_tappelhans_02.jpg") no-repeat;
+    background-size:100% auto !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="photos">
+    <div class="separator">
+        <div class="before">Flo</div>
+        <div class="after">Tim</div>
+    </div>
+    <div class="layer" id="photo-after"></div>
+    <div class="layer" id="photo-before"></div>
+</div>
+
+
+<script src="http://d3js.org/d3.v2.min.js"></script>
+<script src="http://d3js.org/d3.v2.js"></script>
+
+<script>
+/* Update photo urls */
+var updatePhotos = function(b,a) {
+  if(b == 'custom' || a == 'custom') {
+    b = document.getElementById('before_pic').value;
+    a = document.getElementById('after_pic').value;
+    if( !b.length || !a.length) {
+      alert('Enter image URLs');
+      return;
+    }
+  }
+  document.getElementById('photo-before').style.background="url("+b+") no-repeat";
+  document.getElementById('photo-after').style.background="url("+a+") no-repeat";
+}
+
+
+/* Gettin down to D3 business */
+var beforeLayer = d3.select('#photo-before').node();
+
+d3.select('.photos')
+    .on('mousemove', function() {
+        var pos = d3.mouse(this);
+        d3.timer.flush();
+        d3.timer(function() {
+            d3.select('.separator').style("left", pos[0] + 'px');
+            beforeLayer.style.clip = 'rect(0px ' + pos[0] + 'px 9999999px 0px)';
+            return true;
+        }, 0);
+    });
+
+
+</script>
+</body>
+</html>
 
                     
                     </section>

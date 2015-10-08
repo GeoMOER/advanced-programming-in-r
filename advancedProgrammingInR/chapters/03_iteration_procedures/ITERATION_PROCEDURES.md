@@ -40,8 +40,8 @@ This particular example of quicksort is adapted from [Rosetta Code](http://roset
 ```
 
 ```
- [1] -1.72119831 -0.73929960 -0.23182798 -0.11550642 -0.04186827
- [6]  0.11232527  0.11423741  0.30317116  0.35818397  0.39925118
+ [1] -0.68554516 -0.41921218 -0.29225789 -0.21221874  0.04981660
+ [6]  0.07262787  0.46414326  0.85004373  1.35735729  1.55588778
 ```
 
 Because they call themselves, recursive functions are inherently hard to code, understand and debug. Therefore, we leave it at this small example and continue with the more understandable structures of iterative comutation, namely `for`-loops, `*apply` functions and `functional programming`.

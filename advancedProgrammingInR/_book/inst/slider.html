@@ -1,34 +1,3 @@
-
-# Final remarks
-
-We sincerely hope that this tutorial provides some useful parts to enhance your data analysis workflow. For a more general approach to software design (every function that you write is a software!) have a look at [this publication](http://www.plosbiology.org/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.1001745&representation=PDF).
-
-This sources of this tutorial are hosted at [GitHub](https://github.com/marburg-open-courseware/advanced-programming-in-r)
-
-Bug reports or feature requests should be filed at https://github.com/marburg-open-courseware/advanced-programming-in-r/issues
-
-In case you want to provide feedback, don't hesitate to contact [Florian Detsch](http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/florian-detsch/) or 
-[Tim Appelhans](http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/tim-appelhans/)
-
-
-
-```r
-library(jpeg)
-library(rstudioapi)
-
-dir <- tempfile()
-dir.create(dir)
-img1 <- readJPEG("../../inst/portrait_header_fdetsch_01.jpg")
-img2 <- readJPEG("../../inst/portrait_header_tappelhans_02.jpg")
-fl1 <- paste0(dir, "/img1", ".png")
-fl2 <- paste0(dir, "/img2", ".png")
-png::writePNG(img1, fl1)
-png::writePNG(img2, fl2)
-htmlFile <- file.path(dir, "index.html")
-pop <- paste(readLines("../../inst/slider.html"), collapse = "\n")
-write(pop, htmlFile)
-```
-
 <html>
 <head>
 <style>
@@ -89,14 +58,14 @@ write(pop, htmlFile)
     max-width:100%;
     min-width:100%;
     position:absolute;
-    background: url("http://umweltinformatik-marburg.de/uploads/pics/portrait_header_fdetsch_01.jpg") no-repeat;
+    background: url("img1.png") no-repeat;
     background-size:100% auto !important;
 }
 #photo-after {
     max-width:100%;
     min-width:100%;
     position:absolute;
-    background: url("http://umweltinformatik-marburg.de/uploads/pics/portrait_header_tappelhans_02.jpg") no-repeat;
+    background: url("img2.png") no-repeat;
     background-size:100% auto !important;
 }
 </style>
@@ -106,8 +75,8 @@ write(pop, htmlFile)
 
 <div class='photos'>
     <div class="separator">
-        <div class="before">Flo</div>
-        <div class="after">Tim</div>
+        <div class="before">pic1</div>
+        <div class="after">pic2</div>
     </div>
     <div class='layer' id='photo-after'></div>
     <div class='layer' id='photo-before'></div>

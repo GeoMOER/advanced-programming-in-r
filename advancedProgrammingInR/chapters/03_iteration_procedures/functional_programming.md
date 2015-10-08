@@ -200,11 +200,7 @@ So you see that the combination of functionals and closures is a powerful, flexi
 ```
 
 ```
-           [,1]         [,2]       [,3]
-price 0.8493305 0.0001133672 0.01616303
-x     0.9508088 0.0006395460 0.03815939
-y     0.9057751 0.0008608750 0.03376779
-z     0.9089475 0.0090105434 0.02277947
+Error in model.frame.default(formula = y ~ pred, drop.unused.levels = TRUE): invalid type (list) for variable 'pred'
 ```
 
 This is especially valuable for large calculations that require iterating over a set of objects. A classic scenario for using closures in combination with functionals is to find a 'best' value, i.e. some parameter that optimises a fit or something along those lines.
