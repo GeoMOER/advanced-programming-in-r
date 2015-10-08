@@ -24,7 +24,7 @@ The sequence is usually specified via some placeholder - most popular of which i
 
 
 ```r
-> for (i in 1:5) print(i)
+for (i in 1:5) print(i)
 ```
 
 ```
@@ -39,7 +39,7 @@ Make sure you code clearly so that you can easily understand what your code is d
 
 
 ```r
-> for (name in names(diamonds)) print(name)
+for (name in names(diamonds)) print(name)
 ```
 
 ```
@@ -59,20 +59,20 @@ Another way to specify an iteration is via the `seq()` function which can be use
 
 
 ```r
-> for (i in seq(names(diamonds))) cat("The class of colom", i, "is",  class(diamonds[, i]), "\n")
+for (i in seq(names(diamonds))) cat("The class of colom", i, "is",  class(diamonds[, i]), "\n")
 ```
 
 ```
-The class of colom 1 is tbl_df data.frame 
-The class of colom 2 is tbl_df data.frame 
-The class of colom 3 is tbl_df data.frame 
-The class of colom 4 is tbl_df data.frame 
-The class of colom 5 is tbl_df data.frame 
-The class of colom 6 is tbl_df data.frame 
-The class of colom 7 is tbl_df data.frame 
-The class of colom 8 is tbl_df data.frame 
-The class of colom 9 is tbl_df data.frame 
-The class of colom 10 is tbl_df data.frame 
+The class of colom 1 is numeric 
+The class of colom 2 is ordered factor 
+The class of colom 3 is ordered factor 
+The class of colom 4 is ordered factor 
+The class of colom 5 is numeric 
+The class of colom 6 is numeric 
+The class of colom 7 is integer 
+The class of colom 8 is numeric 
+The class of colom 9 is numeric 
+The class of colom 10 is numeric 
 ```
 
 Did you spot the spelling mistake in the above example? It is easy to debug this, as we only need to correct the error once, not 10 times.
@@ -98,32 +98,32 @@ Instead of reusing the same lines of code, we dynamically subset the data, build
 
 
 ```r
-> ## index for start and end rows to be extracted
-> indx_start <- seq(1, nrow(diamonds), 2000)
-> indx_end <- c(indx_start[-1] - 1, nrow(diamonds))
-> 
-> ## create new directory to save files to
-> dir_nm <- "results"
-> dir.create(dir_nm, showWarnings = FALSE)
-> 
-> ## looping through the files
-> for (i in seq(indx_start)) {
-+   
-+   ## actual indeces for current iteration
-+   st <- indx_start[i]
-+   nd <- indx_end[i]
-+   
-+   ## subset data based on row indeces
-+   dat <- diamonds[st:nd, ]
-+   
-+   ## create unique name for iteration data
-+   nm <- paste0(dir_nm, "/", "diamonds_subset_", 
-+                sprintf("%05.0f", st), "_", 
-+                sprintf("%05.0f", nd), ".csv")
-+   
-+   ## write to disk
-+   write.csv(dat, nm, row.names = FALSE)
-+ }
+## index for start and end rows to be extracted
+indx_start <- seq(1, nrow(diamonds), 2000)
+indx_end <- c(indx_start[-1] - 1, nrow(diamonds))
+
+## create new directory to save files to
+dir_nm <- "results"
+dir.create(dir_nm, showWarnings = FALSE)
+
+## looping through the files
+for (i in seq(indx_start)) {
+  
+  ## actual indeces for current iteration
+  st <- indx_start[i]
+  nd <- indx_end[i]
+  
+  ## subset data based on row indeces
+  dat <- diamonds[st:nd, ]
+  
+  ## create unique name for iteration data
+  nm <- paste0(dir_nm, "/", "diamonds_subset_", 
+               sprintf("%05.0f", st), "_", 
+               sprintf("%05.0f", nd), ".csv")
+  
+  ## write to disk
+  write.csv(dat, nm, row.names = FALSE)
+}
 ```
 
 `for`-loops are great for iterative operations that do not require assignment of their output to an object, e.g. the example above of saving data or producing plots. If we want the outcome of a loop to be assigned to an object and use this for further analysis, R has much more convenient structures which we will see in the next chapter.

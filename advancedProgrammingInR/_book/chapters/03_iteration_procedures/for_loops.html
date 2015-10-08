@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="3.1" data-basepath="../.." data-revision="Thu Oct 08 2015 10:49:50 GMT+0200 (CEST)">
+    <div class="book" data-level="3.1" data-basepath="../.." data-revision="Thu Oct 08 2015 11:34:05 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -441,7 +441,7 @@
   do this
 </code></pre><p>The way the iteration sequence is specified differs between languages, but the basic principle is always the same.</p>
 <p>The sequence is usually specified via some placeholder - most popular of which is i for iteration - which usually represents an integer sequence, though you can also iterate over character strings. Here&apos;s a very simple loop:</p>
-<pre><code class="lang-r">&gt; <span class="hljs-keyword">for</span> (i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">5</span>) print(i)
+<pre><code class="lang-r"><span class="hljs-keyword">for</span> (i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">5</span>) print(i)
 </code></pre>
 <pre><code>[1] 1
 [1] 2
@@ -449,7 +449,7 @@
 [1] 4
 [1] 5
 </code></pre><p>Make sure you code clearly so that you can easily understand what your code is doing. Therefore, when using iteration structures, try to provide meaningful placeholder names.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-keyword">for</span> (name <span class="hljs-keyword">in</span> names(diamonds)) print(name)
+<pre><code class="lang-r"><span class="hljs-keyword">for</span> (name <span class="hljs-keyword">in</span> names(diamonds)) print(name)
 </code></pre>
 <pre><code>[1] &quot;carat&quot;
 [1] &quot;cut&quot;
@@ -462,18 +462,18 @@
 [1] &quot;y&quot;
 [1] &quot;z&quot;
 </code></pre><p>Another way to specify an iteration is via the <code>seq()</code> function which can be used to create a sequence of integers based on the length of an object.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-keyword">for</span> (i <span class="hljs-keyword">in</span> seq(names(diamonds))) cat(<span class="hljs-string">&quot;The class of colom&quot;</span>, i, <span class="hljs-string">&quot;is&quot;</span>,  class(diamonds[, i]), <span class="hljs-string">&quot;\n&quot;</span>)
+<pre><code class="lang-r"><span class="hljs-keyword">for</span> (i <span class="hljs-keyword">in</span> seq(names(diamonds))) cat(<span class="hljs-string">&quot;The class of colom&quot;</span>, i, <span class="hljs-string">&quot;is&quot;</span>,  class(diamonds[, i]), <span class="hljs-string">&quot;\n&quot;</span>)
 </code></pre>
-<pre><code>The class of colom 1 is tbl_df data.frame 
-The class of colom 2 is tbl_df data.frame 
-The class of colom 3 is tbl_df data.frame 
-The class of colom 4 is tbl_df data.frame 
-The class of colom 5 is tbl_df data.frame 
-The class of colom 6 is tbl_df data.frame 
-The class of colom 7 is tbl_df data.frame 
-The class of colom 8 is tbl_df data.frame 
-The class of colom 9 is tbl_df data.frame 
-The class of colom 10 is tbl_df data.frame
+<pre><code>The class of colom 1 is numeric 
+The class of colom 2 is ordered factor 
+The class of colom 3 is ordered factor 
+The class of colom 4 is ordered factor 
+The class of colom 5 is numeric 
+The class of colom 6 is numeric 
+The class of colom 7 is integer 
+The class of colom 8 is numeric 
+The class of colom 9 is numeric 
+The class of colom 10 is numeric
 </code></pre><p>Did you spot the spelling mistake in the above example? It is easy to debug this, as we only need to correct the error once, not 10 times.</p>
 <h3 id="task-1-looping-the-mean-meaning-the-loop">Task #1: Looping the mean, meaning the loop</h3>
 <p>Take the above <code>for</code>-loop and modify so that instead of the class it prints out the mean of each column.</p>
@@ -490,32 +490,32 @@ The class of colom 10 is tbl_df data.frame
 </ul>
 <p>One common scenario is to work with different data sources. Here, <code>for</code>-loops can be quite useful. To highlight this, let&apos;s create a few data sources and save them to disk (we will load these again later).</p>
 <p>Instead of reusing the same lines of code, we dynamically subset the data, build suitable names for saving and finally save each part of the data.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## index for start and end rows to be extracted</span>
-&gt; indx_start &lt;- seq(<span class="hljs-number">1</span>, nrow(diamonds), <span class="hljs-number">2000</span>)
-&gt; indx_end &lt;- c(indx_start[-<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>, nrow(diamonds))
-&gt; 
-&gt; <span class="hljs-comment">## create new directory to save files to</span>
-&gt; dir_nm &lt;- <span class="hljs-string">&quot;results&quot;</span>
-&gt; dir.create(dir_nm, showWarnings = <span class="hljs-literal">FALSE</span>)
-&gt; 
-&gt; <span class="hljs-comment">## looping through the files</span>
-&gt; <span class="hljs-keyword">for</span> (i <span class="hljs-keyword">in</span> seq(indx_start)) {
-+   
-+   <span class="hljs-comment">## actual indeces for current iteration</span>
-+   st &lt;- indx_start[i]
-+   nd &lt;- indx_end[i]
-+   
-+   <span class="hljs-comment">## subset data based on row indeces</span>
-+   dat &lt;- diamonds[st:nd, ]
-+   
-+   <span class="hljs-comment">## create unique name for iteration data</span>
-+   nm &lt;- paste0(dir_nm, <span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-string">&quot;diamonds_subset_&quot;</span>, 
-+                sprintf(<span class="hljs-string">&quot;%05.0f&quot;</span>, st), <span class="hljs-string">&quot;_&quot;</span>, 
-+                sprintf(<span class="hljs-string">&quot;%05.0f&quot;</span>, nd), <span class="hljs-string">&quot;.csv&quot;</span>)
-+   
-+   <span class="hljs-comment">## write to disk</span>
-+   write.csv(dat, nm, row.names = <span class="hljs-literal">FALSE</span>)
-+ }
+<pre><code class="lang-r"><span class="hljs-comment">## index for start and end rows to be extracted</span>
+indx_start &lt;- seq(<span class="hljs-number">1</span>, nrow(diamonds), <span class="hljs-number">2000</span>)
+indx_end &lt;- c(indx_start[-<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>, nrow(diamonds))
+
+<span class="hljs-comment">## create new directory to save files to</span>
+dir_nm &lt;- <span class="hljs-string">&quot;results&quot;</span>
+dir.create(dir_nm, showWarnings = <span class="hljs-literal">FALSE</span>)
+
+<span class="hljs-comment">## looping through the files</span>
+<span class="hljs-keyword">for</span> (i <span class="hljs-keyword">in</span> seq(indx_start)) {
+
+  <span class="hljs-comment">## actual indeces for current iteration</span>
+  st &lt;- indx_start[i]
+  nd &lt;- indx_end[i]
+
+  <span class="hljs-comment">## subset data based on row indeces</span>
+  dat &lt;- diamonds[st:nd, ]
+
+  <span class="hljs-comment">## create unique name for iteration data</span>
+  nm &lt;- paste0(dir_nm, <span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-string">&quot;diamonds_subset_&quot;</span>, 
+               sprintf(<span class="hljs-string">&quot;%05.0f&quot;</span>, st), <span class="hljs-string">&quot;_&quot;</span>, 
+               sprintf(<span class="hljs-string">&quot;%05.0f&quot;</span>, nd), <span class="hljs-string">&quot;.csv&quot;</span>)
+
+  <span class="hljs-comment">## write to disk</span>
+  write.csv(dat, nm, row.names = <span class="hljs-literal">FALSE</span>)
+}
 </code></pre>
 <p><code>for</code>-loops are great for iterative operations that do not require assignment of their output to an object, e.g. the example above of saving data or producing plots. If we want the outcome of a loop to be assigned to an object and use this for further analysis, R has much more convenient structures which we will see in the next chapter.</p>
 <p>Finally, there are more pieces related to iteration procedures in R:</p>

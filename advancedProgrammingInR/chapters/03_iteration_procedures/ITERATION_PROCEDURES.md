@@ -29,14 +29,14 @@ This particular example of quicksort is adapted from [Rosetta Code](http://roset
 
 
 ```r
-> qsort <- function(v) {
-+   if (length(v) > 1) {
-+     pivot <- v[1]
-+     c(qsort(v[v < pivot]), v[v == pivot], qsort(v[v > pivot])) 
-+   } else v
-+ }
-> 
-> qsort(rnorm(10))
+qsort <- function(v) {
+  if (length(v) > 1) {
+    pivot <- v[1]
+    c(qsort(v[v < pivot]), v[v == pivot], qsort(v[v > pivot])) 
+  } else v
+}
+
+qsort(rnorm(10))
 ```
 
 ```

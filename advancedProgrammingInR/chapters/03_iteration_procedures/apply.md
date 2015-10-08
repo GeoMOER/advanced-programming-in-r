@@ -12,8 +12,8 @@ First of all, we need to recognize that these structures are pretty much unique 
 
 
 ```r
-> a <- 3
-> a
+a <- 3
+a
 ```
 
 ```
@@ -21,8 +21,8 @@ First of all, we need to recognize that these structures are pretty much unique 
 ```
 
 ```r
-> "<-"(b, 15)
-> b
+"<-"(b, 15)
+b
 ```
 
 ```
@@ -30,7 +30,7 @@ First of all, we need to recognize that these structures are pretty much unique 
 ```
 
 ```r
-> "+"(a, b)
+"+"(a, b)
 ```
 
 ```
@@ -57,14 +57,14 @@ Let's try this
 
 
 ```r
-> data(diamonds)
-> 
-> ## subset diamonds to only numerical columns
-> diamonds_num <- diamonds[, -c(2:4)]
-> 
-> ## apply function mean to all columns of diamonds
-> col_means <- apply(diamonds_num, 2, mean, na.rm = TRUE)
-> col_means
+data(diamonds)
+
+## subset diamonds to only numerical columns
+diamonds_num <- diamonds[, -c(2:4)]
+
+## apply function mean to all columns of diamonds
+col_means <- apply(diamonds_num, 2, mean, na.rm = TRUE)
+col_means
 ```
 
 ```
@@ -95,15 +95,15 @@ Let's have a look at what these lists look like:
 
 
 ```r
-> lst <- list(1:10, 
-+             "Hello", 
-+             mean,
-+             mean(1:10),
-+             function(x) x + 1, 
-+             data.frame(col1 = rnorm(10), col2 = runif(10)),
-+             matrix(1:9, 3, 3))
-> 
-> lst
+lst <- list(1:10, 
+            "Hello", 
+            mean,
+            mean(1:10),
+            function(x) x + 1, 
+            data.frame(col1 = rnorm(10), col2 = runif(10)),
+            matrix(1:9, 3, 3))
+
+lst
 ```
 
 ```
@@ -125,20 +125,20 @@ UseMethod("mean")
 [[5]]
 function (x) 
 x + 1
-<environment: 0x3fc55a8>
+<environment: 0x5bacec8>
 
 [[6]]
-         col1       col2
-1  -0.8558895 0.69604289
-2   0.4976094 0.44996058
-3   0.3887533 0.28840558
-4   0.3366307 0.36496603
-5   0.3329140 0.65194500
-6   0.7673182 0.13711177
-7  -0.2610940 0.01759428
-8  -0.5006976 0.54322421
-9   2.2141514 0.08465572
-10  0.4550700 0.78730495
+          col1      col2
+1  -0.12960160 0.3813381
+2  -0.12158784 0.1463563
+3  -1.04420790 0.1480125
+4   0.09727682 0.8895769
+5   0.34136015 0.7378323
+6  -0.41890684 0.1838219
+7   0.90947564 0.5677393
+8  -0.19631434 0.1844053
+9   0.08068094 0.7201653
+10  0.89483168 0.1849746
 
 [[7]]
      [,1] [,2] [,3]
@@ -158,8 +158,8 @@ So, if we were to recreate the first example from the previous chapter on `for`-
 
 
 ```r
-> result <- lapply(1:5, function(i) i)
-> result
+result <- lapply(1:5, function(i) i)
+result
 ```
 
 ```
@@ -185,8 +185,8 @@ Let's repeat the above with `sapply()`
 
 
 ```r
-> result <- sapply(1:5, function(i) i)
-> result
+result <- sapply(1:5, function(i) i)
+result
 ```
 
 ```
@@ -199,14 +199,14 @@ To highlight this, let's use `lapply()` to read in the numerous chunks of data w
 
 
 ```r
-> fls <- list.files("results", pattern = glob2rx("*subset*.csv"),
-+                   full.names = TRUE)
-> 
-> dat_lst <- lapply(seq(fls), function(i) {
-+   read.csv(fls[i])
-+ })
-> 
-> str(dat_lst, 1)
+fls <- list.files("results", pattern = glob2rx("*subset*.csv"),
+                  full.names = TRUE)
+
+dat_lst <- lapply(seq(fls), function(i) {
+  read.csv(fls[i])
+})
+
+str(dat_lst, 1)
 ```
 
 ```
@@ -246,8 +246,8 @@ Also, recombining these individual data frames back into one is tsraight forward
 
 
 ```r
-> diamonds_df <- do.call("rbind", dat_lst)
-> str(diamonds_df)
+diamonds_df <- do.call("rbind", dat_lst)
+str(diamonds_df)
 ```
 
 ```
@@ -268,39 +268,39 @@ Fianlly, let's look at a slightly more involved example of how to use `lapply()`
 
 
 ```r
-> ## split diamonds by cut
-> cut_lst <- split(diamonds, f = diamonds$cut)
-> 
-> my_result_list <- lapply(seq(cut_lst), function(i) {
-+   
-+   ## subset to color = D
-+   dat <- cut_lst[[i]]
-+   dat_d <- subset(dat, dat$color == "D")
-+   
-+   ## calculate linear model
-+   lm1 <- lm(price ~ carat, data = dat_d)
-+   
-+   ## create scatterplot
-+   scatter_ggplot <- ggplot(aes(x = carat, y = price), data = dat_d)
-+   g_sc <- scatter_ggplot + 
-+     geom_point(colour = "grey60") +
-+     theme_bw() +
-+     stat_smooth(method = "lm", se = TRUE, 
-+                 fill = "black", colour = "black") +
-+      geom_text(data = NULL, 
-+                x = min(dat_d$carat, na.rm = TRUE) + 0.2,  
-+                y = max(dat_d$price, na.rm = TRUE) * 0.98, 
-+                label = unique(dat_d$cut))
-+   
-+   ## return both the linear model and the plot as a list
-+   return(list(linmod = lm1,
-+               plt = g_sc))
-+ })
-> 
-> ## set names of list for clarity
-> names(my_result_list) <- names(cut_lst)
-> 
-> str(my_result_list, 2)
+## split diamonds by cut
+cut_lst <- split(diamonds, f = diamonds$cut)
+
+my_result_list <- lapply(seq(cut_lst), function(i) {
+  
+  ## subset to color = D
+  dat <- cut_lst[[i]]
+  dat_d <- subset(dat, dat$color == "D")
+  
+  ## calculate linear model
+  lm1 <- lm(price ~ carat, data = dat_d)
+  
+  ## create scatterplot
+  scatter_ggplot <- ggplot(aes(x = carat, y = price), data = dat_d)
+  g_sc <- scatter_ggplot + 
+    geom_point(colour = "grey60") +
+    theme_bw() +
+    stat_smooth(method = "lm", se = TRUE, 
+                fill = "black", colour = "black") +
+     geom_text(data = NULL, 
+               x = min(dat_d$carat, na.rm = TRUE) + 0.2,  
+               y = max(dat_d$price, na.rm = TRUE) * 0.98, 
+               label = unique(dat_d$cut))
+  
+  ## return both the linear model and the plot as a list
+  return(list(linmod = lm1,
+              plt = g_sc))
+})
+
+## set names of list for clarity
+names(my_result_list) <- names(cut_lst)
+
+str(my_result_list, 2)
 ```
 
 ```
@@ -336,7 +336,7 @@ This let's us now quickly access each of the analyses individually. To view the 
 
 
 ```r
-> my_result_list$Premium$plt
+my_result_list$Premium$plt
 ```
 
 ![plot of chunk list scatter](figure/list scatter-1.png) 
@@ -345,7 +345,7 @@ We can, hovever still navigate using `[[]]`. To get the summary of the linear mo
 
 
 ```r
-> summary(my_result_list[[5]][[1]])
+summary(my_result_list[[5]][[1]])
 ```
 
 ```

@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="3.2" data-basepath="../.." data-revision="Thu Oct 08 2015 10:49:50 GMT+0200 (CEST)">
+    <div class="book" data-level="3.2" data-basepath="../.." data-revision="Thu Oct 08 2015 11:34:05 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -434,15 +434,15 @@
 <li><code>lapply()</code> and <code>sapply()</code></li>
 </ul>
 <p>First of all, we need to recognize that these structures are pretty much unique to R. The reason for this is that R is at its very core a so-called <em>functional programming language</em>. This means nothing else than &quot;every operation in R is carried out by an appropriate function&quot;. In fact, even the classical <code>&lt;-</code> assignment operator is defined in the same way as any other function in R.</p>
-<pre><code class="lang-r">&gt; a &lt;- <span class="hljs-number">3</span>
-&gt; a
+<pre><code class="lang-r">a &lt;- <span class="hljs-number">3</span>
+a
 </code></pre>
 <pre><code>[1] 3
-</code></pre><pre><code class="lang-r">&gt; <span class="hljs-string">&quot;&lt;-&quot;</span>(b, <span class="hljs-number">15</span>)
-&gt; b
+</code></pre><pre><code class="lang-r"><span class="hljs-string">&quot;&lt;-&quot;</span>(b, <span class="hljs-number">15</span>)
+b
 </code></pre>
 <pre><code>[1] 15
-</code></pre><pre><code class="lang-r">&gt; <span class="hljs-string">&quot;+&quot;</span>(a, b)
+</code></pre><pre><code class="lang-r"><span class="hljs-string">&quot;+&quot;</span>(a, b)
 </code></pre>
 <pre><code>[1] 18
 </code></pre><p>You may wonder why this is relevant to understand <code>*apply</code>? </p>
@@ -457,14 +457,14 @@
 </ul>
 <p>Other function related arguments such as <code>na.rm = ...</code> can also be supplied.</p>
 <p>Let&apos;s try this</p>
-<pre><code class="lang-r">&gt; data(diamonds)
-&gt; 
-&gt; <span class="hljs-comment">## subset diamonds to only numerical columns</span>
-&gt; diamonds_num &lt;- diamonds[, -c(<span class="hljs-number">2</span>:<span class="hljs-number">4</span>)]
-&gt; 
-&gt; <span class="hljs-comment">## apply function mean to all columns of diamonds</span>
-&gt; col_means &lt;- apply(diamonds_num, <span class="hljs-number">2</span>, mean, na.rm = <span class="hljs-literal">TRUE</span>)
-&gt; col_means
+<pre><code class="lang-r">data(diamonds)
+
+<span class="hljs-comment">## subset diamonds to only numerical columns</span>
+diamonds_num &lt;- diamonds[, -c(<span class="hljs-number">2</span>:<span class="hljs-number">4</span>)]
+
+<span class="hljs-comment">## apply function mean to all columns of diamonds</span>
+col_means &lt;- apply(diamonds_num, <span class="hljs-number">2</span>, mean, na.rm = <span class="hljs-literal">TRUE</span>)
+col_means
 </code></pre>
 <pre><code>       carat        depth        table        price            x 
    0.7979397   61.7494049   57.4571839 3932.7997219    5.7311572 
@@ -482,15 +482,15 @@
 <h3 id="lapply">lapply()</h3>
 <p>More powerful than <code>apply()</code> is <code>lapply()</code>. The &apos;l&apos; stands for list and simply means that whatever is returned from an iterative process will be stored in a list. In R, lists are the most flexible way of storing things but their structure may need a little getting used to. Basically, you can store any combination of objects in lists. Matrices, for example, are much less versatile.</p>
 <p>Let&apos;s have a look at what these lists look like:</p>
-<pre><code class="lang-r">&gt; lst &lt;- list(<span class="hljs-number">1</span>:<span class="hljs-number">10</span>, 
-+             <span class="hljs-string">&quot;Hello&quot;</span>, 
-+             mean,
-+             mean(<span class="hljs-number">1</span>:<span class="hljs-number">10</span>),
-+             <span class="hljs-keyword">function</span>(x) x + <span class="hljs-number">1</span>, 
-+             data.frame(col1 = rnorm(<span class="hljs-number">10</span>), col2 = runif(<span class="hljs-number">10</span>)),
-+             matrix(<span class="hljs-number">1</span>:<span class="hljs-number">9</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>))
-&gt; 
-&gt; lst
+<pre><code class="lang-r">lst &lt;- list(<span class="hljs-number">1</span>:<span class="hljs-number">10</span>, 
+            <span class="hljs-string">&quot;Hello&quot;</span>, 
+            mean,
+            mean(<span class="hljs-number">1</span>:<span class="hljs-number">10</span>),
+            <span class="hljs-keyword">function</span>(x) x + <span class="hljs-number">1</span>, 
+            data.frame(col1 = rnorm(<span class="hljs-number">10</span>), col2 = runif(<span class="hljs-number">10</span>)),
+            matrix(<span class="hljs-number">1</span>:<span class="hljs-number">9</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>))
+
+lst
 </code></pre>
 <pre><code>[[1]]
  [1]  1  2  3  4  5  6  7  8  9 10
@@ -510,20 +510,20 @@ UseMethod(&quot;mean&quot;)
 [[5]]
 function (x) 
 x + 1
-&lt;environment: 0x3fc55a8&gt;
+&lt;environment: 0x5bacec8&gt;
 
 [[6]]
-         col1       col2
-1  -0.8558895 0.69604289
-2   0.4976094 0.44996058
-3   0.3887533 0.28840558
-4   0.3366307 0.36496603
-5   0.3329140 0.65194500
-6   0.7673182 0.13711177
-7  -0.2610940 0.01759428
-8  -0.5006976 0.54322421
-9   2.2141514 0.08465572
-10  0.4550700 0.78730495
+          col1      col2
+1  -0.12960160 0.3813381
+2  -0.12158784 0.1463563
+3  -1.04420790 0.1480125
+4   0.09727682 0.8895769
+5   0.34136015 0.7378323
+6  -0.41890684 0.1838219
+7   0.90947564 0.5677393
+8  -0.19631434 0.1844053
+9   0.08068094 0.7201653
+10  0.89483168 0.1849746
 
 [[7]]
      [,1] [,2] [,3]
@@ -537,8 +537,8 @@ x + 1
 <li>we need to write the bit that does the calculation part as a function </li>
 </ol>
 <p>So, if we were to recreate the first example from the previous chapter on <code>for</code>-loops</p>
-<pre><code class="lang-r">&gt; result &lt;- lapply(<span class="hljs-number">1</span>:<span class="hljs-number">5</span>, <span class="hljs-keyword">function</span>(i) i)
-&gt; result
+<pre><code class="lang-r">result &lt;- lapply(<span class="hljs-number">1</span>:<span class="hljs-number">5</span>, <span class="hljs-keyword">function</span>(i) i)
+result
 </code></pre>
 <pre><code>[[1]]
 [1] 1
@@ -556,20 +556,20 @@ x + 1
 [1] 5
 </code></pre><p>The only time we will use <code>sapply()</code> in his tutorial is right here. <code>sapply()</code> and <code>lapply()</code> are very similar, so that it is sufficient to cover only one in detail. The &apos;s&apos; stands for &apos;simplify&apos; which means that <code>sapply()</code> will try to return and object of simple structure, such as a vector or a matrix. </p>
 <p>Let&apos;s repeat the above with <code>sapply()</code></p>
-<pre><code class="lang-r">&gt; result &lt;- sapply(<span class="hljs-number">1</span>:<span class="hljs-number">5</span>, <span class="hljs-keyword">function</span>(i) i)
-&gt; result
+<pre><code class="lang-r">result &lt;- sapply(<span class="hljs-number">1</span>:<span class="hljs-number">5</span>, <span class="hljs-keyword">function</span>(i) i)
+result
 </code></pre>
 <pre><code>[1] 1 2 3 4 5
 </code></pre><p>Getting a vector as a result is great if the calculation produces a vector, however this won&apos;t work if the result is e.g. a function or a <code>ggplot2</code>-object or something along those lines. Therefore, <code>lapply()</code> is simply the more versatile of the two as it can handle any type of result. </p>
 <p>To highlight this, let&apos;s use <code>lapply()</code> to read in the numerous chunks of data we have previously saved.</p>
-<pre><code class="lang-r">&gt; fls &lt;- list.files(<span class="hljs-string">&quot;results&quot;</span>, pattern = glob2rx(<span class="hljs-string">&quot;*subset*.csv&quot;</span>),
-+                   full.names = <span class="hljs-literal">TRUE</span>)
-&gt; 
-&gt; dat_lst &lt;- lapply(seq(fls), <span class="hljs-keyword">function</span>(i) {
-+   read.csv(fls[i])
-+ })
-&gt; 
-&gt; str(dat_lst, <span class="hljs-number">1</span>)
+<pre><code class="lang-r">fls &lt;- list.files(<span class="hljs-string">&quot;results&quot;</span>, pattern = glob2rx(<span class="hljs-string">&quot;*subset*.csv&quot;</span>),
+                  full.names = <span class="hljs-literal">TRUE</span>)
+
+dat_lst &lt;- lapply(seq(fls), <span class="hljs-keyword">function</span>(i) {
+  read.csv(fls[i])
+})
+
+str(dat_lst, <span class="hljs-number">1</span>)
 </code></pre>
 <pre><code>List of 27
  $ :&apos;data.frame&apos;:    2000 obs. of  10 variables:
@@ -601,8 +601,8 @@ x + 1
  $ :&apos;data.frame&apos;:    1940 obs. of  10 variables:
 </code></pre><p>Great, you might say, but now we have a list of multiple data frames instead of one complete data frame. In our case this seems rather silly, but think about situations where you want to analyse the same sort of data only from different dates or from different locations or patients or ...</p>
 <p>Also, recombining these individual data frames back into one is tsraight forward. </p>
-<pre><code class="lang-r">&gt; diamonds_df &lt;- do.call(<span class="hljs-string">&quot;rbind&quot;</span>, dat_lst)
-&gt; str(diamonds_df)
+<pre><code class="lang-r">diamonds_df &lt;- do.call(<span class="hljs-string">&quot;rbind&quot;</span>, dat_lst)
+str(diamonds_df)
 </code></pre>
 <pre><code>&apos;data.frame&apos;:    53940 obs. of  10 variables:
  $ carat  : num  0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
@@ -616,39 +616,39 @@ x + 1
  $ y      : num  3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
  $ z      : num  2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...
 </code></pre><p>Fianlly, let&apos;s look at a slightly more involved example of how to use <code>lapply()</code>. A standard analysis workflow likely involves some sort of statistical analysis + the visualisation of the results in some way. Here, we will create linear models between &apos;carat&apos; and &apos;price&apos; and the corresponding scatterplots for all levels of &apos;cut&apos; but only for those diamonds of &apos;color = D&apos;.</p>
-<pre><code class="lang-r">&gt; <span class="hljs-comment">## split diamonds by cut</span>
-&gt; cut_lst &lt;- split(diamonds, f = diamonds$cut)
-&gt; 
-&gt; my_result_list &lt;- lapply(seq(cut_lst), <span class="hljs-keyword">function</span>(i) {
-+   
-+   <span class="hljs-comment">## subset to color = D</span>
-+   dat &lt;- cut_lst[[i]]
-+   dat_d &lt;- subset(dat, dat$color == <span class="hljs-string">&quot;D&quot;</span>)
-+   
-+   <span class="hljs-comment">## calculate linear model</span>
-+   lm1 &lt;- lm(price ~ carat, data = dat_d)
-+   
-+   <span class="hljs-comment">## create scatterplot</span>
-+   scatter_ggplot &lt;- ggplot(aes(x = carat, y = price), data = dat_d)
-+   g_sc &lt;- scatter_ggplot + 
-+     geom_point(colour = <span class="hljs-string">&quot;grey60&quot;</span>) +
-+     theme_bw() +
-+     stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">TRUE</span>, 
-+                 fill = <span class="hljs-string">&quot;black&quot;</span>, colour = <span class="hljs-string">&quot;black&quot;</span>) +
-+      geom_text(data = <span class="hljs-literal">NULL</span>, 
-+                x = min(dat_d$carat, na.rm = <span class="hljs-literal">TRUE</span>) + <span class="hljs-number">0.2</span>,  
-+                y = max(dat_d$price, na.rm = <span class="hljs-literal">TRUE</span>) * <span class="hljs-number">0.98</span>, 
-+                label = unique(dat_d$cut))
-+   
-+   <span class="hljs-comment">## return both the linear model and the plot as a list</span>
-+   <span class="hljs-keyword">return</span>(list(linmod = lm1,
-+               plt = g_sc))
-+ })
-&gt; 
-&gt; <span class="hljs-comment">## set names of list for clarity</span>
-&gt; names(my_result_list) &lt;- names(cut_lst)
-&gt; 
-&gt; str(my_result_list, <span class="hljs-number">2</span>)
+<pre><code class="lang-r"><span class="hljs-comment">## split diamonds by cut</span>
+cut_lst &lt;- split(diamonds, f = diamonds$cut)
+
+my_result_list &lt;- lapply(seq(cut_lst), <span class="hljs-keyword">function</span>(i) {
+
+  <span class="hljs-comment">## subset to color = D</span>
+  dat &lt;- cut_lst[[i]]
+  dat_d &lt;- subset(dat, dat$color == <span class="hljs-string">&quot;D&quot;</span>)
+
+  <span class="hljs-comment">## calculate linear model</span>
+  lm1 &lt;- lm(price ~ carat, data = dat_d)
+
+  <span class="hljs-comment">## create scatterplot</span>
+  scatter_ggplot &lt;- ggplot(aes(x = carat, y = price), data = dat_d)
+  g_sc &lt;- scatter_ggplot + 
+    geom_point(colour = <span class="hljs-string">&quot;grey60&quot;</span>) +
+    theme_bw() +
+    stat_smooth(method = <span class="hljs-string">&quot;lm&quot;</span>, se = <span class="hljs-literal">TRUE</span>, 
+                fill = <span class="hljs-string">&quot;black&quot;</span>, colour = <span class="hljs-string">&quot;black&quot;</span>) +
+     geom_text(data = <span class="hljs-literal">NULL</span>, 
+               x = min(dat_d$carat, na.rm = <span class="hljs-literal">TRUE</span>) + <span class="hljs-number">0.2</span>,  
+               y = max(dat_d$price, na.rm = <span class="hljs-literal">TRUE</span>) * <span class="hljs-number">0.98</span>, 
+               label = unique(dat_d$cut))
+
+  <span class="hljs-comment">## return both the linear model and the plot as a list</span>
+  <span class="hljs-keyword">return</span>(list(linmod = lm1,
+              plt = g_sc))
+})
+
+<span class="hljs-comment">## set names of list for clarity</span>
+names(my_result_list) &lt;- names(cut_lst)
+
+str(my_result_list, <span class="hljs-number">2</span>)
 </code></pre>
 <pre><code>List of 5
  $ Fair     :List of 2
@@ -677,11 +677,11 @@ x + 1
   ..$ plt   :List of 9
   .. ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;gg&quot; &quot;ggplot&quot;
 </code></pre><p>This let&apos;s us now quickly access each of the analyses individually. To view the scatterplot for diamonds of &apos;cut = Premium&apos; we simply navigate down to the respective entry (Note, given that we have set the names for the resulting lists we can now use the common <code>$</code> notation for the navigation):</p>
-<pre><code class="lang-r">&gt; my_result_list$Premium$plt
+<pre><code class="lang-r">my_result_list$Premium$plt
 </code></pre>
 <p><img src="figure/list scatter-1.png" alt="plot of chunk list scatter"> </p>
 <p>We can, hovever still navigate using <code>[[]]</code>. To get the summary of the linear model for &apos;cut = Ideal&apos;:</p>
-<pre><code class="lang-r">&gt; summary(my_result_list[[<span class="hljs-number">5</span>]][[<span class="hljs-number">1</span>]])
+<pre><code class="lang-r">summary(my_result_list[[<span class="hljs-number">5</span>]][[<span class="hljs-number">1</span>]])
 </code></pre>
 <pre><code>
 Call:

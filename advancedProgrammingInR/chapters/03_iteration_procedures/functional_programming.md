@@ -14,12 +14,12 @@ So, let's try and create a custom function. A function to calculate the Pythogor
 
 
 ```r
-> pythagoreanTheorem <- function(a, b) {
-+   c <- sqrt(a*a + b*b)
-+   return(c)
-+ }
-> 
-> pythagoreanTheorem(3, 4)
+pythagoreanTheorem <- function(a, b) {
+  c <- sqrt(a*a + b*b)
+  return(c)
+}
+
+pythagoreanTheorem(3, 4)
 ```
 
 ```
@@ -54,10 +54,10 @@ We've already seen functionals, functions that take other functions as arguments
 
 
 ```r
-> dat <- data.frame(a = c(3, 7, 11, 1, 24, 2),
-+                   b = c(4, 3, 2, 3, 12, 5))
-> 
-> sapply(seq(nrow(dat)), function(i) pythagoreanTheorem(dat[i, 1], dat[i, 2]))
+dat <- data.frame(a = c(3, 7, 11, 1, 24, 2),
+                  b = c(4, 3, 2, 3, 12, 5))
+
+sapply(seq(nrow(dat)), function(i) pythagoreanTheorem(dat[i, 1], dat[i, 2]))
 ```
 
 ```
@@ -76,59 +76,59 @@ We have a bunch of possible predictor variables and a bunch of response variable
 
 
 ```r
-> ### generate some random data
-> set.seed(123)
-> pred <- data.frame(pred1 = rnorm(100, 2, 1),
-+                    pred2 = 1:100,
-+                    pred3 = rpois(100, 2),
-+                    pred4 = 200:101)
-> 
-> set.seed(234)
-> resp <- data.frame(resp1 = 1:100,
-+                    resp2 = rnorm(100, 2, 1),
-+                    resp3 = 200:101,
-+                    resp4 = rpois(100, 2))
+### generate some random data
+set.seed(123)
+pred <- data.frame(pred1 = rnorm(100, 2, 1),
+                   pred2 = 1:100,
+                   pred3 = rpois(100, 2),
+                   pred4 = 200:101)
+
+set.seed(234)
+resp <- data.frame(resp1 = 1:100,
+                   resp2 = rnorm(100, 2, 1),
+                   resp3 = 200:101,
+                   resp4 = rpois(100, 2))
 ```
 
 We could simply use copy and paste to claculate each combination.
 
 
 ```r
-> summary(lm(resp$resp1 ~ pred$pred1))$r.squared
-> summary(lm(resp$resp2 ~ pred$pred1))$r.squared
-> summary(lm(resp$resp2 ~ pred$pred1))$r.squared
-> summary(lm(resp$resp4 ~ pred$pred1))$r.squared
-> 
-> summary(lm(resp$resp1 ~ pred$pred2))$r.squared
-> summary(lm(resp$resp2 ~ pred$pred2))$r.squared
-> summary(lm(resp$resp3 ~ pred$pred2))$r.squared
-> summary(lm(resp$resp4 ~ pred$pred3))$r.squared
-> 
-> #.... and so forth
+summary(lm(resp$resp1 ~ pred$pred1))$r.squared
+summary(lm(resp$resp2 ~ pred$pred1))$r.squared
+summary(lm(resp$resp2 ~ pred$pred1))$r.squared
+summary(lm(resp$resp4 ~ pred$pred1))$r.squared
+
+summary(lm(resp$resp1 ~ pred$pred2))$r.squared
+summary(lm(resp$resp2 ~ pred$pred2))$r.squared
+summary(lm(resp$resp3 ~ pred$pred2))$r.squared
+summary(lm(resp$resp4 ~ pred$pred3))$r.squared
+
+#.... and so forth
 ```
 
 This is far from being optimal. Despite the fact that we have to type a lot, we are very prone to introduce errors (can you spot them?) and it is particularly hard to debug. Here, defining a closure can be of great help.
 
 
 ```r
-> ### define closure
-> calcRsq <- function(pred) {
-+ 
-+   function(y) {
-+     summary(lm(y ~ pred))$r.squared
-+   }
-+ 
-+ }
+### define closure
+calcRsq <- function(pred) {
+
+  function(y) {
+    summary(lm(y ~ pred))$r.squared
+  }
+
+}
 ```
 
 We now have a universal way of defining functions to calculate R-squared values
 
 
 ```r
-> ## create function using pred$v1 as predictor
-> calcRsq_pred1 <- calcRsq(pred$pred1)
-> 
-> calcRsq_pred1(resp$resp1)
+## create function using pred$v1 as predictor
+calcRsq_pred1 <- calcRsq(pred$pred1)
+
+calcRsq_pred1(resp$resp1)
 ```
 
 ```
@@ -139,7 +139,7 @@ Using it explicitly like above doesn't really help us much, although we have mad
 
 
 ```r
-> apply(resp, 2, calcRsq_pred1)
+apply(resp, 2, calcRsq_pred1)
 ```
 
 ```
@@ -151,10 +151,10 @@ But why stop here, taking advantage of `sapply()` we can calculate every possibl
 
 
 ```r
-> sapply(seq(ncol(pred)), function(i) {
-+   f <- calcRsq(pred[, i])
-+   apply(resp, 2, f)
-+ })
+sapply(seq(ncol(pred)), function(i) {
+  f <- calcRsq(pred[, i])
+  apply(resp, 2, f)
+})
 ```
 
 ```
@@ -175,7 +175,7 @@ The result is equivalent to what `cor(resp, pred)` produces.
 
 
 ```r
-> cor(resp, pred)^2
+cor(resp, pred)^2
 ```
 
 ```
@@ -190,17 +190,21 @@ So you see that the combination of functionals and closures is a powerful, flexi
 
 
 ```r
-> df1 <- diamonds[, c(1, 5, 6)]
-> df2 <- diamonds[, 7:10]
-> 
-> sapply(seq(ncol(df1)), function(i) {
-+   f <- calcRsq(df1[, i])
-+   apply(df2, 2, f)
-+ })
+df1 <- diamonds[, c(1, 5, 6)]
+df2 <- diamonds[, 7:10]
+
+sapply(seq(ncol(df1)), function(i) {
+  f <- calcRsq(df1[, i])
+  apply(df2, 2, f)
+})
 ```
 
 ```
-Error in model.frame.default(formula = y ~ pred, drop.unused.levels = TRUE): invalid type (list) for variable 'pred'
+           [,1]         [,2]       [,3]
+price 0.8493305 0.0001133672 0.01616303
+x     0.9508088 0.0006395460 0.03815939
+y     0.9057751 0.0008608750 0.03376779
+z     0.9089475 0.0090105434 0.02277947
 ```
 
 This is especially valuable for large calculations that require iterating over a set of objects. A classic scenario for using closures in combination with functionals is to find a 'best' value, i.e. some parameter that optimises a fit or something along those lines.
