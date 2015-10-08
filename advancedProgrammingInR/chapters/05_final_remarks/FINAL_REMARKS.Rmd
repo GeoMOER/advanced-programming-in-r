@@ -21,7 +21,7 @@ In case you want to provide feedback, don't hesitate to contact [Florian Detsch]
 [Tim Appelhans](http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/tim-appelhans/)
 
 
-```{r mapview, echo = FALSE, fig.height = 2.5, fig.width = 9.47, warning = FALSE, message = FALSE}
+```{r mapview, echo = FALSE, eval = FALSE, fig.height = 2.5, fig.width = 9.47, warning = FALSE, message = FALSE}
 library(mapview)
 library(jpeg)
 library(raster)
