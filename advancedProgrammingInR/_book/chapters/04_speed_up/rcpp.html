@@ -8,7 +8,7 @@
         <title>C++ interconnectivity via Rcpp | Advanced Programming in R</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.4.3">
+        <meta name="generator" content="GitBook 2.4.0">
         
         
         <meta name="HandheldFriendly" content="true"/>
@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="4.2" data-basepath="../.." data-revision="Thu Oct 08 2015 18:01:53 GMT+0200 (CEST)">
+    <div class="book" data-level="4.2" data-basepath="../.." data-revision="Thu Oct 08 2015 18:46:48 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -426,7 +426,12 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="c-interconnectivity-via-rcpp">C++ interconnectivity via <strong>Rcpp</strong></h1>
+                        <hr>
+<p>output: 
+  html_document: </p>
+<pre><code>keep_md: yes
+</code></pre><hr>
+<h1 id="c-interconnectivity-via-rcpp">C++ interconnectivity via <strong>Rcpp</strong></h1>
 <h3 id="prerequisites">Prerequisites</h3>
 <p>In order for <strong>Rcpp</strong> to work, we have to make sure your local system is capable 
 of building packages. On Linux-based systems, this shouldn&apos;t be much of a 
@@ -578,7 +583,8 @@ means &lt;- colMeansC(diamonds_sub)
 names(means) &lt;- colnames(diamonds_sub)
 means
 </code></pre>
-<pre><code>numeric(0)
+<pre><code>       carat        depth        table        price            x            y            z 
+   0.7979397   61.7494049   57.4571839 3932.7997219    5.7311572    5.7345260    3.5387338
 </code></pre><pre><code class="lang-r"><span class="hljs-comment">## speed check</span>
 <span class="hljs-keyword">library</span>(microbenchmark)
 
@@ -587,10 +593,13 @@ microbenchmark(
   val_cpp &lt;- colMeansC(diamonds_sub)
 , times = <span class="hljs-number">20L</span>)
 </code></pre>
-<pre><code>Unit: microseconds
-                                      expr     min       lq      mean   median       uq      max neval cld
- val_apply &lt;- apply(diamonds_sub, 2, mean) 926.204 1009.433 1255.8173 1134.557 1295.545 2038.054    20   b
-        val_cpp &lt;- colMeansC(diamonds_sub)  57.909   87.639  112.4895  110.481  141.893  157.704    20  a
+<pre><code>Unit: milliseconds
+                                      expr       min        lq      mean    median        uq       max neval
+ val_apply &lt;- apply(diamonds_sub, 2, mean) 27.227481 28.421131 31.720997 30.851126 34.425244 40.072122    20
+        val_cpp &lt;- colMeansC(diamonds_sub)  4.588115  4.694662  5.282275  4.808042  5.684602  7.487828    20
+ cld
+   b
+  a
 </code></pre><pre><code class="lang-r"><span class="hljs-comment">## similarity check</span>
 identical(val_apply, means)
 </code></pre>
@@ -623,10 +632,10 @@ microbenchmark(
 , times = <span class="hljs-number">20L</span>)
 </code></pre>
 <pre><code>Unit: milliseconds
-          expr        min         lq       mean     median         uq        max neval cld
-  sum(1:1e+06)   1.463940   1.504679   1.794690   1.521631   2.053072   3.193073    20  a 
- sumR(1:1e+06) 426.601966 428.451842 440.876577 433.542421 437.543521 514.100927    20   b
- sumC(1:1e+06)   2.847464   3.173149   7.637797   3.455318   4.675076  79.178257    20  a
+          expr         min          lq        mean      median         uq        max neval cld
+  sum(1:1e+06)    7.160041    7.324482    8.642589    7.787139   10.01439   13.35305    20  a 
+ sumR(1:1e+06) 2561.344833 2615.906606 2767.435500 2654.453214 2695.04399 3981.43035    20   b
+ sumC(1:1e+06)   11.548921   12.167845   14.285591   14.348567   15.49907   18.96642    20  a
 </code></pre><p>As you can see, <code>sumC</code> runs more than 40 times faster than <code>sumR</code> and, at the 
 same time, performs only slightly slower as compared to the highly optimized 
 (vectorized) built-in <code>sum</code> function. You cannot imagine what&apos;s possible with 
@@ -698,10 +707,10 @@ microbenchmark(
   corC(diamonds$carat, diamonds$price) 
 , times = <span class="hljs-number">20L</span>)
 </code></pre>
-<pre><code>Unit: microseconds
-                                 expr     min       lq     mean   median        uq      max neval cld
-  cor(diamonds$carat, diamonds$price) 749.379 776.8545 820.6577 814.0645  861.6235  944.746    20  a 
- corC(diamonds$carat, diamonds$price) 818.033 876.5245 991.9636 958.3925 1114.0550 1285.765    20   b
+<pre><code>Unit: milliseconds
+                                 expr      min       lq     mean   median       uq      max neval cld
+  cor(diamonds$carat, diamonds$price) 4.527283 4.698588 5.276412 4.865921 5.025503 8.909225    20   b
+ corC(diamonds$carat, diamonds$price) 4.096629 4.191466 4.642949 4.397490 4.529463 7.231497    20  a
 </code></pre><p>Note that, again, <code>corC</code> performs only slightly slower than the built-in <code>cor</code> 
 function. Just imagine the speed gain as compared to a possible <code>corR</code> function!</p>
 

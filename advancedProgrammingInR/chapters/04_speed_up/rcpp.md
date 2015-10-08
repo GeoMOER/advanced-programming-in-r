@@ -1,3 +1,8 @@
+---
+output: 
+  html_document: 
+    keep_md: yes
+---
 
 # C++ interconnectivity via **Rcpp**
 
@@ -190,7 +195,8 @@ means
 ```
 
 ```
-numeric(0)
+       carat        depth        table        price            x            y            z 
+   0.7979397   61.7494049   57.4571839 3932.7997219    5.7311572    5.7345260    3.5387338 
 ```
 
 ```r
@@ -204,10 +210,13 @@ microbenchmark(
 ```
 
 ```
-Unit: microseconds
-                                      expr     min       lq      mean   median       uq      max neval cld
- val_apply <- apply(diamonds_sub, 2, mean) 926.204 1009.433 1255.8173 1134.557 1295.545 2038.054    20   b
-        val_cpp <- colMeansC(diamonds_sub)  57.909   87.639  112.4895  110.481  141.893  157.704    20  a 
+Unit: milliseconds
+                                      expr       min        lq      mean    median        uq       max neval
+ val_apply <- apply(diamonds_sub, 2, mean) 27.227481 28.421131 31.720997 30.851126 34.425244 40.072122    20
+        val_cpp <- colMeansC(diamonds_sub)  4.588115  4.694662  5.282275  4.808042  5.684602  7.487828    20
+ cld
+   b
+  a 
 ```
 
 ```r
@@ -253,10 +262,10 @@ microbenchmark(
 
 ```
 Unit: milliseconds
-          expr        min         lq       mean     median         uq        max neval cld
-  sum(1:1e+06)   1.463940   1.504679   1.794690   1.521631   2.053072   3.193073    20  a 
- sumR(1:1e+06) 426.601966 428.451842 440.876577 433.542421 437.543521 514.100927    20   b
- sumC(1:1e+06)   2.847464   3.173149   7.637797   3.455318   4.675076  79.178257    20  a 
+          expr         min          lq        mean      median         uq        max neval cld
+  sum(1:1e+06)    7.160041    7.324482    8.642589    7.787139   10.01439   13.35305    20  a 
+ sumR(1:1e+06) 2561.344833 2615.906606 2767.435500 2654.453214 2695.04399 3981.43035    20   b
+ sumC(1:1e+06)   11.548921   12.167845   14.285591   14.348567   15.49907   18.96642    20  a 
 ```
 
 As you can see, `sumC` runs more than 40 times faster than `sumR` and, at the 
@@ -345,10 +354,10 @@ microbenchmark(
 ```
 
 ```
-Unit: microseconds
-                                 expr     min       lq     mean   median        uq      max neval cld
-  cor(diamonds$carat, diamonds$price) 749.379 776.8545 820.6577 814.0645  861.6235  944.746    20  a 
- corC(diamonds$carat, diamonds$price) 818.033 876.5245 991.9636 958.3925 1114.0550 1285.765    20   b
+Unit: milliseconds
+                                 expr      min       lq     mean   median       uq      max neval cld
+  cor(diamonds$carat, diamonds$price) 4.527283 4.698588 5.276412 4.865921 5.025503 8.909225    20   b
+ corC(diamonds$carat, diamonds$price) 4.096629 4.191466 4.642949 4.397490 4.529463 7.231497    20  a 
 ```
 
 Note that, again, `corC` performs only slightly slower than the built-in `cor` 

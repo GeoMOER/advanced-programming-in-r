@@ -40,7 +40,7 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
   geom_point()
 ```
 
-<img src="figure/gg_scat-1.pdf" title="Figure 1: A basic scatter plot created with ggplot2" alt="Figure 1: A basic scatter plot created with ggplot2" style="display: block; margin: auto;" />
+<img src="figure/gg_scat-1.png" title="Figure 1: A basic scatter plot created with ggplot2" alt="Figure 1: A basic scatter plot created with ggplot2" style="display: block; margin: auto;" />
 
 Let's look at the above code in a little more detail. The first line is the fundamental definition of **what** we want to plot. We provide the 'aesthetics' for the plot (`aes()`) and state that we want the values on the `x`-axis (`y`-axis) to represent 'carat' ('price'). The `data` to take these variables from is the 'diamonds' dataset. That's basically it, and this will not change a hell of a lot in the subsequent plotting routines.
 
@@ -56,7 +56,7 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
               colour = "red", size = 1.5, linetype = "dashed")
 ```
 
-![Figure 2: A scatter plot incl. regression line.](figure/gg_scat_stat-1.pdf) 
+![Figure 2: A scatter plot incl. regression line.](figure/gg_scat_stat-1.png) 
 
 If we wanted to provide a plot showing the relationship between 'price' and 'carat' in panels representing the quality of the diamonds, we need what in **ggplot2** is called facetting (similar to panels in **lattice**). To achive this, we simply repeat our plotting call from earlier and add another layer to the call which does the facetting. Note that this time, confidence intervals are included via `se = TRUE` and `fill`-ed grey.
 
@@ -69,7 +69,7 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
   facet_wrap(~ cut)
 ```
 
-<img src="figure/gg_scat_facet-1.pdf" title="Figure 3: ggplot2 version of a facetted plot" alt="Figure 3: ggplot2 version of a facetted plot" style="display: block; margin: auto;" />
+<img src="figure/gg_scat_facet-1.png" title="Figure 3: ggplot2 version of a facetted plot" alt="Figure 3: ggplot2 version of a facetted plot" style="display: block; margin: auto;" />
 
 One thing that some people dislike about the default settings in **ggplot2** is the grey background of the plots. This grey background is, in our opinion, a good idea when colors are involved as it tends to increase the contrast of the colors. If, however, the plot is a simple black-and-white scatter plot, a white facet background seems more reasonable. We can easily change this using a pre-defined theme called `theme_bw()`. Note that in the following, we also change the axis titles (`labs`) and the number of rows (`nrow`) and columns (`ncol`) into which the facets should be arranged - simple and straightforward.
 
@@ -84,7 +84,7 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
   theme_bw()
 ```
 
-<img src="figure/gg_scat_facet_bw-1.pdf" title="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" alt="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" style="display: block; margin: auto;" />
+<img src="figure/gg_scat_facet_bw-1.png" title="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" alt="Figure 4: a ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" style="display: block; margin: auto;" />
 
 
 ### Box and whisker plots
@@ -102,7 +102,7 @@ p_bw <- p + geom_boxplot()
 print(p_bw)
 ```
 
-<img src="figure/gg_bw-1.pdf" title="Figure 5: a basic ggplot2 bw-plot" alt="Figure 5: a basic ggplot2 bw-plot" style="display: block; margin: auto;" />
+<img src="figure/gg_bw-1.png" title="Figure 5: a basic ggplot2 bw-plot" alt="Figure 5: a basic ggplot2 bw-plot" style="display: block; margin: auto;" />
 
 Note that this time, we stored the basic frame of our plot in a variable `p` and added the desired `geom_boxplot()` layer afterwards. In order to keep a clear structure (and not to get in trouble with Tim), this is possibly the ideal way to create graphics using **ggplot2** - so stick to it! 
 
@@ -119,7 +119,7 @@ p_bw <- p +
 print(p_bw)
 ```
 
-<img src="figure/gg_bw_facet-1.pdf" title="Figure 6: ggplot2 panel bw-plot" alt="Figure 6: ggplot2 panel bw-plot" style="display: block; margin: auto;" />
+<img src="figure/gg_bw_facet-1.png" title="Figure 6: ggplot2 panel bw-plot" alt="Figure 6: ggplot2 panel bw-plot" style="display: block; margin: auto;" />
 
 
 ## Histograms and densityplots
@@ -137,7 +137,7 @@ p_hist <- p + geom_histogram()
 print(p_hist)
 ```
 
-<img src="figure/gg_hist-1.pdf" title="Figure 7: a basic histogram produced with ggplot2" alt="Figure 7: a basic histogram produced with ggplot2" style="display: block; margin: auto;" />
+<img src="figure/gg_hist-1.png" title="Figure 7: a basic histogram produced with ggplot2" alt="Figure 7: a basic histogram produced with ggplot2" style="display: block; margin: auto;" />
 
 When working with **ggplot2** densityplots, it is quite easy to fill the area under the curve which really contributes to the visual representation of the data.
 
@@ -149,7 +149,7 @@ p_dens <- p +  geom_density(fill = "black", alpha = 0.5)
 print(p_dens)
 ```
 
-<img src="figure/gg dens-1.pdf" title="Figure 8: a basic density plot produced with ggplot2" alt="Figure 8: a basic density plot produced with ggplot2" style="display: block; margin: auto;" />
+<img src="figure/gg dens-1.png" title="Figure 8: a basic density plot produced with ggplot2" alt="Figure 8: a basic density plot produced with ggplot2" style="display: block; margin: auto;" />
 
 In addition to `theme_bw` which you already encountered before, there's a lot of different `theme` settings that let you customize your plots at will. For instance, let us slightly rotate the tick labels on the x-axis and move them horizontally a little bit. `element_text` is an essential function to achieve such things as it allows you to modify, amongst others, 
 
@@ -171,4 +171,4 @@ p_dens <- p +
 print(p_dens)
 ```
 
-<img src="figure/gg facet density-1.pdf" title="Figure 9: a ggplot2 panel density plot conditioned according to 2 variables" alt="Figure 9: a ggplot2 panel density plot conditioned according to 2 variables" style="display: block; margin: auto;" />
+<img src="figure/gg facet density-1.png" title="Figure 9: a ggplot2 panel density plot conditioned according to 2 variables" alt="Figure 9: a ggplot2 panel density plot conditioned according to 2 variables" style="display: block; margin: auto;" />

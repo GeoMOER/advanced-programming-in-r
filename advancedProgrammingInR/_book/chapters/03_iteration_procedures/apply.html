@@ -8,7 +8,7 @@
         <title>The *apply family | Advanced Programming in R</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.4.3">
+        <meta name="generator" content="GitBook 2.4.0">
         
         
         <meta name="HandheldFriendly" content="true"/>
@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="3.2" data-basepath="../.." data-revision="Thu Oct 08 2015 18:01:53 GMT+0200 (CEST)">
+    <div class="book" data-level="3.2" data-basepath="../.." data-revision="Thu Oct 08 2015 18:46:48 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -501,7 +501,7 @@ lst
 [[3]]
 function (x, ...) 
 UseMethod(&quot;mean&quot;)
-&lt;bytecode: 0x2bcf9a0&gt;
+&lt;bytecode: 0x90c70d0&gt;
 &lt;environment: namespace:base&gt;
 
 [[4]]
@@ -510,20 +510,20 @@ UseMethod(&quot;mean&quot;)
 [[5]]
 function (x) 
 x + 1
-&lt;environment: 0x6003800&gt;
+&lt;environment: 0x5a75848&gt;
 
 [[6]]
-          col1      col2
-1  -0.12960160 0.3813381
-2  -0.12158784 0.1463563
-3  -1.04420790 0.1480125
-4   0.09727682 0.8895769
-5   0.34136015 0.7378323
-6  -0.41890684 0.1838219
-7   0.90947564 0.5677393
-8  -0.19631434 0.1844053
-9   0.08068094 0.7201653
-10  0.89483168 0.1849746
+         col1      col2
+1   1.4610674 0.4484408
+2   2.1440210 0.5758179
+3   1.3834530 0.4516127
+4   1.0766126 0.2894647
+5  -0.6317903 0.1481946
+6  -0.9259492 0.4262628
+7  -1.2966368 0.5387467
+8   1.3965336 0.4508377
+9   0.6743350 0.6335838
+10  0.4790339 0.2481006
 
 [[7]]
      [,1] [,2] [,3]
@@ -679,7 +679,7 @@ str(my_result_list, <span class="hljs-number">2</span>)
 </code></pre><p>This let&apos;s us now quickly access each of the analyses individually. To view the scatterplot for diamonds of &apos;cut = Premium&apos; we simply navigate down to the respective entry (Note, given that we have set the names for the resulting lists we can now use the common <code>$</code> notation for the navigation):</p>
 <pre><code class="lang-r">my_result_list$Premium$plt
 </code></pre>
-<p><img src="figure/list scatter-1.pdf" alt="plot of chunk list scatter"> </p>
+<p><img src="figure/list scatter-1.png" alt="plot of chunk list scatter"> </p>
 <p>We can, hovever still navigate using <code>[[]]</code>. To get the summary of the linear model for &apos;cut = Ideal&apos;:</p>
 <pre><code class="lang-r">summary(my_result_list[[<span class="hljs-number">5</span>]][[<span class="hljs-number">1</span>]])
 </code></pre>

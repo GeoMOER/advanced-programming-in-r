@@ -140,10 +140,10 @@ microbenchmark({
 
 ```
 Unit: milliseconds
-                                                              expr     min       lq     mean
- {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 38.1463 38.84559 40.47613
-   median      uq      max neval
- 41.01803 41.7228 42.81539    20
+                                                              expr      min       lq     mean
+ {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 225.4069 233.8234 244.4407
+   median       uq     max neval
+ 244.3948 249.3875 274.483    20
 ```
 
 Hm, quite some time. Let's see how long it takes on when using multiple cores. 
@@ -161,10 +161,10 @@ microbenchmark({
 
 ```
 Unit: milliseconds
-                                                                 expr      min       lq    mean
- {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 172.6794 199.6546 247.193
+                                                                 expr      min       lq     mean
+ {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 476.3248 518.9524 893.3077
    median       uq      max neval
- 208.4668 235.7048 900.1181    20
+ 610.9467 712.1403 6291.788    20
 ```
 
 Oops, what's going on now? Obviously, this action doesn't perform faster at all 
@@ -207,6 +207,11 @@ system.time({
 })
 ```
 
+```
+   user  system elapsed 
+178.351   0.232 178.985 
+```
+
 `ctree` performs rather slowly, which is particularly owing to `nresample` that 
 tells the function to perform 1000 internal Monte-Carlo replications. Luckily, 
 we can easily split this operation into 3 parts, i.e. one node takes 'cut' as 
@@ -234,6 +239,11 @@ system.time({
 })
 ```
 
+```
+   user  system elapsed 
+ 27.901   5.668 182.206 
+```
+
 Of course, this is seconds we are talking about. Nonetheless, everyone of you 
 will eventually end up with quite big datasets upon which computationally 
 expensive operations need to be performed in an iterative manner. It might be 
@@ -257,9 +267,9 @@ showConnections()
 ```
   description         class            mode  text     isopen   can read can write
 4 "output"            "textConnection" "wr"  "text"   "opened" "no"     "yes"    
-5 "<-localhost:11672" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-6 "<-localhost:11672" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-7 "<-localhost:11672" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+5 "<-localhost:11687" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+6 "<-localhost:11687" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+7 "<-localhost:11687" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
 ```
 
 There's 3 socket connections (i.e. cores) registered at the moment, just as we 

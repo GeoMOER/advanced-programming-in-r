@@ -164,7 +164,7 @@ For example, let's assume we wanted to separately predict 'cut', 'color' and
 Using `foreach` (or `lapply`), the referring code would roughly look as follows.
 
 
-```{r foreach_ctree, eval = FALSE, message = FALSE, warnings = FALSE}
+```{r foreach_ctree, eval = TRUE, message = FALSE, warnings = FALSE}
 ## load 'party' package
 library(party)
 
@@ -192,7 +192,7 @@ we can easily split this operation into 3 parts, i.e. one node takes 'cut' as
 response variable, another node 'color' and a third node 'carat' - at the same 
 time!
 
-```{r foreach_ctree_par, eval = FALSE, warning = FALSE}
+```{r foreach_ctree_par, eval = TRUE, warning = FALSE}
 system.time({
   
   ## conditional inference trees 

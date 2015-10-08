@@ -8,7 +8,7 @@
         <title>Parallelization | Advanced Programming in R</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.4.3">
+        <meta name="generator" content="GitBook 2.4.0">
         
         
         <meta name="HandheldFriendly" content="true"/>
@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="4.1" data-basepath="../.." data-revision="Thu Oct 08 2015 18:01:53 GMT+0200 (CEST)">
+    <div class="book" data-level="4.1" data-basepath="../.." data-revision="Thu Oct 08 2015 18:46:48 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -529,10 +529,10 @@ microbenchmark({
 }, times = <span class="hljs-number">20L</span>) <span class="hljs-comment"># number of times to evaluate the expression</span>
 </code></pre>
 <pre><code>Unit: milliseconds
-                                                              expr     min       lq     mean
- {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 38.1463 38.84559 40.47613
-   median      uq      max neval
- 41.01803 41.7228 42.81539    20
+                                                              expr      min       lq     mean
+ {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 225.4069 233.8234 244.4407
+   median       uq     max neval
+ 244.3948 249.3875 274.483    20
 </code></pre><p>Hm, quite some time. Let&apos;s see how long it takes on when using multiple cores. 
 The only thing that&apos;s required in order to let this operation run on multiple 
 cores is to replace <code>%do%</code> with <code>%dopar%</code>. In doing so (and distributing the 
@@ -543,10 +543,10 @@ much faster, right?</p>
 }, times = <span class="hljs-number">20L</span>)
 </code></pre>
 <pre><code>Unit: milliseconds
-                                                                 expr      min       lq    mean
- {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 172.6794 199.6546 247.193
+                                                                 expr      min       lq     mean
+ {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 476.3248 518.9524 893.3077
    median       uq      max neval
- 208.4668 235.7048 900.1181    20
+ 610.9467 712.1403 6291.788    20
 </code></pre><p>Oops, what&apos;s going on now? Obviously, this action doesn&apos;t perform faster at all 
 although we told R to run in parallel via <code>%dopar%</code>. In fact, this is a bad 
 example for the parallelized use of <code>foreach</code>. <code>lm</code> is a highly optimized base-R 
@@ -581,7 +581,9 @@ system.time({
   }
 })
 </code></pre>
-<p><code>ctree</code> performs rather slowly, which is particularly owing to <code>nresample</code> that 
+<pre><code>   user  system elapsed 
+178.351   0.232 178.985
+</code></pre><p><code>ctree</code> performs rather slowly, which is particularly owing to <code>nresample</code> that 
 tells the function to perform 1000 internal Monte-Carlo replications. Luckily, 
 we can easily split this operation into 3 parts, i.e. one node takes &apos;cut&apos; as 
 response variable, another node &apos;color&apos; and a third node &apos;carat&apos; - at the same 
@@ -604,7 +606,9 @@ time!</p>
   }
 })
 </code></pre>
-<p>Of course, this is seconds we are talking about. Nonetheless, everyone of you 
+<pre><code>   user  system elapsed 
+ 27.901   5.668 182.206
+</code></pre><p>Of course, this is seconds we are talking about. Nonetheless, everyone of you 
 will eventually end up with quite big datasets upon which computationally 
 expensive operations need to be performed in an iterative manner. It might be 
 hours or even days (trust us, we know what we&apos;re talking about...) that one 
@@ -621,9 +625,9 @@ currently open connections to the R console. </p>
 </code></pre>
 <pre><code>  description         class            mode  text     isopen   can read can write
 4 &quot;output&quot;            &quot;textConnection&quot; &quot;wr&quot;  &quot;text&quot;   &quot;opened&quot; &quot;no&quot;     &quot;yes&quot;    
-5 &quot;&lt;-localhost:11672&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
-6 &quot;&lt;-localhost:11672&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
-7 &quot;&lt;-localhost:11672&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;
+5 &quot;&lt;-localhost:11687&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
+6 &quot;&lt;-localhost:11687&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
+7 &quot;&lt;-localhost:11687&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;
 </code></pre><p>There&apos;s 3 socket connections (i.e. cores) registered at the moment, just as we 
 initially defined via <code>registerDoParallel</code>. In order to close these connections 
 (which we recommend to consider at the end of each parallelized R script), 

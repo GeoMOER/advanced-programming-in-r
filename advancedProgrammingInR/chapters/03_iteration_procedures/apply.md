@@ -116,7 +116,7 @@ lst
 [[3]]
 function (x, ...) 
 UseMethod("mean")
-<bytecode: 0x2bcf9a0>
+<bytecode: 0x90c70d0>
 <environment: namespace:base>
 
 [[4]]
@@ -125,20 +125,20 @@ UseMethod("mean")
 [[5]]
 function (x) 
 x + 1
-<environment: 0x6003800>
+<environment: 0x5a75848>
 
 [[6]]
-          col1      col2
-1  -0.12960160 0.3813381
-2  -0.12158784 0.1463563
-3  -1.04420790 0.1480125
-4   0.09727682 0.8895769
-5   0.34136015 0.7378323
-6  -0.41890684 0.1838219
-7   0.90947564 0.5677393
-8  -0.19631434 0.1844053
-9   0.08068094 0.7201653
-10  0.89483168 0.1849746
+         col1      col2
+1   1.4610674 0.4484408
+2   2.1440210 0.5758179
+3   1.3834530 0.4516127
+4   1.0766126 0.2894647
+5  -0.6317903 0.1481946
+6  -0.9259492 0.4262628
+7  -1.2966368 0.5387467
+8   1.3965336 0.4508377
+9   0.6743350 0.6335838
+10  0.4790339 0.2481006
 
 [[7]]
      [,1] [,2] [,3]
@@ -339,7 +339,7 @@ This let's us now quickly access each of the analyses individually. To view the 
 my_result_list$Premium$plt
 ```
 
-![plot of chunk list scatter](figure/list scatter-1.pdf) 
+![plot of chunk list scatter](figure/list scatter-1.png) 
 
 We can, hovever still navigate using `[[]]`. To get the summary of the linear model for 'cut = Ideal':
 
