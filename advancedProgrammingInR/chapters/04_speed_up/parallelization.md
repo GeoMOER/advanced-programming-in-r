@@ -113,7 +113,7 @@ Remember to `split` the 'diamonds' dataset first and pass the thus created list
 (with each list entry representing a group of uniform cuts) to `foreach`.
 
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
 </center>
 
 
@@ -140,9 +140,9 @@ microbenchmark({
 ```
 Unit: milliseconds
                                                               expr      min       lq     mean
- {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 156.6862 179.3401 208.3742
-   median     uq      max neval
- 194.7486 213.65 441.9002    20
+ {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 38.51691 40.05378 41.44462
+   median       uq      max neval
+ 41.86162 42.33359 44.70795    20
 ```
 
 Hm, quite some time. Let's see how long it takes on when using multiple cores. 
@@ -161,9 +161,9 @@ microbenchmark({
 ```
 Unit: milliseconds
                                                                  expr      min       lq     mean
- {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 454.8072 497.3229 829.2411
+ {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 152.9988 193.2337 240.7809
    median       uq      max neval
- 555.2486 683.9334 5506.991    20
+ 203.4517 219.1267 968.7595    20
 ```
 
 Oops, what's going on now? Obviously, this action doesn't perform faster at all 
@@ -256,9 +256,9 @@ showConnections()
 ```
   description         class            mode  text     isopen   can read can write
 4 "output"            "textConnection" "wr"  "text"   "opened" "no"     "yes"    
-6 "<-localhost:11991" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-7 "<-localhost:11991" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-8 "<-localhost:11991" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+5 "<-localhost:11304" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+6 "<-localhost:11304" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+7 "<-localhost:11304" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
 ```
 
 There's 3 socket connections (i.e. cores) registered at the moment, just as we 

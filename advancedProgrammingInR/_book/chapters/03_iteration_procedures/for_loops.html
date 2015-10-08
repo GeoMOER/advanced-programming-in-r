@@ -8,7 +8,7 @@
         <title>for loops | Advanced Programming in R</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.4.0">
+        <meta name="generator" content="GitBook 2.4.3">
         
         
         <meta name="HandheldFriendly" content="true"/>
@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="3.1" data-basepath="../.." data-revision="Thu Oct 08 2015 11:34:05 GMT+0200 (CEST)">
+    <div class="book" data-level="3.1" data-basepath="../.." data-revision="Thu Oct 08 2015 12:49:20 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -464,21 +464,21 @@
 </code></pre><p>Another way to specify an iteration is via the <code>seq()</code> function which can be used to create a sequence of integers based on the length of an object.</p>
 <pre><code class="lang-r"><span class="hljs-keyword">for</span> (i <span class="hljs-keyword">in</span> seq(names(diamonds))) cat(<span class="hljs-string">&quot;The class of colom&quot;</span>, i, <span class="hljs-string">&quot;is&quot;</span>,  class(diamonds[, i]), <span class="hljs-string">&quot;\n&quot;</span>)
 </code></pre>
-<pre><code>The class of colom 1 is numeric 
-The class of colom 2 is ordered factor 
-The class of colom 3 is ordered factor 
-The class of colom 4 is ordered factor 
-The class of colom 5 is numeric 
-The class of colom 6 is numeric 
-The class of colom 7 is integer 
-The class of colom 8 is numeric 
-The class of colom 9 is numeric 
-The class of colom 10 is numeric
+<pre><code>The class of colom 1 is tbl_df data.frame 
+The class of colom 2 is tbl_df data.frame 
+The class of colom 3 is tbl_df data.frame 
+The class of colom 4 is tbl_df data.frame 
+The class of colom 5 is tbl_df data.frame 
+The class of colom 6 is tbl_df data.frame 
+The class of colom 7 is tbl_df data.frame 
+The class of colom 8 is tbl_df data.frame 
+The class of colom 9 is tbl_df data.frame 
+The class of colom 10 is tbl_df data.frame
 </code></pre><p>Did you spot the spelling mistake in the above example? It is easy to debug this, as we only need to correct the error once, not 10 times.</p>
 <h3 id="task-1-looping-the-mean-meaning-the-loop">Task #1: Looping the mean, meaning the loop</h3>
 <p>Take the above <code>for</code>-loop and modify so that instead of the class it prints out the mean of each column.</p>
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;">
 </center>
 
 

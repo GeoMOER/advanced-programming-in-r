@@ -153,6 +153,8 @@ an index vector of (non-)numeric columns).
 
 ```r
 ## subset with numeric columns only
+library(ggplot2)
+
 num_cols <- sapply(1:ncol(diamonds), function(i) is.numeric(diamonds[, i]))
 diamonds_sub <- as.matrix(diamonds[, num_cols])
 
@@ -193,6 +195,8 @@ numeric(0)
 
 ```r
 ## speed check
+library(microbenchmark)
+
 microbenchmark(
   val_apply <- apply(diamonds_sub, 2, mean), 
   val_cpp <- colMeansC(diamonds_sub)
@@ -201,9 +205,9 @@ microbenchmark(
 
 ```
 Unit: microseconds
-                                      expr      min        lq      mean   median        uq      max neval cld
- val_apply <- apply(diamonds_sub, 2, mean) 3125.044 3288.6240 3545.4526 3443.740 3613.0500 4600.675    20   b
-        val_cpp <- colMeansC(diamonds_sub)  246.763  279.5665  336.1187  310.696  362.5755  660.332    20  a 
+                                      expr     min      lq      mean   median      uq     max neval cld
+ val_apply <- apply(diamonds_sub, 2, mean) 885.387 905.969 916.71515 915.8680 930.172 962.366    20   b
+        val_cpp <- colMeansC(diamonds_sub)  79.765  84.823  97.67675  86.8955 109.558 153.574    20  a 
 ```
 
 ```r
@@ -232,7 +236,7 @@ equivalent to the above `sumC` function and have a look at the time it takes to
 run `sumR(1:1e6)` using `system.time` (or `microbenchmark`). 
 
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
 </center>
 
 
@@ -249,10 +253,10 @@ microbenchmark(
 
 ```
 Unit: milliseconds
-          expr         min          lq       mean      median          uq        max neval cld
-  sum(1:1e+06)    5.233536    5.814915    8.41074    6.994915    9.387691   18.92933    20  a 
- sumR(1:1e+06) 1957.271510 2073.692678 2174.38095 2131.147524 2233.150092 2545.76411    20   b
- sumC(1:1e+06)   10.367949   12.142502   16.81998   15.135575   17.840249   39.13963    20  a 
+          expr        min         lq       mean     median         uq        max neval cld
+  sum(1:1e+06)   1.502401   1.533289   1.887837   1.580846   2.030754   4.100611    20  a 
+ sumR(1:1e+06) 464.297098 467.716764 488.777649 472.627492 511.340087 544.955230    20   b
+ sumC(1:1e+06)   2.825359   3.219330   4.086953   3.629312   4.673801   6.682671    20  a 
 ```
 
 As you can see, `sumC` runs more than 40 times faster than `sumR` and, at the 
@@ -341,10 +345,10 @@ microbenchmark(
 ```
 
 ```
-Unit: milliseconds
-                                 expr      min       lq     mean   median       uq      max neval cld
-  cor(diamonds$carat, diamonds$price) 2.707724 3.146788 4.006327 3.441283 3.852234 10.43654    20  a 
- corC(diamonds$carat, diamonds$price) 4.007191 4.136856 5.258105 4.420609 5.176979 10.13490    20   b
+Unit: microseconds
+                                 expr     min       lq      mean    median        uq      max neval cld
+  cor(diamonds$carat, diamonds$price) 738.992 799.6650  815.1462  816.7775  837.3995  917.196    20  a 
+ corC(diamonds$carat, diamonds$price) 798.693 876.4435 1098.1872 1066.4530 1085.3735 3018.982    20   b
 ```
 
 Note that, again, `corC` performs only slightly slower than the built-in `cor` 

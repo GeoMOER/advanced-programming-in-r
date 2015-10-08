@@ -1,8 +1,7 @@
 
 
 # Advanced Programming in R
-#### by Florian Detsch and Tim Appelhans
-##### (florian.detsch@staff.uni-marburg.de, tim.appelhans@staff.uni-marburg.de)
+#### Course given within the scope of the Marburg Research Academy (MARA) program on October 9, 2015 by Florian Detsch (florian.detsch@staff.uni-marburg.de) and Tim Appelhans (tim.appelhans@staff.uni-marburg.de).
 
 <br>
 The following R tutorial is not for beginners. This might seem odd at first 

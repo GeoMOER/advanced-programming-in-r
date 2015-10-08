@@ -99,7 +99,7 @@ Remember to `split` the 'diamonds' dataset first and pass the thus created list
 (with each list entry representing a group of uniform cuts) to `foreach`.
 
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
 </center>
 
 ```{r lm_foreach, eval = FALSE, echo = FALSE, warnings = FALSE}

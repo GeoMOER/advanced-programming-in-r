@@ -63,7 +63,7 @@ col_means
 Similar to the example above, calculate the standard deviation for each row of diamonds.
 
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
 </center>
 
 

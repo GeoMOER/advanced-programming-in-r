@@ -84,7 +84,7 @@ carat. Try to figure out two different solutions, one <u>with</u> and one
 <u>without</u> using `subset`. 
 
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
 </center>
 
 
@@ -246,7 +246,7 @@ top. Finally, for each set of diamonds with a specified color and price, we want
 their weights arranged in descending order, with the heaviest specimen on top.
 
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
 </center>
 
 
@@ -321,7 +321,7 @@ try to `aggregate` diamonds in such a fashion that you end up with a data frame
 showing the minimum, mean and maximum price per diamond color.
 
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
 </center>
 
 

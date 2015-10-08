@@ -63,16 +63,16 @@ for (i in seq(names(diamonds))) cat("The class of colom", i, "is",  class(diamon
 ```
 
 ```
-The class of colom 1 is numeric 
-The class of colom 2 is ordered factor 
-The class of colom 3 is ordered factor 
-The class of colom 4 is ordered factor 
-The class of colom 5 is numeric 
-The class of colom 6 is numeric 
-The class of colom 7 is integer 
-The class of colom 8 is numeric 
-The class of colom 9 is numeric 
-The class of colom 10 is numeric 
+The class of colom 1 is tbl_df data.frame 
+The class of colom 2 is tbl_df data.frame 
+The class of colom 3 is tbl_df data.frame 
+The class of colom 4 is tbl_df data.frame 
+The class of colom 5 is tbl_df data.frame 
+The class of colom 6 is tbl_df data.frame 
+The class of colom 7 is tbl_df data.frame 
+The class of colom 8 is tbl_df data.frame 
+The class of colom 9 is tbl_df data.frame 
+The class of colom 10 is tbl_df data.frame 
 ```
 
 Did you spot the spelling mistake in the above example? It is easy to debug this, as we only need to correct the error once, not 10 times.
@@ -81,7 +81,7 @@ Did you spot the spelling mistake in the above example? It is easy to debug this
 Take the above `for`-loop and modify so that instead of the class it prints out the mean of each column.
 
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
 </center>
 
 

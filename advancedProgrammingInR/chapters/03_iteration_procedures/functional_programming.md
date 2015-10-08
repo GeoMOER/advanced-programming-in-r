@@ -43,7 +43,7 @@ In R we can easily calculate a pupolations standard deviation around the the mea
 Note, there are far more standard error statistics for which R does not provide standard base functions, such as the [root mean square error RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) or the [absolute error AE](https://en.wikipedia.org/wiki/Approximation_error). Therefore, if you're keen go ahead and practice writing functions to provide these.
 
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
 </center>
 
 -------
@@ -200,11 +200,7 @@ sapply(seq(ncol(df1)), function(i) {
 ```
 
 ```
-           [,1]         [,2]       [,3]
-price 0.8493305 0.0001133672 0.01616303
-x     0.9508088 0.0006395460 0.03815939
-y     0.9057751 0.0008608750 0.03376779
-z     0.9089475 0.0090105434 0.02277947
+Error in model.frame.default(formula = y ~ pred, drop.unused.levels = TRUE): invalid type (list) for variable 'pred'
 ```
 
 This is especially valuable for large calculations that require iterating over a set of objects. A classic scenario for using closures in combination with functionals is to find a 'best' value, i.e. some parameter that optimises a fit or something along those lines.

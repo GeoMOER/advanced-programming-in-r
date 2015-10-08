@@ -25,7 +25,7 @@ used to the basic `git` commands that we're gonna use repeatedly during the
 subsequent lessons. 
 
 <center>
-  <img src="https://pixabay.com/static/uploads/photo/2012/04/14/14/04/hourglass-34048_640.png" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
 </center>
 
 ### Initialize a new online code repository
