@@ -1,4 +1,8 @@
-
+```{r options, echo = FALSE, message = FALSE}
+library(knitr)
+opts_knit$set(base.dir='./', fig.path='', out.format='md')
+opts_chunk$set(fig.align = "center", fig.width = 10, fig.height = 6)
+```
 
 # Advanced Programming in R
 #### by Florian Detsch and Tim Appelhans
@@ -8,27 +12,17 @@
 The following R tutorial is not for beginners. This might seem odd at first 
 since most tutorials tend to start with the very basics of the language, e.g. 
 
-
-```r
+```{r, intro1}
 1 + 1
-```
-
-```
-## [1] 2
 ```
 
 or, when it comes to using variables instead of calculator functionalities,  
 
-
-```r
+```{r, intro2}
 a <- 1
 b <- 1
 
 a + b
-```
-
-```
-## [1] 2
 ```
 
 Well, let's assume you are already familiar with such things. In fact, maybe it 
@@ -48,7 +42,28 @@ least because of the rather awkward MS Excel style that is still widely applied,
 amongst others, in the fields of academic research. Well, decide for yourselves 
 which of the following figures is more appealing for you. 
 
-<img src="figure/figures-1.png" title="plot of chunk figures" alt="plot of chunk figures" style="display: block; margin: auto;" />
+```{r figures, tidy = FALSE, echo = FALSE}
+par(mfrow = c(1, 2))
+
+## base plot
+plot(1:10, 1:10, xlab = "x", ylab = "y", main = "base R")
+
+## same with ggplot2
+library(ggplot2)
+p <- ggplot(aes(x, y), data = data.frame(x = 1:10, y = 1:10)) + 
+  geom_point() + 
+  ggtitle("ggplot\n") + 
+  labs(x = "\nx", y = "y\n") +
+  theme_bw() + 
+  theme(title = element_text(face = "bold", size = 13))
+
+## arrange plots
+library(grid)
+vp1 <- viewport(x = .5, y = .05, width = .5, height = .93, 
+                just = c("left", "bottom"))
+pushViewport(vp1)
+print(p, newpage = FALSE)
+```
 
 It could also be conceivable that you came across a work step that requires 
 massive computational power, and thus takes quite long to perform. R, by default, 
