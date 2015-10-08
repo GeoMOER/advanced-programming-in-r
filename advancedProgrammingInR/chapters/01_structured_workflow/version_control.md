@@ -16,7 +16,7 @@ used to the basic `git` commands that we're gonna use repeatedly during the
 subsequent lessons. 
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
 
 ### Initialize a new online code repository
@@ -45,6 +45,20 @@ functionality to your project. Back in RStudio, open the shell from the 'More'
 drop-down menu in the top-right pane. 
 
 ![add_remote](http://i.imgur.com/AWI8Bpq.png)
+
+#### Task #1.2: Create your own RStudio project
+Before we can push new commits to the newly created online code repository, we 
+have to create a SSH key (if not already present) for the local machine you are 
+currently working on. For this purpose, follow the official GitHub tutorial on 
+[Generating SSH keys](https://help.github.com/articles/generating-ssh-keys/) 
+and, if necessary, create a SSH key locally and add it in your online account 
+settings. 
+
+<center>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
+</center>
+
+
 
 Now, let's see how much you remember from the above Git online tutorial. Try to 
 link your local .git repository to the 'advanced-programming-in-r' online 

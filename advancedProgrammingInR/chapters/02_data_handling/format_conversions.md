@@ -59,7 +59,7 @@ with each row representing a unique ID-variable combination.
 You will notice later on that such a format is much easier to handle when it 
 comes to visualizing grouped variables.
 
-##### Task #5: Melting 'diamonds'
+#### Task #2.2: Melting 'diamonds'
 The 'diamonds' dataset included in **ggplot2** features quite a variety of 
 variables per specimen (see `?diamonds` for further information). For the time 
 being, let's assume we want to convert the dataset from wide into long format, 
@@ -69,5 +69,5 @@ subsequently `melt` the dataset using all factor columns and the newly
 established ID column as `id.vars`.
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>

@@ -77,11 +77,11 @@ The class of colom 10 is tbl_df data.frame
 
 Did you spot the spelling mistake in the above example? It is easy to debug this, as we only need to correct the error once, not 10 times.
 
-### Task #1: Looping the mean, meaning the loop
+#### Task #3.1: Looping the mean, meaning the loop
 Take the above `for`-loop and modify so that instead of the class it prints out the mean of each column.
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
 
 

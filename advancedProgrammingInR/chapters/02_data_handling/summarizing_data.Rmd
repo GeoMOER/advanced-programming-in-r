@@ -63,14 +63,14 @@ included in square brackets, `filter` creates a subset of your data based on
 some user-defined criteria. For the time being, let's have a look at your 
 subsetting abilities.
 
-##### Task #2: base-R subsetting
+#### Task #2.1.1: base-R subsetting
 Suppose we want to create a subset of 'diamonds' keeping all D-, E- or F-colored 
 specimen with a 'Premium' or 'Ideal' cut quality and a weight of more than 3 
 carat. Try to figure out two different solutions, one <u>with</u> and one 
 <u>without</u> using `subset`. 
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
 
 ```{r subset, echo = FALSE, eval = FALSE}
@@ -175,7 +175,7 @@ variables. Although this can be done using base-R, its necessity soon becomes
 clear when dealing with rearrangements based on multiple variables as the **dplyr** 
 approach requires far less typing.
 
-##### Task #3: base-R rearrangement of rows
+#### Task #2.1.2: base-R rearrangement of rows
 Here's a tricky one. Let's assume we wanted to rearrange the rows of a subset of 
 'diamonds' (color, price, carat) according to color, with the best color (D) on 
 top. Since we're also interested in a preferably low price, the diamonds of 
@@ -184,7 +184,7 @@ top. Finally, for each set of diamonds with a specified color and price, we want
 their weights arranged in descending order, with the heaviest specimen on top.
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
 
 ```{r order, echo = FALSE, eval = FALSE}
@@ -219,13 +219,13 @@ a data frame into a single row depending on the supplied function. The function
 works quite similar as base-R `aggregate`. However, the ease of use is definitely 
 on the side of `summarise`. 
 
-##### Task #4: base-R data aggregation
+#### Task #2.1.3: base-R data aggregation
 In order to demonstrate **dplyr**'s ease of use in terms of data summarization, 
 try to `aggregate` diamonds in such a fashion that you end up with a data frame 
 showing the minimum, mean and maximum price per diamond color.
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
 
 ```{r aggregate, echo = FALSE, eval = FALSE}

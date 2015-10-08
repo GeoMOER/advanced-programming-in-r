@@ -66,7 +66,7 @@ For any further information, you are kindly referred to the [official RStudio
 support website on using projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects).
 
 
-### Task #1: Create your own RStudio project
+#### Task #1.1: Create your own RStudio project
 Now it's up to you! You are required to initialize a new (and empty) RStudio 
 project called 'advanced-programming-in-r'. For that purpose, 
 
@@ -83,4 +83,4 @@ control enabled.
 Now that you successfully set up your own personal RStudio project, it's time to 
 move on to the next crucial step towards establishing a consistently structured 
 workflow in R: tracing your tediously developed coding work with 
-[GitHub version control](chapters/01_structured_workflow/version_control.md).
+[GitHub version control](version_control.html).

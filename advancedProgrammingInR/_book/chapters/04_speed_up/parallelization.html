@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="4.1" data-basepath="../.." data-revision="Thu Oct 08 2015 12:49:20 GMT+0200 (CEST)">
+    <div class="book" data-level="4.1" data-basepath="../.." data-revision="Thu Oct 08 2015 18:01:53 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -501,13 +501,14 @@ foreach(i = <span class="hljs-number">1</span>:<span class="hljs-number">4</span
 <pre><code>[1] 1.000000 1.414214 1.732051 2.000000
 </code></pre><p>et voil&#xE0;, we transformed the <code>lapply</code>-style list output of our loop into an 
 <code>sapply</code>-style vector output.  </p>
+<h4 id="task-4-1-apply-lm-to-selected-columns-using-foreach">Task #4.1: apply <code>lm</code> to selected columns (using <code>foreach</code>)</h4>
 <p>Let&apos;s now come back to the &apos;diamonds&apos; dataset. Since you may just take the 
 function body from the previous application with <code>lapply</code>, it&apos;s up to you to 
 calculate the linear model between &apos;carat&apos; and &apos;price&apos; for each group of &apos;cut&apos;. 
 Remember to <code>split</code> the &apos;diamonds&apos; dataset first and pass the thus created list 
 (with each list entry representing a group of uniform cuts) to <code>foreach</code>.</p>
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;">
 </center>
 
 
@@ -528,10 +529,10 @@ microbenchmark({
 }, times = <span class="hljs-number">20L</span>) <span class="hljs-comment"># number of times to evaluate the expression</span>
 </code></pre>
 <pre><code>Unit: milliseconds
-                                                              expr      min       lq     mean
- {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 38.51691 40.05378 41.44462
-   median       uq      max neval
- 41.86162 42.33359 44.70795    20
+                                                              expr     min       lq     mean
+ {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 38.1463 38.84559 40.47613
+   median      uq      max neval
+ 41.01803 41.7228 42.81539    20
 </code></pre><p>Hm, quite some time. Let&apos;s see how long it takes on when using multiple cores. 
 The only thing that&apos;s required in order to let this operation run on multiple 
 cores is to replace <code>%do%</code> with <code>%dopar%</code>. In doing so (and distributing the 
@@ -542,10 +543,10 @@ much faster, right?</p>
 }, times = <span class="hljs-number">20L</span>)
 </code></pre>
 <pre><code>Unit: milliseconds
-                                                                 expr      min       lq     mean
- {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 152.9988 193.2337 240.7809
+                                                                 expr      min       lq    mean
+ {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 172.6794 199.6546 247.193
    median       uq      max neval
- 203.4517 219.1267 968.7595    20
+ 208.4668 235.7048 900.1181    20
 </code></pre><p>Oops, what&apos;s going on now? Obviously, this action doesn&apos;t perform faster at all 
 although we told R to run in parallel via <code>%dopar%</code>. In fact, this is a bad 
 example for the parallelized use of <code>foreach</code>. <code>lm</code> is a highly optimized base-R 
@@ -620,17 +621,22 @@ currently open connections to the R console. </p>
 </code></pre>
 <pre><code>  description         class            mode  text     isopen   can read can write
 4 &quot;output&quot;            &quot;textConnection&quot; &quot;wr&quot;  &quot;text&quot;   &quot;opened&quot; &quot;no&quot;     &quot;yes&quot;    
-5 &quot;&lt;-localhost:11304&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
-6 &quot;&lt;-localhost:11304&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
-7 &quot;&lt;-localhost:11304&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;
+5 &quot;&lt;-localhost:11672&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
+6 &quot;&lt;-localhost:11672&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;    
+7 &quot;&lt;-localhost:11672&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot; &quot;yes&quot;    &quot;yes&quot;
 </code></pre><p>There&apos;s 3 socket connections (i.e. cores) registered at the moment, just as we 
 initially defined via <code>registerDoParallel</code>. In order to close these connections 
 (which we recommend to consider at the end of each parallelized R script), 
 simply perform </p>
-<pre><code class="lang-r">stopImplicitCluster()
+<pre><code class="lang-r">stopCluster(cl)
 </code></pre>
-<p>which explicitly deregisters the implicitly created cluster.</p>
-
+<p>which explicitly deregisters the implicitly created cluster (except for the 
+&apos;textConnection&apos; required to create this very document, of course &#x1F609;).</p>
+<pre><code class="lang-r">showConnections()
+</code></pre>
+<pre><code>  description class            mode text   isopen   can read can write
+4 &quot;output&quot;    &quot;textConnection&quot; &quot;wr&quot; &quot;text&quot; &quot;opened&quot; &quot;no&quot;     &quot;yes&quot;
+</code></pre>
                     
                     </section>
                 

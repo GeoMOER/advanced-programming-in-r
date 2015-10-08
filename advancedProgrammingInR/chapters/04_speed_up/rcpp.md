@@ -205,9 +205,9 @@ microbenchmark(
 
 ```
 Unit: microseconds
-                                      expr     min      lq      mean   median      uq     max neval cld
- val_apply <- apply(diamonds_sub, 2, mean) 885.387 905.969 916.71515 915.8680 930.172 962.366    20   b
-        val_cpp <- colMeansC(diamonds_sub)  79.765  84.823  97.67675  86.8955 109.558 153.574    20  a 
+                                      expr     min       lq      mean   median       uq      max neval cld
+ val_apply <- apply(diamonds_sub, 2, mean) 926.204 1009.433 1255.8173 1134.557 1295.545 2038.054    20   b
+        val_cpp <- colMeansC(diamonds_sub)  57.909   87.639  112.4895  110.481  141.893  157.704    20  a 
 ```
 
 ```r
@@ -230,13 +230,13 @@ into detail, one of the underlying reason is the very efficient memory
 management of the C++ language as compared to the massive overhead that R 
 produces during each intermediary step. But find out for yourselves...
 
-##### Task 1: `sumR` vs. `sumC`
+##### Task 4.2: `sumR` vs. `sumC`
 Write a function `sumR` (do <u>not</u> use the built-in `sum` function) as an 
 equivalent to the above `sumC` function and have a look at the time it takes to 
 run `sumR(1:1e6)` using `system.time` (or `microbenchmark`). 
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
 
 
@@ -254,9 +254,9 @@ microbenchmark(
 ```
 Unit: milliseconds
           expr        min         lq       mean     median         uq        max neval cld
-  sum(1:1e+06)   1.502401   1.533289   1.887837   1.580846   2.030754   4.100611    20  a 
- sumR(1:1e+06) 464.297098 467.716764 488.777649 472.627492 511.340087 544.955230    20   b
- sumC(1:1e+06)   2.825359   3.219330   4.086953   3.629312   4.673801   6.682671    20  a 
+  sum(1:1e+06)   1.463940   1.504679   1.794690   1.521631   2.053072   3.193073    20  a 
+ sumR(1:1e+06) 426.601966 428.451842 440.876577 433.542421 437.543521 514.100927    20   b
+ sumC(1:1e+06)   2.847464   3.173149   7.637797   3.455318   4.675076  79.178257    20  a 
 ```
 
 As you can see, `sumC` runs more than 40 times faster than `sumR` and, at the 
@@ -298,7 +298,7 @@ select 'C++ file' from the top-left dropdown menu and paste the code that we
 initially passed as `code` argument to `cppFunction`. 
 
 <center>
-  <img src="http://i.imgur.com/nKf0QZH.png" alt="new_cpp" style="width: 200px;"/>
+  <img src="http://i.imgur.com/nKf0QZH.png" alt="new_cpp" style="width: 125px;"/>
 </center>
 
 In order to ensure compatibility with **Rcpp** and make the C++ function 
@@ -346,9 +346,9 @@ microbenchmark(
 
 ```
 Unit: microseconds
-                                 expr     min       lq      mean    median        uq      max neval cld
-  cor(diamonds$carat, diamonds$price) 738.992 799.6650  815.1462  816.7775  837.3995  917.196    20  a 
- corC(diamonds$carat, diamonds$price) 798.693 876.4435 1098.1872 1066.4530 1085.3735 3018.982    20   b
+                                 expr     min       lq     mean   median        uq      max neval cld
+  cor(diamonds$carat, diamonds$price) 749.379 776.8545 820.6577 814.0645  861.6235  944.746    20  a 
+ corC(diamonds$carat, diamonds$price) 818.033 876.5245 991.9636 958.3925 1114.0550 1285.765    20   b
 ```
 
 Note that, again, `corC` performs only slightly slower than the built-in `cor` 

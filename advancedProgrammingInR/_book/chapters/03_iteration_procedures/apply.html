@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="3.2" data-basepath="../.." data-revision="Thu Oct 08 2015 12:49:20 GMT+0200 (CEST)">
+    <div class="book" data-level="3.2" data-basepath="../.." data-revision="Thu Oct 08 2015 18:01:53 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -470,10 +470,10 @@ col_means
    0.7979397   61.7494049   57.4571839 3932.7997219    5.7311572 
            y            z 
    5.7345260    3.5387338
-</code></pre><h3 id="task-1-apply-sd-to-rows">Task #1: apply sd to rows</h3>
+</code></pre><h4 id="task-3-2-apply-sd-to-rows">Task #3.2: apply sd to rows</h4>
 <p>Similar to the example above, calculate the standard deviation for each row of diamonds.</p>
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;">
 </center>
 
 
@@ -501,7 +501,7 @@ lst
 [[3]]
 function (x, ...) 
 UseMethod(&quot;mean&quot;)
-&lt;bytecode: 0x57212e0&gt;
+&lt;bytecode: 0x2bcf9a0&gt;
 &lt;environment: namespace:base&gt;
 
 [[4]]
@@ -510,20 +510,20 @@ UseMethod(&quot;mean&quot;)
 [[5]]
 function (x) 
 x + 1
-&lt;environment: 0x7df1a88&gt;
+&lt;environment: 0x6003800&gt;
 
 [[6]]
-          col1        col2
-1   0.60939243 0.533240392
-2   0.28052350 0.237634755
-3  -0.09097633 0.612735608
-4  -0.34024824 0.265967837
-5   0.41368188 0.909379946
-6   1.28767087 0.008246187
-7  -1.23939406 0.124271389
-8   1.53822663 0.840215962
-9   1.14938910 0.340993766
-10  1.66040370 0.632133404
+          col1      col2
+1  -0.12960160 0.3813381
+2  -0.12158784 0.1463563
+3  -1.04420790 0.1480125
+4   0.09727682 0.8895769
+5   0.34136015 0.7378323
+6  -0.41890684 0.1838219
+7   0.90947564 0.5677393
+8  -0.19631434 0.1844053
+9   0.08068094 0.7201653
+10  0.89483168 0.1849746
 
 [[7]]
      [,1] [,2] [,3]
@@ -679,7 +679,7 @@ str(my_result_list, <span class="hljs-number">2</span>)
 </code></pre><p>This let&apos;s us now quickly access each of the analyses individually. To view the scatterplot for diamonds of &apos;cut = Premium&apos; we simply navigate down to the respective entry (Note, given that we have set the names for the resulting lists we can now use the common <code>$</code> notation for the navigation):</p>
 <pre><code class="lang-r">my_result_list$Premium$plt
 </code></pre>
-<p><img src="figure/list scatter-1.png" alt="plot of chunk list scatter"> </p>
+<p><img src="figure/list scatter-1.pdf" alt="plot of chunk list scatter"> </p>
 <p>We can, hovever still navigate using <code>[[]]</code>. To get the summary of the linear model for &apos;cut = Ideal&apos;:</p>
 <pre><code class="lang-r">summary(my_result_list[[<span class="hljs-number">5</span>]][[<span class="hljs-number">1</span>]])
 </code></pre>

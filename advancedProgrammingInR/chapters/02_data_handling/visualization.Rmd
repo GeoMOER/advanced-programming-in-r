@@ -1,4 +1,5 @@
 ```{r knitsetup, echo=FALSE, results='hide', warning=FALSE, message=FALSE, cache=FALSE}
+library(knitr)
 opts_knit$set(base.dir='./', fig.path='', out.format='md')
 opts_chunk$set(comment='', results='markup')
 # See yihui.name/knitr/options for more Knitr options.
@@ -89,7 +90,6 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
 
 
 ### Box and whisker plots
-
 Box and whisker plots drawn with **ggplot2** look quite nice and, in contrast to **lattice**, do not require the user to exhaustively modify graphical parameter settings in order to get an acceptable result. But see for yourselves (using the default settings).
 
 ```{r gg_bw, tidy = FALSE, fig.cap = fn("a basic ggplot2 bw-plot"), fig.align = 'center'}

@@ -22,8 +22,8 @@ shall be produced.
 This section will introduce you to two fundamental pillars of a structured 
 workflow in R, i.e. 
 
-* [**RStudio projects**](chapters/01_structured_workflow/projects.md) and
-* [**GitHub version control**](chapters/01_structured_workflow/version_control.md).
+* [**RStudio projects**](projects.html) and
+* [**GitHub version control**](version_control.html).
 
 While the former is meant to separate the single projects you are working on 
 and, at the same time, keep your stuff together in unique project-related 

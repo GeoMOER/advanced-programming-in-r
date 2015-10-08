@@ -106,6 +106,7 @@ foreach(i = 1:4, .combine = "c") %do% sqrt(i)
 et voilà, we transformed the `lapply`-style list output of our loop into an 
 `sapply`-style vector output.  
 
+#### Task #4.1: apply `lm` to selected columns (using `foreach`)
 Let's now come back to the 'diamonds' dataset. Since you may just take the 
 function body from the previous application with `lapply`, it's up to you to 
 calculate the linear model between 'carat' and 'price' for each group of 'cut'. 
@@ -113,7 +114,7 @@ Remember to `split` the 'diamonds' dataset first and pass the thus created list
 (with each list entry representing a group of uniform cuts) to `foreach`.
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
 
 
@@ -139,10 +140,10 @@ microbenchmark({
 
 ```
 Unit: milliseconds
-                                                              expr      min       lq     mean
- {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 38.51691 40.05378 41.44462
-   median       uq      max neval
- 41.86162 42.33359 44.70795    20
+                                                              expr     min       lq     mean
+ {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) } 38.1463 38.84559 40.47613
+   median      uq      max neval
+ 41.01803 41.7228 42.81539    20
 ```
 
 Hm, quite some time. Let's see how long it takes on when using multiple cores. 
@@ -160,10 +161,10 @@ microbenchmark({
 
 ```
 Unit: milliseconds
-                                                                 expr      min       lq     mean
- {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 152.9988 193.2337 240.7809
+                                                                 expr      min       lq    mean
+ {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) } 172.6794 199.6546 247.193
    median       uq      max neval
- 203.4517 219.1267 968.7595    20
+ 208.4668 235.7048 900.1181    20
 ```
 
 Oops, what's going on now? Obviously, this action doesn't perform faster at all 
@@ -256,9 +257,9 @@ showConnections()
 ```
   description         class            mode  text     isopen   can read can write
 4 "output"            "textConnection" "wr"  "text"   "opened" "no"     "yes"    
-5 "<-localhost:11304" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-6 "<-localhost:11304" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
-7 "<-localhost:11304" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+5 "<-localhost:11672" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+6 "<-localhost:11672" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
+7 "<-localhost:11672" "sockconn"       "a+b" "binary" "opened" "yes"    "yes"    
 ```
 
 There's 3 socket connections (i.e. cores) registered at the moment, just as we 
@@ -268,7 +269,18 @@ simply perform
 
 
 ```r
-stopImplicitCluster()
+stopCluster(cl)
 ```
 
-which explicitly deregisters the implicitly created cluster.
+which explicitly deregisters the implicitly created cluster (except for the 
+'textConnection' required to create this very document, of course &#128521;).
+
+
+```r
+showConnections()
+```
+
+```
+  description class            mode text   isopen   can read can write
+4 "output"    "textConnection" "wr" "text" "opened" "no"     "yes"    
+```

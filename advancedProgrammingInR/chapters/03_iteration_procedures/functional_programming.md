@@ -37,13 +37,13 @@ Creating custom functions always follows the same procedure:
 
 Now it is time for you to try this yourselves.
 
-### Task #1: write your own
+#### Task #3.3: write your own
 In R we can easily calculate a pupolations standard deviation around the the mean using `sd()` but there is no default implementation for the [standard error of the mean](https://en.wikipedia.org/wiki/Standard_error). Therefore, it is up to you to write one now. 
 
 Note, there are far more standard error statistics for which R does not provide standard base functions, such as the [root mean square error RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) or the [absolute error AE](https://en.wikipedia.org/wiki/Approximation_error). Therefore, if you're keen go ahead and practice writing functions to provide these.
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
 
 -------

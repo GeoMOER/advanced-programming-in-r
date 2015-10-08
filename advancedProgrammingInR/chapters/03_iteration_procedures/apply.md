@@ -75,11 +75,11 @@ col_means
 ```
 
 
-### Task #1: apply sd to rows
+#### Task #3.2: apply sd to rows
 Similar to the example above, calculate the standard deviation for each row of diamonds.
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
 
 
@@ -116,7 +116,7 @@ lst
 [[3]]
 function (x, ...) 
 UseMethod("mean")
-<bytecode: 0x57212e0>
+<bytecode: 0x2bcf9a0>
 <environment: namespace:base>
 
 [[4]]
@@ -125,20 +125,20 @@ UseMethod("mean")
 [[5]]
 function (x) 
 x + 1
-<environment: 0x7df1a88>
+<environment: 0x6003800>
 
 [[6]]
-          col1        col2
-1   0.60939243 0.533240392
-2   0.28052350 0.237634755
-3  -0.09097633 0.612735608
-4  -0.34024824 0.265967837
-5   0.41368188 0.909379946
-6   1.28767087 0.008246187
-7  -1.23939406 0.124271389
-8   1.53822663 0.840215962
-9   1.14938910 0.340993766
-10  1.66040370 0.632133404
+          col1      col2
+1  -0.12960160 0.3813381
+2  -0.12158784 0.1463563
+3  -1.04420790 0.1480125
+4   0.09727682 0.8895769
+5   0.34136015 0.7378323
+6  -0.41890684 0.1838219
+7   0.90947564 0.5677393
+8  -0.19631434 0.1844053
+9   0.08068094 0.7201653
+10  0.89483168 0.1849746
 
 [[7]]
      [,1] [,2] [,3]
@@ -339,7 +339,7 @@ This let's us now quickly access each of the analyses individually. To view the 
 my_result_list$Premium$plt
 ```
 
-![plot of chunk list scatter](figure/list scatter-1.png) 
+![plot of chunk list scatter](figure/list scatter-1.pdf) 
 
 We can, hovever still navigate using `[[]]`. To get the summary of the linear model for 'cut = Ideal':
 

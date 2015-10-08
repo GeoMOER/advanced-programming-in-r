@@ -92,6 +92,7 @@ foreach(i = 1:4, .combine = "c") %do% sqrt(i)
 et voilà, we transformed the `lapply`-style list output of our loop into an 
 `sapply`-style vector output.  
 
+#### Task #4.1: apply `lm` to selected columns (using `foreach`)
 Let's now come back to the 'diamonds' dataset. Since you may just take the 
 function body from the previous application with `lapply`, it's up to you to 
 calculate the linear model between 'carat' and 'price' for each group of 'cut'. 
@@ -99,7 +100,7 @@ Remember to `split` the 'diamonds' dataset first and pass the thus created list
 (with each list entry representing a group of uniform cuts) to `foreach`.
 
 <center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 200px;"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
 
 ```{r lm_foreach, eval = FALSE, echo = FALSE, warnings = FALSE}
@@ -236,7 +237,12 @@ initially defined via `registerDoParallel`. In order to close these connections
 simply perform 
 
 ```{r close_conn}
-stopImplicitCluster()
+stopCluster(cl)
 ```
 
-which explicitly deregisters the implicitly created cluster.
+which explicitly deregisters the implicitly created cluster (except for the 
+'textConnection' required to create this very document, of course &#128521;).
+
+```{r show_conn2}
+showConnections()
+```
