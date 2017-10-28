@@ -1,0 +1,530 @@
+# Data handling and visualization
+
+As noted earlier in this guide, an R workflow basically consists of performing 
+calculations and/or visualizing your data which has previously been imported into 
+R. In the majority of cases, this workflow usually includes an intermediary step 
+referred to as data manipulation meant to get your data into shape for 
+visualization. Note that some packages even require you to provide the data to 
+be displayed in a particular format (of which more later on).  
+
+Within the scope of this short course, we'll simply assume that you already 
+heard a lot about importing your data into R. Even if this were not the case, 
+there's plenty of tutorials on the internet demonstrating the use of `read.table` 
+and the like. Help on this topic may be found e.g. on 
+[Quick-R](http://www.statmethods.net/input/importingdata.html), 
+[CRAN](https://cran.r-project.org/doc/manuals/r-release/R-data.html), 
+[R-Tutor](http://www.r-tutor.com/r-introduction/data-frame/data-import) and so 
+forth. Just remember, Google is your friend &#9786;
+
+<hr>
+
+<b>Data manipulation</b>
+
+A hodgepodge of typical data manipulation steps including illustrative examples 
+is given at [Cookbook for R](http://www.cookbook-r.com/Manipulating_data/) and 
+includes, amongst others,
+
+* _General operations_
+    * Sorting
+    * Converting between vector types
+    * Dealing with duplicate records and missing values
+* _Factor operations_
+    * Renaming and re-computing factor levels
+    * Reordering factor levels (which comes in quite handy when it comes to plotting)
+* _Data frame operations_
+    * Adding and removing columns
+    * Reordering columns
+    * Merging data frames
+* _Restructuring data_
+    * Data format conversions
+    * Summarizing data
+
+Assuming that you're already familiar with the basics of data manipulation, we'll 
+primarily focus on the latter point which represents an essential step towards 
+conveying your results clearly and vividly to a broader audience. 
+
+<hr>
+
+<b>The `diamonds` dataset</b>
+
+In the following, I'll demonstrate the essentials of data restructuring in R on 
+the basis of the `diamonds` dataset included in **ggplot2**. In case you're not 
+already familiar with the dataset, just take a minute to have a brief look at 
+what it's all about. Also, feel free to try out `?diamonds` in order to get a 
+more detailed description of the single variables.
+
+Now, `diamonds` is not a standard R `data.frame`, but first and foremost an object of class `tbl_df`.
+
+```{r tbl_df1, message = FALSE}
+library(ggplot2)
+
+class(diamonds)
+```
+
+One good thing about such objects in R is that their `print()` method largely renders ritual-like `head()`, `tail()` or `str()` calls unnecessary. 
+
+```{r tbl_df2}
+diamonds
+```
+
+Notice that not only the class and the dimensions of the dataset are displayed, 
+but also the variable types of the single columns. Furthermore, the console 
+output is truncated after the first 10 rows (which would also apply to the 
+displayed columns if we were dealing with a somewhat wider dataset). Practically, 
+this means that the appropriate use of `tbl_df` lets you kill two birds with one 
+stone compared with the 2-step approach via `head` and `str` that is usually required for investigating standard data frames. 
+
+
+## Summarizing data
+
+The **dplyr** package is a marvelous and very intuitive set of tools to perform 
+fast and easy data manipulation and summarization in preparation e.g. for 
+visualization. In the following, we'll guide you through a selection of 
+operations you may find helpful within the course of future R workflows on the 
+basis of the 'diamonds' dataset. Based on a very comprehensive 
+[RPubs tutorial](https://rpubs.com/justmarkham/dplyr-tutorial), these include
+
+* `filter`, 
+* `select`, 
+* `arrange`, 
+* `mutate` and 
+* `summarise` (incl. `group_by`) 
+
+each of which will be accompanied by an equivalent base-R approach.
+
+<hr>
+
+<b>Subsetting data via `filter`</b>
+
+Just like base-R `subset` or simply indexing via conditional expressions 
+included in square brackets, `filter` creates a subset of your data based on 
+some user-defined criteria. For the time being, let's have a look at your 
+subsetting abilities.
+
+<hr>
+
+<b>Task: base-R subsetting</b>
+
+Suppose we want to create a subset of 'diamonds' keeping all D-, E- or F-colored 
+specimen with a 'Premium' or 'Ideal' cut quality and a weight of more than 3 
+carat. Try to figure out two different solutions, one <u>with</u> and one 
+<u>without</u> using `subset`. 
+
+<center>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
+</center>
+
+```{r subset, echo = FALSE, eval = FALSE}
+subset(diamonds, carat > 3 & 
+         (cut == "Premium" | cut == "Ideal") & 
+         (color == "D" | color == "E" | color == "F"))
+
+subset(diamonds, carat > 3 &
+         cut %in% c("Premium", "Ideal") &
+         color %in% c("D", "E", "F"))
+
+diamonds[diamonds$carat > 3 & 
+           diamonds$cut %in% c("Premium", "Ideal") &
+           diamonds$color %in% c("D", "E", "F"), ]
+```
+
+Using `filter` is straightforward and very similar to `subset`. The first 
+argument represents the data frame, whereas any subsequent argument represents a 
+logical expression to filter particular rows. Note that in contrast to the 
+direct subsetting via square brackets, you are not required to repeat the name 
+of the data frame with every single condition.
+
+```{r filter}
+library(dplyr)
+
+filter(diamonds, carat > 3 &
+         cut %in% c("Premium", "Ideal") &
+         color %in% c("D", "E", "F"))
+```
+
+<hr>
+
+<b>Selecting columns via `select`</b>
+
+Selecting specific columns from a data frame follows a similar syntax to 
+`filter` and works analogous to SQL standards. Again, the first argument 
+represents the data frame under consideration followed by the desired column 
+names (without double quotes). 
+
+```{r select}
+dplyr::select(diamonds, carat, cut, color, clarity)
+```
+
+Note that both the use of `c` to combine the single column names into a vector 
+as well as the need for double quotes became obsolete. In addition to this, 
+column names may be treated analogous to numeric indices, eliminating the need 
+to count columns when desiring to extract several consecutive columns from a 
+rather wide datasets. 
+
+```{r select2}
+dplyr::select(diamonds, carat:clarity, price)
+```
+
+There's also a set of additional helper functions, including `starts_with`, 
+`ends_with`, `matches` and `contains`, which definitely go beyond the scope of 
+this short introduction. Still, it's good to know that such things existed in 
+case you needed any of them.
+
+<hr>
+
+<b>A brief note on chaining (or pipelining)</b>
+
+Now suppose we wanted to select the same columns from the previously created 
+subset of data. Traditionally, this would either require a 2-step approach, 
+generating otherwise unnecessary intermediate results, via 
+
+```{r filter_select, eval = FALSE}
+## first, create subset
+diamonds_sub <- filter(diamonds, carat > 3 &
+                         cut %in% c("Premium", "Ideal") &
+                         color %in% c("D", "E", "F"))
+
+## second, select columns
+select(diamonds_sub, carat:clarity, price)
+```
+
+or nested function calls which are usually hard to read.
+
+```{r filter_select2, eval = FALSE}
+## all-in-one nested solution
+select(
+  filter(diamonds, carat > 3 &
+           cut %in% c("Premium", "Ideal") &
+           color %in% c("D", "E", "F")), 
+  carat:clarity, price
+)
+```
+
+**dplyr** introduces the `%>%` operator which is meant to bridge a set of 
+connected processing steps, thus eliminating the need for intermediary 
+variables ('diamonds_sub') or nested functions. Just think of `%>%` as a "then" 
+connecting two parts of a sentence.
+
+```{r pipelining}
+diamonds %>%
+  filter(carat > 3 &
+           cut %in% c("Premium", "Ideal") &
+           color %in% c("D", "E", "F")) %>%
+  dplyr::select(carat:clarity, price)
+```
+
+Note that chaining comes in handy when performing multiple operations at once, 
+rendering your code much more elegant and reducing the accumulated overhead 
+significantly. The single worksteps can be read from left to right and from top 
+to bottom, just like you would read the pages of a book. 
+
+<hr>
+
+<b>Reordering data frames via `arrange`</b>
+
+`arrange` ensures a fast and easy rearrangement of rows based on certain 
+variables. Although this can be done using base-R, its necessity soon becomes 
+clear when dealing with rearrangements based on multiple variables as the **dplyr** 
+approach requires far less typing.
+
+<hr>
+
+<b>Task: base-R rearrangement of rows</b>
+
+Here's a tricky one. Let's assume we wanted to rearrange the rows of a subset of 
+'diamonds' (color, price, carat) according to color, with the best color (D) on 
+top. Since we're also interested in a preferably low price, the diamonds of 
+uniform color should be sorted according to their price, with cheapest ones on 
+top. Finally, for each set of diamonds with a specified color and price, we want 
+their weights arranged in descending order, with the heaviest specimen on top.
+
+<center>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
+</center>
+
+```{r order, echo = FALSE, eval = FALSE}
+diamonds_sub <- diamonds[, c("color", "price", "carat")]
+diamonds_carat <- diamonds_sub[order(diamonds_sub$carat, decreasing = TRUE), ]
+diamonds_carat[order(diamonds_carat$color, diamonds_carat$price), ]
+```
+
+Again, the **dplyr** approach is much simpler and can be done in one go. 
+
+```{r arrange}
+diamonds %>%
+  dplyr::select(color, price, carat) %>%
+  arrange(color, price, desc(carat))
+```
+
+<hr>
+
+<b>Add new columns via `mutate`</b>
+
+`mutate` lets you add new variables to an existing data frame. It is basically 
+an extended version of base-R `transform` in the sense that it allows you to 
+directly work with columns you've just created. 
+
+```{r mutate}
+diamonds %>%
+  dplyr::select(color, carat, price) %>%
+  mutate(ppc = price / carat, 
+         ppc_rnd = round(ppc, 2))
+```
+
+<hr>
+
+<b>Summarise values via `summarise`</b>
+
+Similar to `plyr::summarise`, the **dplyr** version of `summarise` lets you melt 
+a data frame into a single row depending on the supplied function. The function 
+works quite similar as base-R `aggregate`. However, the ease of use is definitely 
+on the side of `summarise`. 
+
+<hr>
+
+<b>Task: base-R data aggregation</b>
+
+In order to demonstrate **dplyr**'s ease of use in terms of data summarization, 
+try to `aggregate` diamonds in such a fashion that you end up with a data frame 
+showing the minimum, mean and maximum price per diamond color.
+
+<center>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
+</center>
+
+```{r aggregate, echo = FALSE, eval = FALSE}
+aggregate(diamonds$price, by = list(diamonds$color), FUN = function(x) {
+  c(MIN = min(x), MEAN = mean(x), MAX = max(x))
+})
+```
+
+As for the **dplyr** solution, the `group_by` function comes in handy when 
+trying to calculate metrics from sub-groups of data, e.g. depending on the 
+diamonds' color, rather than from the entire data frame.
+
+```{r group_by}
+diamonds %>% 
+  group_by(color) %>%
+  summarise(MIN = min(price), MEAN = mean(price), MAX = max(price))
+```
+
+In order to summarize an entire variable into one single value, just drop the 
+`group_by` function. 
+
+```{r summarise}
+summarise(diamonds, min = min(price), mean = mean(price), max = max(price))
+```
+
+Now that you're familiar with the basics of data manipulation via **dplyr** and 
+before moving on to actual data visualization via **ggplot2**, it's time to have 
+a brief look at data format conversion from wide to long format which is essential 
+for displaying numerous groups of data in one single plot.
+
+
+## Data format conversions
+
+Usually, your data is arranged in matrix format with rows and columns 
+representing observations and variables, respectively. This is the common case 
+not only for R, but also for many other statistical software packages, including 
+Excel and SPSS. 
+However, certain R packages, including visualization via **ggplot2**, are easier to handle when using a long data format rather than a wide one, thus requiring a "rearrangement of the form, but not the content, of the data" [@Wickham2007] according to so-called 
+identifier (or ID) and measured variables. Here's a simple example taken from 
+[Cookbook for R](http://www.cookbook-r.com/Manipulating_data/Converting_data_between_wide_and_long_format/) 
+to illustrate this point. Let's start off with the wide format:
+
+```{r wide_format}
+olddata_wide <- read.table(header = TRUE, text = '
+ subject sex control cond1 cond2
+       1   M     7.9  12.3  10.7
+       2   F     6.3  10.6  11.1
+       3   F     9.5  13.1  13.8
+       4   M    11.5  13.4  12.9
+')
+```
+
+Notice the strict structure of the `data.frame` with observations of subjects 
+1-4 (two males and two females) arranged in rows and measured variables ('control', 
+'cond1', 'cond2') in columns? Now, let's see what the long version of the 
+dataset would look like:
+
+```{r long_format}
+library(reshape2)
+melt(olddata_wide, id.vars = c("subject", "sex"))
+```
+
+What just happened? `melt` (or, more precisely, `melt.data.frame`) from the 
+**reshape2** package was cast upon the dataset, forcing an increase in `nrow` to 
+the expense of `ncol`. Columns 'subject' and 'sex' were thereby specified as 
+ID variables, which prevented them from being split apart. The remaining variables, 
+on the other side, now got arranged among each other rather than next to each other, 
+with each row representing a unique ID-variable combination. 
+You will notice later on that such a format is much easier to handle when it 
+comes to visualizing grouped variables.
+
+<hr>
+
+<b>Task: Melting `diamonds`</b>
+
+The 'diamonds' dataset included in **ggplot2** features quite a variety of 
+variables per specimen (see `?diamonds` for further information). For the time 
+being, let's assume we want to convert the dataset from wide into long format, 
+thus resulting in a significant reduction of columns. Since no 'true' ID column 
+is included so far, create a new column 'ID' from `rownames(diamonds)` and 
+subsequently `melt` the dataset using all factor columns and the newly 
+established ID column as `id.vars`.
+
+<center>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
+</center>
+
+
+## Visualizing data using **ggplot2**
+
+Now that you've grown familiar with the basics of data manipulation using 
+**dplyr** and **reshape2**, the next logical step in our workflow is to 
+visualize the data that we've exhaustively prepared. Be aware that there are 
+plenty of marvellous graphics packages available in R depending on which tasks 
+you'd like to perform. Within the scope of our short course, **ggplot2** will do 
+just fine not least because it is closely linked to the previously performed 
+manipulation tasks (maybe because of the same author). 
+
+```{r package}
+## load 'ggplot2' package
+library(ggplot2)
+```
+
+In **ggplot2**, every plot we want to draw consists of subsequent calls on how 
+to represent the individual plot components (basically `x` and `y`). This means 
+a much more consistent way of *building* visualizations as compared, for 
+instance, to the much more conventional style of **lattice**, but 
+it also means that things are rather different from what you might have learned 
+about syntax and structure of (plotting) objects in R so far.
+
+Note also that the brief examples shown below are mainly taken from another MARA course 
+about [Creating publication quality graphs using R](https://oer.uni-marburg.de/data/mriliasmooc/lm_data/lm_1901/index.html). 
+Feel free to browse the text tutorial or the accompanying [course slides](http://moc.environmentalinformatics-marburg.de/doku.php?id=courses:sp:pqgr) 
+in case you're not entirely satisfied with the rather shallow introduction given 
+here or if you wish to learn more about **lattice**-style figures. 
+
+<hr>
+
+<b>Scatter plots</b>
+
+Scatter plots are produced by invoking `geom_points()`. If we wanted to plot 
+variables 'price' and 'carat' from the 'diamonds' dataset against each other, 
+the `ggplot` call would be as follows.
+
+```{r gg-scat, tidy = FALSE, fig.cap = "A basic scatter plot created with ggplot2", fig.align = 'center'}
+ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point()
+```
+
+Let's look at the above code in a little more detail. The first line is the fundamental definition of **what** we want to plot. We provide the 'aesthetics' for the plot (`aes()`) and state that we want the values on the `x`-axis (`y`-axis) to represent 'carat' ('price'). The `data` to take these variables from is the 'diamonds' dataset. That's basically it, and this will not change a hell of a lot in the subsequent plotting routines.
+
+What will change in the code chunks that follow is **how** we want the relationship between these variables to be represented in our plot. This is done by defining so-called geometries (`geom_...()`). In this first case we stated that we want the relationship between `x` and `y` to be rpresented as points, hence we used `geom_point()`.
+
+For the sake of practicing, let's add another layer to our plot. In order to provide the regression line, for instance, we need a function called `stat_smooth()`. Note that we also specify the smoothing `method` and the line `colour`, `size` and `linetype`. `se = FALSE` tells the function not to display confidence intervals for the moment. See `?stat_smooth` for a more detailed overview of costumization possibilities.
+
+```{r gg-scat-stat, tidy = FALSE, fig.cap = "A scatter plot incl. regression line.", fig.aline = 'center'}
+ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point() +
+  stat_smooth(method = "lm", se = FALSE, 
+              colour = "red", size = 1.5, linetype = "dashed")
+```
+
+If we wanted to provide a plot showing the relationship between 'price' and 'carat' in panels representing the quality of the diamonds, we need what in **ggplot2** is called facetting (similar to panels in **lattice**). To achive this, we simply repeat our plotting call from earlier and add another layer to the call which does the facetting. Note that this time, confidence intervals are included via `se = TRUE` and `fill`-ed grey.
+
+```{r gg-scat-facet, tidy = FALSE, fig.cap = "ggplot2 version of a facetted plot", fig.align = 'center'}
+ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point() +
+  stat_smooth(method = "lm", se = TRUE, 
+              colour = "red", fill = "grey35") + 
+  facet_wrap(~ cut)
+```
+
+One thing that some people dislike about the default settings in **ggplot2** is the grey background of the plots. This grey background is, in our opinion, a good idea when colors are involved as it tends to increase the contrast of the colors. If, however, the plot is a simple black-and-white scatter plot, a white facet background seems more reasonable. We can easily change this using a pre-defined theme called `theme_bw()`. Note that in the following, we also change the axis titles (`labs`) and the number of rows (`nrow`) and columns (`ncol`) into which the facets should be arranged - simple and straightforward.
+
+```{r gg-scat-facet_bw, tidy = FALSE, fig.cap = "A ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel", fig.align = 'center'}
+ggplot(aes(x = carat, y = price), data = diamonds) + 
+  geom_point(colour = "grey65") +
+  stat_smooth(method = "lm", se = TRUE, 
+              colour = "black", fill = "grey35") +
+  facet_wrap(~ cut, nrow = 2, ncol = 3) +
+  labs(x = "Carat", y = "Price ($)") +
+  theme_bw()
+```
+
+<hr>
+
+<b>Box and whisker plots</b>
+
+Box and whisker plots drawn with **ggplot2** look quite nice and, in contrast to **lattice**, do not require the user to exhaustively modify graphical parameter settings in order to get an acceptable result. But see for yourselves (using the default settings).
+
+```{r gg-bw, tidy = FALSE, fig.cap = "A basic ggplot2 bw-plot", fig.align = 'center'}
+## basic frame
+p <- ggplot(aes(x = color, y = price), data = diamonds)
+
+## add boxplot
+p_bw <- p + geom_boxplot()
+
+## print
+print(p_bw)
+```
+
+Note that this time, we stored the basic frame of our plot in a variable `p` and added the desired `geom_boxplot()` layer afterwards. In order to keep a clear structure (and not to get in trouble with Tim), this is possibly the ideal way to create graphics using **ggplot2** - so stick to it! 
+
+As we've already seen, the facetting is also just one more line of code.
+
+```{r gg-bw-facet, tidy = FALSE, fig.cap = "ggplot2 panel bw-plot", fig.align = 'center'}
+## add faceted boxplots
+p_bw <- p + 
+  geom_boxplot(fill = "grey90") +
+  facet_wrap(~ cut) +
+  theme_bw()
+
+print(p_bw)
+```
+
+<hr>
+
+<b>Histograms and density plots</b>
+
+Much like with the box and whisker plot, **ggplot2** produces quite nice histograms and density plots when using the default settings.
+
+```{r gg-hist, tidy = FALSE, fig.cap = "A basic histogram produced with ggplot2", fig.align = 'center', message=FALSE}
+## new basic frame
+p <- ggplot(aes(x = price), data = diamonds)
+
+## add histogram
+p_hist <- p + geom_histogram()
+
+print(p_hist)
+```
+
+When working with **ggplot2** densityplots, it is quite easy to fill the area under the curve which really contributes to the visual representation of the data.
+
+```{r gg-dens, tidy = FALSE, fig.cap = "A basic density plot produced with ggplot2", fig.align = 'center'}
+## add densityplot
+p_dens <- p +  geom_density(fill = "black", alpha = 0.5)
+
+print(p_dens)
+```
+
+In addition to `theme_bw` which you already encountered before, there's a lot of different `theme` settings that let you customize your plots at will. For instance, let us slightly rotate the tick labels on the x-axis and move them horizontally a little bit. `element_text` is an essential function to achieve such things as it allows you to modify, amongst others, 
+
+* font `family` and `face` (e.g. 'bold'),
+* text `colour` and `size`,
+* horizontal (`hjust`) and vertical (`vjust`) justification as well as 
+* `angle` of the tick labels. 
+
+(In case you prefer American English, `element_text` also understands `color` instead of `colour` &#9786;)
+
+```{r gg-facet-density, tidy = FALSE, fig.cap = "A ggplot2 panel density plot conditioned according to 2 variables", fig.align = 'center'}
+p_dens <- p +
+  geom_density(fill = "black", alpha = 0.5) +
+  facet_grid(color ~ cut) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(p_dens)
+```

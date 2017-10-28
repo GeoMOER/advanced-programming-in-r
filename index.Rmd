@@ -1,0 +1,96 @@
+---
+title: "Advanced Programming in R"
+author: "<b>Florian Detsch</b>"
+date: "`r paste('Last modified:', Sys.Date())`"
+site: bookdown::bookdown_site
+output: 
+  bookdown::gitbook:
+    split_by: section
+documentclass: book
+bibliography: references.bib
+biblio-style: apalike
+link-citations: yes
+github-repo: marburg-open-courseware/publication-quality-graphics
+---
+
+
+# Preface {-}
+
+<br>
+The following R tutorial is not for beginners. This might seem odd at first 
+since most tutorials tend to start with the very basics of the language, e.g. 
+
+
+```r
+1 + 1
+```
+
+```
+## [1] 2
+```
+
+or, when it comes to using variables instead of calculator functionalities,  
+
+
+```r
+a <- 1
+b <- 1
+
+a + b
+```
+
+```
+## [1] 2
+```
+
+Well, let's assume you are already familiar with such things. In fact, maybe it 
+is because of the overwhelming number of R tutorials on the web that 
+this particular tutorial starts a little later, after the first excitement has 
+settled and one has grown familiar with the syntax and the basic commands.
+
+That is all very well, but soon you will notice that you could use a little more 
+of the stuff you heard R was capable of. There is, for instance, the saying that 
+using `for` loops in R is not quite convenient - as opposed to other programming 
+languages, including C++! So how is that, and what should I use as an 
+alternative?
+
+The same possibly applies for base **graphics**. Sure thing, everyone of us has been 
+excited at some stage about the professional default style of R's artworks, not 
+least because of the rather awkward MS Excel style that is still widely applied, 
+among others, in the fields of academic research. Well, decide for yourselves 
+which of the following figures is more appealing for you. 
+
+<img src="figure/figures-1.png" title="plot of chunk figures" alt="plot of chunk figures" style="display: block; margin: auto;" />
+
+It could also be conceivable that you came across a work step that requires 
+massive computational power, and thus takes quite long to perform. R, by default, 
+uses only one core on your machine, which could likely be the reason for the 
+slow performance of your code. If you haven't heard, you can actually tell R to 
+use multiple cores to reasonably split up slow peaces of code and make certain 
+operations perform much fast. Today, most machines come with at least 4 internal 
+cores which makes it easy to do such stuff.
+
+You see, there's plenty of applications that definitely go beyond the scope of a 
+base-R programmer's skills. In case you've felt a continuously rising interest 
+while reading this short introduction, you might want to browse the following 
+chapters of this tutorial on 'Advanced Programming in R' and see for yourselves.
+
+<hr>
+
+Some technical remarks before starting out: 
+
+This tutorial is published under the creative commons license ['Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)'](http://creativecommons.org/licenses/by-sa/3.0/).
+
+![](http://i.creativecommons.org/l/by-sa/3.0/88x31.png)
+
+It has constantly evolved over the years and has lately become an annual course in the [event calendar](https://www.uni-marburg.de/mara/veranstaltungen/workshops/2017/programm_lnw/advanced-programming-in-r?language_sync=1) of the [MArburg University Research Academy (MARA)](https://www.uni-marburg.de/mara). Of course, comments, feedback, suggestions and bug reports are always welcome and should be directed to [florian.detsch{at}staff.uni-marburg.de](mailto:florian.detsch@staff.uni-marburg.de).
+
+Please note that we adhere to the format conventions introduced by @Xie2016 in his [introductory book](https://bookdown.org/yihui/bookdown/) about the R <b>bookdown</b> package. Accordingly, we do not add prompts (`>` and `+`) to the R source code presented herein, and text output is commented out with two hashes (`##`) by default, for example: 
+
+```{r format}
+cat("Hello world.\n")
+```
+
+This is meant to facilitate copying and running the code, while the text output will be automatically ignored since it is commented out. Package names are in bold text (e.g., **grid**), and inline code and file names are formatted in a typewriter font (e.g., `grid::upViewport(0)`). Function names are followed by parentheses (e.g., `grid::viewport()`). The double-colon operator `::` means accessing a function from a particular package.
+
+Enough talking now, let's dive into the coding work!

@@ -1,0 +1,204 @@
+# Towards a structured workflow
+
+<b>What is it actually?</b>
+
+Briefly put, the meaning of 'workflow' in a general sense may be summarized as 
+
+<blockquote>
+"[...] an abstraction of an automated and computerized business 
+process. It consists of a set of activities that are interconnected by control 
+flows [...]. Each activity is a naturally defined task in a workflow and has 
+associated servers that are either humans or executions of programs commonly 
+called processes [...]." [@Son2001]
+</blockquote>
+
+Accordingly, from an R perspective, the term typically describes a set of 
+interconnected scripts and functions, which sequentially perform individual 
+tasks to generate a desired result. In the majority of cases, such workflows
+rely on certain input data based on which some statistical metrics or figures
+shall be produced.
+
+<hr>
+
+<b>What's the use of it?</b>
+
+This section will introduce you to two fundamental pillars of a structured 
+workflow in R, i.e. 
+
+* [_RStudio projects_](projects.html) and
+* [_GitHub version control_](version_control.html).
+
+While the former is meant to separate the single projects you are working on 
+and, at the same time, keep your stuff together in unique project-related 
+working directories, the latter helps you to keep track of your single R code 
+snippets and, more precisely, the changes you (or somebody else) made over time.
+
+
+## RStudio projects
+
+RStudio projects (`.Rproj`) are a handy solution to keep all the files related to 
+a specific workflow, including
+
+* _R scripts_ (`.R`),
+* _workspace_ files (`.RData`),
+* _history_ files (`.Rhistory`), 
+* required _datasets_, 
+* etc., 
+
+together in one working directory. RStudio projects, once opened, are 
+automatically associated with the directory the .Rproj file is located in, thus 
+rendering unnecessary the use of `setwd()`.
+
+<hr>
+
+<b>Starting a new project</b>
+
+From inside RStudio, projects are easily initialized and associated with either
+
+* a brand new working directory, 
+* an existing directory or
+* a local copy of a version control repository (of which more later on)
+
+by hitting the 'New Project...' button from the drop-down menu at the top-right 
+corner.
+
+![new_project](http://i.imgur.com/0eeFQmB.png)
+
+<hr>
+
+<b>Working with projects</b>
+
+Once created, RStudio automatically switches to the new project (not without 
+asking if you'd like to safe your latest changes, of course). If you desire to 
+work with an already existing project instead, you may simply open the referring 
+.Rproj file either via the drop-down menu in the top-right corner, or just 
+double-click it within your system's file explorer. Note that, amongst others, 
+the following actions are taken when a project opens inside RStudio (taken 
+directly from 
+https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects):
+
+* a new R session is started;
+* the `.Rprofile` file in the project's main directory (if any) is sourced;
+* the `.RData` file in the project's main directory is loaded (if indicated by the 
+project options);
+* the `.Rhistory` file in the project's main directory is loaded into the RStudio 
+'History' pane and available for Console Up/Down arrow command history;
+* previously edited source documents are restored into editor tabs.
+
+Similarly, when you quit a project, 
+
+* the related `.RData` and `.Rhistory` files are being saved (if indicated by the 
+project options); 
+* the currently active R scripts are being saved;
+* the current R session is terminated.
+
+For any further information, you are kindly referred to the [official RStudio 
+support website on using projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects).
+
+<hr>
+
+<b>Task: Create your own RStudio project</b>
+
+Now it's up to you! You are required to initialize a new (and empty) RStudio 
+project called 'advanced-programming-in-r'. For that purpose, 
+
+* choose a new directory rather than an existing one (don't worry, we'll take 
+care of version control later) and 
+
+![new_directory](http://i.imgur.com/B6UC3Xh.png?1)
+
+* initialize an empty project (pop-up dialog not shown) with GitHub version 
+control enabled.
+
+![add_version_control](http://i.imgur.com/fTjwmmi.png)
+
+Now that you successfully set up your own personal RStudio project, it's time to 
+move on to the next crucial step towards establishing a consistently structured 
+workflow in R: tracing your tediously developed coding work with 
+[GitHub version control](version_control.html).
+
+
+## GitHub version control
+
+<b>What is it actually?</b>
+
+GitHub is an online version control system which hosts and provides access 
+(including a web-based graphical interface) to [Git](https://git-scm.com/) 
+repositories. Briefly, the software enables multiple users to work on a single 
+(code) project, or workflow, without the need to share a common network. 
+Following the principles of distributed revision control, each change to a file 
+or folder is recorded, thus making any edit you've made comprehensible for other 
+developers - and also making it easy to undo changes if something went terribly 
+wrong! A short browser tutorial to get started with the program is e.g. 
+available from [Try Git](https://try.github.io/levels/1/challenges/1). At this 
+point, we would like to invite you to take this roughly ten-minute tour to get 
+used to the basic `git` commands that we're gonna use repeatedly during the 
+subsequent lessons. 
+
+<center>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
+</center>
+
+<hr>
+
+<b>Initialize a new online code repository</b>
+Let's get back to our own personal R business now. In order to add version 
+control to your newly established RStudio project, you are required to create a 
+user account at [GitHub](https://github.com/). This involves the specification 
+of a username, an e-mail address and a password only and goes without giving 
+away personal data. 
+
+Once your account has been created and you've successfully logged in, select 
+'New repository' from the 'Create new...' (plus sign) drop-down menu in the 
+top-right corner to create a new GitHub code repository. 
+
+![new_repository](http://i.imgur.com/N4ni6RY.png)
+
+Now, enter 'advanced-programming-in-r' as repository name and, optionally, 
+provide a short description of the data it contains (or, more precisely, the 
+data that it is supposed to contain in the future). Finally, hit the 'Create 
+repository' button to complete the setup process.
+
+![new_repository_ii](http://i.imgur.com/K9D6NQr.png)
+
+<hr>
+
+<b>Establishing the link</b>
+
+So far, that's all the web browser-based work required to add GitHub 
+functionality to your project. Back in RStudio, open the shell from the 'More' 
+drop-down menu in the top-right pane. 
+
+![add_remote](http://i.imgur.com/AWI8Bpq.png)
+
+<hr> 
+
+<b>Task: Create a local SSH key</b>
+
+Before we can push new commits to the newly created online code repository, we 
+have to create a SSH key (if not already present) for the local machine you are 
+currently working on. For this purpose, follow the official GitHub tutorial on 
+[Generating SSH keys](https://help.github.com/articles/generating-ssh-keys/) 
+and, if necessary, create a SSH key locally and add it in your online account 
+settings. 
+
+<center>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
+</center>
+
+```{r echo = FALSE, eval = FALSE}
+git remote add origin git@github.com:<username>/demo_app.git
+git push origin master
+```
+
+Now, let's see how much you remember from the above Git online tutorial. Try to 
+link your local .git repository to the 'advanced-programming-in-r' online 
+repository you've created during the previous step! After having accomplished 
+this, `git add` all the stuff that has accumulated in the local project 
+directory so far followed by `git commit` (including a meaningful description of your recent 
+actions) and, finally, `git push`. 
+
+Have a look at the web-based representation 
+of your code repository to see if everything worked out fine. Don't forget that 
+you may use `git status` at any stage to get further information on the status 
+quo of the Git processing chain. There's also a [comprehensive tutorial on version control with Git (and SVN) on the RStudio support website](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN) if you wish to gather further insights into the topic.
