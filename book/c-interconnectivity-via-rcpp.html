@@ -275,11 +275,11 @@ means</code></pre></div>
 , <span class="dt">times =</span> 20L)</code></pre></div>
 <pre><code>## Unit: milliseconds
 ##                                       expr      min       lq     mean
-##  val_apply &lt;- apply(diamonds_sub, 2, mean) 5.488217 7.557794 9.068818
-##         val_cpp &lt;- colMeansC(diamonds_sub) 1.198803 1.306572 1.377884
-##    median       uq       max neval cld
-##  7.887054 8.438626 34.079246    20   b
-##  1.360354 1.426452  1.615921    20  a</code></pre>
+##  val_apply &lt;- apply(diamonds_sub, 2, mean) 5.142534 5.187900 5.385949
+##         val_cpp &lt;- colMeansC(diamonds_sub) 1.158980 1.170475 1.242834
+##    median       uq      max neval cld
+##  5.339393 5.476106 6.158233    20   b
+##  1.248274 1.308215 1.320326    20  a</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## similarity check
 <span class="kw">identical</span>(val_apply, means)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
@@ -300,10 +300,10 @@ means</code></pre></div>
   <span class="kw">sumC</span>(<span class="dv">1</span><span class="op">:</span><span class="fl">1e4</span>)  <span class="co"># rcpp version</span>
 , <span class="dt">times =</span> 100L)</code></pre></div>
 <pre><code>## Unit: microseconds
-##           expr     min      lq      mean   median      uq      max neval
-##   sum(1:10000)  12.317  13.138  14.55042  13.9590  14.370   31.202   100
-##  sumR(1:10000) 557.526 559.989 667.95113 560.8105 577.232 5711.145   100
-##  sumC(1:10000)  26.276  28.944  32.58578  30.3810  32.434  112.491   100
+##           expr     min       lq      mean  median      uq      max neval
+##   sum(1:10000)  13.138  14.3700  15.60138  14.781  15.602   30.792   100
+##  sumR(1:10000) 557.936 560.4000 675.62845 562.247 580.106 6391.835   100
+##  sumC(1:10000)  29.560  32.8445  34.59753  34.076  35.308   51.319   100
 ##  cld
 ##   a 
 ##    b
@@ -366,12 +366,12 @@ means</code></pre></div>
   <span class="kw">corC</span>(diamonds<span class="op">$</span>carat, diamonds<span class="op">$</span>price) 
 , <span class="dt">times =</span> 20L)</code></pre></div>
 <pre><code>## Unit: microseconds
-##                                  expr     min       lq     mean    median
-##   cor(diamonds$carat, diamonds$price) 769.780 777.3750 856.5082  849.6315
-##  corC(diamonds$carat, diamonds$price) 685.617 791.3335 974.2330 1007.6930
+##                                  expr     min       lq     mean   median
+##   cor(diamonds$carat, diamonds$price) 776.349 795.2335 889.1878 852.5055
+##  corC(diamonds$carat, diamonds$price) 720.924 787.0230 837.4791 809.8080
 ##        uq      max neval cld
-##   920.451 1078.923    20  a 
-##  1104.376 1285.428    20   b</code></pre>
+##  918.8085 1271.881    20   a
+##  851.8895 1225.078    20   a</code></pre>
 <p>Wow, <code>corC()</code> performs even faster than the built-in and highly optimized <code>cor()</code> function – at least on my machine. Just imagine the speed gain as compared to a self-written <code>corR()</code> function!</p>
 
 </div>

@@ -210,8 +210,8 @@ ls_diamonds &lt;-<span class="st"> </span><span class="kw">split</span>(diamonds
 <pre><code>## Unit: milliseconds
 ##                                                               expr
 ##  {     foreach(i = ls_diamonds) %do% lm(carat ~ price, data = i) }
-##       min       lq     mean   median       uq     max neval
-##  60.99195 68.66388 81.50131 73.23226 79.23222 223.412    20</code></pre>
+##       min       lq    mean   median       uq      max neval
+##  57.30358 58.29157 59.1779 58.94188 60.13144 62.36893    20</code></pre>
 <p>Hm, quite some time. Let’s see how long it takes on when using multiple cores. The only thing that’s required in order to let this operation run on multiple cores is to replace <code>%do%</code> with <code>%dopar%</code>. In doing so (and distributing the iterative <code>lm()</code> calculation to multiple cores), the operation should perform much faster, right?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>({
   <span class="kw">foreach</span>(<span class="dt">i =</span> ls_diamonds) <span class="op">%dopar%</span><span class="st"> </span><span class="kw">lm</span>(carat <span class="op">~</span><span class="st"> </span>price, <span class="dt">data =</span> i)
@@ -219,8 +219,8 @@ ls_diamonds &lt;-<span class="st"> </span><span class="kw">split</span>(diamonds
 <pre><code>## Unit: milliseconds
 ##                                                                  expr
 ##  {     foreach(i = ls_diamonds) %dopar% lm(carat ~ price, data = i) }
-##       min       lq    mean  median       uq      max neval
-##  113.8177 118.7909 309.533 126.402 185.2848 3373.016    20</code></pre>
+##       min      lq     mean   median       uq      max neval
+##  95.02029 98.5116 252.5694 104.7193 144.6324 2749.455    20</code></pre>
 <p>Oops, what’s going on now? Obviously, this action doesn’t perform faster at all although we told R to run in parallel. In fact, this is a bad example for the parallelized use of <code>foreach()</code>. <code>lm()</code> is a highly optimized base-R function that performs quite fast without the need to go parallel.</p>
 <blockquote>
 <p>“With [such] small tasks, the overhead of scheduling the task and returning the result can be greater than the time to execute the task itself, resulting in poor performance.” <span class="citation">(Weston and Calaway <a href="#ref-Weston2014">2014</a>)</span></p>
@@ -246,13 +246,13 @@ ls_diamonds &lt;-<span class="st"> </span><span class="kw">split</span>(diamonds
   }
 })</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   36.13    0.05   36.19</code></pre>
+##   34.79    0.00   34.81</code></pre>
 <p><code>ctree()</code> from <strong>party</strong> performs rather slowly which is particularly owing to the <code>nresample</code> argument that tells the function to perform 1000 internal Monte-Carlo replications. Luckily, we can easily split this operation into 3 parts, i.e. one node takes ‘cut’ as response variable, another node ‘color’, and a third node ‘carat’ – at the same time!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>({
   
   ## conditional inference trees 
   ls_ct &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i =</span> <span class="kw">c</span>(<span class="st">&quot;cut&quot;</span>, <span class="st">&quot;color&quot;</span>, <span class="st">&quot;carat&quot;</span>), 
-                   <span class="dt">.packages =</span> <span class="kw">c</span>(<span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;party&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{
+                   <span class="dt">.packages =</span> <span class="st">&quot;party&quot;</span>) <span class="op">%dopar%</span><span class="st"> </span>{
   
     <span class="co"># formula</span>
     frml &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="kw">paste</span>(i, <span class="st">&quot;.&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot; ~ &quot;</span>))
@@ -266,27 +266,41 @@ ls_diamonds &lt;-<span class="st"> </span><span class="kw">split</span>(diamonds
   }
 })</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    6.48    2.58   42.73</code></pre>
+##   1.416   0.296  16.357</code></pre>
 <p>Of course, this is seconds we are talking about. Nonetheless, everyone of you will eventually end up with quite big datasets upon which computationally expensive operations need to be performed in an iterative manner. It might be hours or even days (trust me on this…) that one single operation takes to perform – and here, the <code>%dopar%</code> might come in quite handy.</p>
 <p><br><b>Closing a parallel backend</b></p>
 <p>One final remark on the proper use of parallel backends in R. When working on multiple cores, you can easily lose track of how many parallel backends, if any, you registered during your current session, especially when some error prevents your script from finishing. If you should ever find yourself in such a situation, do not hesitate to use <code>showConnections()</code> to print information on currently open connections to the R console.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">showConnections</span>()</code></pre></div>
-<pre><code>##   description               class            mode  text     isopen  
-## 4 &quot;output&quot;                  &quot;textConnection&quot; &quot;wr&quot;  &quot;text&quot;   &quot;opened&quot;
-## 5 &quot;&lt;-DESKTOP-989003N:11816&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
-## 6 &quot;&lt;-DESKTOP-989003N:11816&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
-## 7 &quot;&lt;-DESKTOP-989003N:11816&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
-##   can read can write
-## 4 &quot;no&quot;     &quot;yes&quot;    
-## 5 &quot;yes&quot;    &quot;yes&quot;    
-## 6 &quot;yes&quot;    &quot;yes&quot;    
-## 7 &quot;yes&quot;    &quot;yes&quot;</code></pre>
+<pre><code>##    description               class            mode  text     isopen  
+## 3  &quot;&lt;-DESKTOP-989003N:11679&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
+## 4  &quot;&lt;-DESKTOP-989003N:11679&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
+## 5  &quot;&lt;-DESKTOP-989003N:11679&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
+## 7  &quot;output&quot;                  &quot;textConnection&quot; &quot;wr&quot;  &quot;text&quot;   &quot;opened&quot;
+## 8  &quot;&lt;-DESKTOP-989003N:11679&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
+## 9  &quot;&lt;-DESKTOP-989003N:11679&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
+## 10 &quot;&lt;-DESKTOP-989003N:11679&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
+##    can read can write
+## 3  &quot;yes&quot;    &quot;yes&quot;    
+## 4  &quot;yes&quot;    &quot;yes&quot;    
+## 5  &quot;yes&quot;    &quot;yes&quot;    
+## 7  &quot;no&quot;     &quot;yes&quot;    
+## 8  &quot;yes&quot;    &quot;yes&quot;    
+## 9  &quot;yes&quot;    &quot;yes&quot;    
+## 10 &quot;yes&quot;    &quot;yes&quot;</code></pre>
 <p>There’s 3 socket connections (i.e. cores) registered at the moment, just as we initially defined via <code>registerDoParallel</code>. In order to close these connections (which we recommend to explicitly do at the end of each parallelized R script), simply perform</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopCluster</span>(cl)</code></pre></div>
 <p>which closes the implicitly created cluster (except for the ‘textConnection’ required to create this very <strong>bookdown</strong> document, of course 😉).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">showConnections</span>()</code></pre></div>
-<pre><code>##   description class            mode text   isopen   can read can write
-## 4 &quot;output&quot;    &quot;textConnection&quot; &quot;wr&quot; &quot;text&quot; &quot;opened&quot; &quot;no&quot;     &quot;yes&quot;</code></pre>
+<pre><code>##   description               class            mode  text     isopen  
+## 3 &quot;&lt;-DESKTOP-989003N:11679&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
+## 4 &quot;&lt;-DESKTOP-989003N:11679&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
+## 5 &quot;&lt;-DESKTOP-989003N:11679&quot; &quot;sockconn&quot;       &quot;a+b&quot; &quot;binary&quot; &quot;opened&quot;
+## 7 &quot;output&quot;                  &quot;textConnection&quot; &quot;wr&quot;  &quot;text&quot;   &quot;opened&quot;
+##   can read can write
+## 3 &quot;yes&quot;    &quot;yes&quot;    
+## 4 &quot;yes&quot;    &quot;yes&quot;    
+## 5 &quot;yes&quot;    &quot;yes&quot;    
+## 7 &quot;no&quot;     &quot;yes&quot;</code></pre>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">

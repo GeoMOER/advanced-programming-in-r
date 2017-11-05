@@ -169,19 +169,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </center>
 <p><br></p>
 <p>Using <code>filter()</code> is straightforward and very similar to <code>subset()</code>. The first argument represents the dataset under investigation, whereas any subsequent argument represents a logical expression to filter particular rows. Note that in contrast to the direct subsetting via square brackets, you are not required to repeat the name of the dataset with every single condition.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)</code></pre></div>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:raster&#39;:
-## 
-##     intersect, select, union</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(diamonds, carat <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span> <span class="op">&amp;</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+
+<span class="kw">filter</span>(diamonds, carat <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span> <span class="op">&amp;</span>
 <span class="st">         </span>cut <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Premium&quot;</span>, <span class="st">&quot;Ideal&quot;</span>) <span class="op">&amp;</span>
 <span class="st">         </span>color <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;D&quot;</span>, <span class="st">&quot;E&quot;</span>, <span class="st">&quot;F&quot;</span>))</code></pre></div>
 <pre><code>## # A tibble: 2 x 10
