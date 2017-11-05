@@ -8,9 +8,7 @@ operations. But first things first... here's the topics (and the related
 packages) that we're gonna cover in the upcoming section on speeding up 
 iteration procedures in R.
 
-<hr>
-
-<b>Parallelization via `doParallel` (and `foreach`)</b>
+<br><b>Parallelization via `doParallel` (and `foreach`)</b>
 
 Just a bit of theory ahead.
 
@@ -26,21 +24,21 @@ processing is at least <i>N</i>." [@Denning1990]
 Or, to cut a long story short, if you're performing one and the same iteration 
 again and again, you may as well distribute an equal amount of sub-iterations to 
 each processor available on your local machine. In theory, distributing an 
-operation to <i>N</i> nodes would result in a 10-fold speed gain. 
+operation to <i>N</i> nodes would result in a _n_-fold speed gain. 
 
+<br>
 <center>
   <img src="https://i2.wp.com/gforge.se/wp-content/uploads/2015/02/Horse_power_smudge_9000.jpg" alt="horses" style="width: 500px;"/>
 </center>
+<br>
 
-Enough theory - let's proceed to actual practice. We'll have a brief look at R's 
+In this scope, we'll have a brief look at R's 
 capabilities in terms of parallel processing using the **doParallel** package 
 along with **foreach** (an other package to deal with loop constructs). Be 
 aware, however, that there are plenty of opportunities to ["go parallel" in R](http://www.r-bloggers.com/how-to-go-parallel-in-r-basics-tips/) which you 
 might want to have a look at.
 
-<hr>
-
-<b>"Cross-lingual" programming via `Rcpp`</b>
+<br><b>"Cross-lingual" programming via `Rcpp`</b>
 
 The **Rcpp** package offers a seamless integration of C++ functionality in R. 
 The underlying reason why such a thing exists in the first place is rather easy 
@@ -50,13 +48,14 @@ of what is possibly when combining those two languages. In fact, our short
 excursion on the topic is merely meant to raise awareness of such things 
 slumbering in the depth of the R universe. In case you'd like to learn more 
 about the subject, we recommend to have a closer look at Hadley Wickham's 
-comprehensive [Rcpp tutorial on Advanced R](http://adv-r.had.co.nz/Rcpp.html) or, 
-if you're a fan of hard copies, Dirk Eddelbuettel's book about "Seamless R and 
-C++ Integration with Rcpp". 
+comprehensive introduction to [High performance functions with **Rcpp**](http://adv-r.had.co.nz/Rcpp.html) [@Wickham2014] or, if you're a fan of hard copies, Dirk Eddelbuettel's book about "Seamless R and 
+C++ Integration with Rcpp" [@Eddelbuettel2013]. 
 
+<br>
 <center>
-  <img src="http://www.rcpp.org/book/seamless.png" alt="rcpp" style="width: 300px;"/>
+  <img src="http://www.rcpp.org/book/seamless.png" alt="rcpp" style="width: 250px;"/>
 </center>
+<br>
 
 
 ## Parallelization
@@ -66,22 +65,20 @@ that allow you to distribute particular processing steps to multiple cores on
 your local machine. Out of those, we decided to focus on **doParallel** (in 
 conjunction with **foreach**) as it represents a straightforward solution that 
 does not require the user to manually export objects from the global environment 
-to the single nodes (e.g. required by `par*apply` along with **parallel**).
+to the single nodes (e.g. required by `par*apply` from **parallel**).
 
-<hr>
-
-<b>Getting started</b>
+<br><b>Getting started</b>
 
 Let's start straight away with detecting the number of cores available on your 
-machine via `detectCores`. In the end, there's no use in trying to split a 
+machine using `parallel::detectCores()`. In the end, there's no use in trying to split a 
 certain task into 5 parts when there are only 4 horses available, is it? &#128521; 
 
 ```{r ncores, message=FALSE, warnings = FALSE}
-## load 'doParallel' package
 library(doParallel)
 
-## no. of local cores
-detectCores()
+## detect number of cores
+nodes = detectCores()
+nodes
 ```
 
 In our case, there are 4 nodes available for parallelization among which 
@@ -89,39 +86,35 @@ iteration procedures may be divided. Note that this number typically varies
 between computers. Note also that `library(doParallel)` automatically attaches 
 the **foreach** package which we will require later on, so there's no need to 
 manually load it. In fact, this would only be required if we decided to use 
-`foreach` on a single core, but for such operations, we highly recommend to use 
-`*apply`.
+`foreach()` on a single core, but for such operations, we highly recommend to use 
+`*apply` instead.
 
-Next, let's create a socket cluster for parallel processing via `makeCluster`. 
+Next, let's create a socket cluster for parallel processing via `makeCluster()`. 
 Think of this as a set of workers among which a particular work step should be 
-divided equally - just like in the image on the previous page. With 
-`registerDoParallel`, we tell R that it should use the cluster 'cl' for any 
-further multi-core operations performed with `foreach`.
+divided equally &ndash; just like in the image on the previous page. With 
+`registerDoParallel()`, we tell R that it should use the cluster `cl` for any 
+further multi-core operations performed with `foreach()`.
 
 ```{r cluster, warnings = FALSE}
-## create parallel socket cluster
-cl <- makeCluster(3)
-
-## register parallel backend
+## create and register parallel backend
+cl <- makeCluster(0.75 * nodes)
 registerDoParallel(cl)
 ```
 
-You will probably notice that we told R to use 3 nodes to work with. Why not use  
-all 4 nodes?, you might wonder. Well, parallel processing distributed among all 
+You will probably notice that we just told R to use 3 nodes to work with. 'Why not use  
+all 4 nodes?', you might wonder. Well, parallel processing distributed among all 
 nodes available tends to slow down your computer considerably. Since we'd 
 possibly like to perform some other actions while R is occupied (e.g. browsing 
-the internet, checking e-mails, etc.), it is wise to leave some remaining 
+the internet, checking e-mails), it is wise to leave some remaining 
 computational power for such operations as well.  
 
-<hr>
-
-<b>The `foreach` syntax</b>
+<br><b>The `foreach()` syntax</b>
 
 Now that we're set up properly, it's time to give our cluster something to work 
 with. Remember the previous example on calculating the linear relationship 
 between 'carat' and 'price' for each 'cut' quality iteratively? We're gonna do the same thing again now 
-except this time it's `foreach` we'll be working with. Similar to `*apply`, 
-`foreach` requires a set of input data and a function to perform on the very same. 
+except this time it's **foreach** we'll be working with. Similar to `*apply`, 
+`foreach()` requires a set of input data and a function to perform on the very same. 
 Have a look at the following example. 
 
 ```{r foreach, warning = FALSE}
@@ -129,13 +122,13 @@ Have a look at the following example.
 foreach(i = 1:4) %do% sqrt(i)
 ```
 
-Similar to `lapply`, `foreach` returns an object of class 'list' by default. The 
+Similar to `lapply()`, `foreach()` returns an object of class `list` by default. The 
 function body, by contrast, is connected with the part on variable 
 definition via the binary operator `%do%`. This might seem odd at first, but you 
 will notice later on that this syntax comes in quite handy when forwarding 
-`foreach`-related operations to a parallel cluster. 
+`foreach()`-related operations to a parallel cluster. 
 
-We may easily change the output type of `foreach` by telling R how to `.combine` 
+We may easily change the output type here by telling R how to `.combine` 
 the results of the single iterations via 
 
 ```{r combine, warning = FALSE}
@@ -143,22 +136,22 @@ the results of the single iterations via
 foreach(i = 1:4, .combine = "c") %do% sqrt(i)
 ```
 
-et voilà, we transformed the `lapply`-style list output of our loop into an 
+Et voilà, we transformed the `lapply`-style list output of our loop into an 
 `sapply`-style vector output.  
 
-<hr>
+<br><b>Task: apply `lm()` to selected columns using `foreach()`</b>
 
-<b>Task: apply `lm` to selected columns (using `foreach`)</b>
-
-Let's now come back to the 'diamonds' dataset. Since you may just take the 
-function body from the previous application with `lapply`, it's up to you to 
+Let's now come back to the `diamonds` dataset. Since you may just take the 
+function body from the previous application with `lapply()`, it's up to you to 
 calculate the linear model between 'carat' and 'price' for each group of 'cut'. 
-Remember to `split` the 'diamonds' dataset first and pass the thus created list 
-(with each list entry representing a group of uniform cuts) to `foreach`.
+Remember to `split()` the `diamonds` dataset first and pass the thus created list 
+(with each list entry representing a group of uniform cuts) to `foreach()`.
 
+<br>
 <center>
   <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
+<br>
 
 ```{r lm_foreach, eval = FALSE, echo = FALSE, warnings = FALSE}
 ## load 'ggplot2' and split 'diamonds' dataset
@@ -174,9 +167,7 @@ names(rsq) <- unique(diamonds$cut)
 rsq
 ```
 
-<hr>
-
-<b>How *not* to use parallel features</b>
+<br><b>How *not* to use parallel features</b>
 
 Let's see how long this code chunk takes to perform. The **microbenchmark** 
 package is just the right thing for such an operation.
@@ -198,7 +189,7 @@ microbenchmark({
 Hm, quite some time. Let's see how long it takes on when using multiple cores. 
 The only thing that's required in order to let this operation run on multiple 
 cores is to replace `%do%` with `%dopar%`. In doing so (and distributing the 
-iterative `lm` calculation on multiple cores), the operation should perform 
+iterative `lm()` calculation to multiple cores), the operation should perform 
 much faster, right?
 
 ```{r lm_foreach_par_mb, warning = FALSE}
@@ -208,27 +199,23 @@ microbenchmark({
 ```
 
 Oops, what's going on now? Obviously, this action doesn't perform faster at all 
-although we told R to run in parallel via `%dopar%`. In fact, this is a bad 
-example for the parallelized use of `foreach`. `lm` is a highly optimized base-R 
-function that performs quite fast without the need to go parallel. "With [such] 
-small tasks, the overhead of scheduling the task and returning the result can be 
-greater than the time to execute the task itself, resulting in poor 
-performance." [@Weston2014]
+although we told R to run in parallel. In fact, this is a bad 
+example for the parallelized use of `foreach()`. `lm()` is a highly optimized base-R 
+function that performs quite fast without the need to go parallel. 
 
-<hr>
+>"With [such] small tasks, the overhead of scheduling the task and returning the result can be greater than the time to execute the task itself, resulting in poor performance." [@Weston2014]
 
-<b>How to use parallel features</b>
+<br><b>How to use parallel features</b>
 
 Now that you've learned how *not* to use `%dopar%`, let's see what a proper use 
 would look like. 'Proper' in this prospect refers to a piece of code that is 
 computationally expensive and needs to be repeated at least a couple of times. 
 For example, let's assume we wanted to separately predict 'cut', 'color' and 
-'carat' for each specimen from 'diamonds' based on all remaining variables. 
-Using `foreach` (or `lapply`), the referring code would roughly look as follows.
+'carat' for each specimen from `diamonds` based on all the remaining variables. 
+Using `foreach()` (or `lapply()`), the referring code would roughly look as follows.
 
 
 ```{r foreach_ctree, eval = TRUE, message = FALSE, warnings = FALSE}
-## load 'party' package
 library(party)
 
 system.time({
@@ -249,10 +236,10 @@ system.time({
 })
 ```
 
-`ctree` performs rather slowly, which is particularly owing to `nresample` that 
+`ctree()` from **party** performs rather slowly which is particularly owing to the `nresample` argument that 
 tells the function to perform 1000 internal Monte-Carlo replications. Luckily, 
 we can easily split this operation into 3 parts, i.e. one node takes 'cut' as 
-response variable, another node 'color' and a third node 'carat' - at the same 
+response variable, another node 'color', and a third node 'carat' &ndash; at the same 
 time!
 
 ```{r foreach_ctree_par, eval = TRUE, warning = FALSE}
@@ -278,19 +265,17 @@ system.time({
 Of course, this is seconds we are talking about. Nonetheless, everyone of you 
 will eventually end up with quite big datasets upon which computationally 
 expensive operations need to be performed in an iterative manner. It might be 
-hours or even days (trust us, we know what we're talking about...) that one 
-single operation takes to perform - and then, the `%dopar%` might come in quite 
+hours or even days (trust me on this...) that one 
+single operation takes to perform &ndash; and here, the `%dopar%` might come in quite 
 handy.
 
-<hr>
-
-<b>Closing a parallel backend</b>
+<br><b>Closing a parallel backend</b>
 
 One final remark on the proper use of parallel backends in R. When working on 
 multiple cores, you can easily lose track of how many parallel backends, if any, 
 you registered during your current session, especially when some error prevents 
 your script from finishing. If you should ever find yourself in such a 
-situation, do not hesitate to use `showConnections` to print information on 
+situation, do not hesitate to use `showConnections()` to print information on 
 currently open connections to the R console. 
 
 ```{r show_conn}
@@ -299,15 +284,15 @@ showConnections()
 
 There's 3 socket connections (i.e. cores) registered at the moment, just as we 
 initially defined via `registerDoParallel`. In order to close these connections 
-(which we recommend to consider at the end of each parallelized R script), 
+(which we recommend to explicitly do at the end of each parallelized R script), 
 simply perform 
 
 ```{r close_conn}
 stopCluster(cl)
 ```
 
-which explicitly deregisters the implicitly created cluster (except for the 
-'textConnection' required to create this very document, of course &#128521;).
+which closes the implicitly created cluster (except for the 
+'textConnection' required to create this very **bookdown** document, of course &#128521;).
 
 ```{r show_conn2}
 showConnections()
@@ -342,30 +327,25 @@ If this expression does <u>not</u> evaluate to '2', there's something wrong with
 your local setup and you should possibly contact one of the lecturers for 
 troubleshooting.
 
-<hr>
-
-<b>How to make your C++ code available in R</b>
+<br><b>How to make your C++ code available in R</b>
 
 **Rcpp** offers two ways to import C++ functions into R, namely
 
-* `cppFunction` and
-* `sourceCpp`. 
+* `cppFunction()` and
+* `sourceCpp()`. 
 
-While the former takes an entire C++ source code as input argument (`code`), the 
-latter behaves very similar to base-R `source` in the sense that it sources a 
-code file (.cpp) and makes the functions included therein available in your  
+While the former takes an entire C++ source code as input argument, the 
+latter behaves very similar to base-R `source()` in the sense that it sources a 
+code file (`.cpp`) and makes the functions included therein available in your  
 global R environment. During this short overview, however, we'll primarily focus 
 on the first approach while the latter is introduced only briefly.
 
-<hr>
-
-<i>No input, scalar output</i>
+1. <i>No input, scalar output</i>
 
 No matter which approach you will use in the end, **Rcpp** will take the C++ 
 code, compile it and transform it into a proper R function. Imagine, for 
-instance, the following code (which is heavily based on Hadley Wickham's 
-[Advanced R. High performance functions with Rcpp](http://adv-r.had.co.nz/Rcpp.html) 
-tutorial). 
+instance, the following code (which is heavily based on Hadley Wickham's tutorial on
+[High performance functions with Rcpp](http://adv-r.had.co.nz/Rcpp.html) [@Wickham2014]). 
 
 ```{r cpp_ex1}
 ## function that returns '1'
@@ -381,12 +361,12 @@ particular case, is obviously an integer (`int`). Accordingly, R variables of
 type 'numeric', 'character' and 'logical' are referred to as `double`, `String` 
 and `bool` in C++ language. Let's move on to our next example.
 
-<i>Scalar input, scalar output</i>
+2. <i>Scalar input, scalar output</i>
 
 When working with C++ code, you are required to not only specify the output 
 type of your function, but also the type(s) of the input argument(s). The next 
-code chunk defines a function `signC` that takes an integer input `x` and, 
-depending on the arithmetic sign of `x`, returns one of '1', '0' and '-1'. 
+code chunk defines a function `signC()` that takes an integer input `x` and, 
+depending on the arithmetic sign of `x`, returns one of '1', '0', and '-1'. 
 
 ```{r cpp_ex2}
 ## function that returns 1 if 'x' is positive, -1 if 'x' is negative, 0 otherwise
@@ -409,7 +389,7 @@ The only obvious differences are
 * the need to explicitly include a `return` statement and 
 * the semicolons (`;`) terminating each line of code.
 
-<i>Vector input, scalar output</i>
+3. <i>Vector input, scalar output</i>
 
 Although this seems hardly necessary, let's assume for now that we wanted to 
 rewrite the base-R `sum` function in C++. Rather than supplying a scalar input 
@@ -434,32 +414,32 @@ cppFunction('double sumC(NumericVector x) {
 sumC(seq(0, 1, 0.1))
 ```
 
-<i>Matrix input, vector output</i>
+4. <i>Matrix input, vector output</i>
 
 **Rcpp** also comes with a number of so-called 'sugars' that help newcomers to 
 find their way by providing C++-equivalents of a number of built-in R functions. 
 A short overview of featured functions is e.g. given by 
 @Eddelbuettel2011. Among others, these include 
 
-* _math functions_, e.g. `abs`, `ceiling`, `floor`, `exp`, `log`
-* _scalar summaries_, e.g. `mean`, `min`, `max`, `sum`, `sd`, `var`
-* _vector summaries_, e.g. `cumsum`, `diff`
-* _finding utilities_, e.g. `which_max`, `which_min`, `match`
-* _finding duplicates_, e.g. `duplicated`, `unique`
+* _math functions_, e.g. `abs`, `ceiling`, `floor`, `exp`, `log`;
+* _scalar summaries_, e.g. `mean`, `min`, `max`, `sum`, `sd`, `var;
+* _vector summaries_, e.g. `cumsum`, `diff`;
+* _finding utilities_, e.g. `which_max`, `which_min`, `match`;
+* _finding duplicates_, e.g. `duplicated`, `unique`.
 
 In order to demonstrate the proper use of such 'sugars' and, at the same time, 
 introduce `NumericMatrix` (`NumericVector`) as further input (output) variable 
 types, let's replicate the previous example on the use of `apply` to calculate 
-mean values from each single variable column of the 'diamonds' dataset using 
+mean values from each single variable column of the `diamonds` dataset using 
 **Rcpp** functionality. For the sake of simplicity of this demonstration, let's 
-again focus on the numeric columns only (note also the use of `sapply` to create 
+again focus on the numeric columns only (note also the use of `sapply()` to create 
 an index vector of (non-)numeric columns). 
 
 ```{r colMeansC, message = FALSE}
 ## subset with numeric columns only
-library(ggplot2)
-
-num_cols <- sapply(1:ncol(diamonds), function(i) is.numeric(diamonds[, i]))
+num_cols <- sapply(1:ncol(diamonds), function(i) {
+  is.numeric(data.frame(diamonds)[, i])
+})
 diamonds_sub <- as.matrix(diamonds[, num_cols])
 
 ## c++-version of 'colMeans'
@@ -493,8 +473,6 @@ names(means) <- colnames(diamonds_sub)
 means
 
 ## speed check
-library(microbenchmark)
-
 microbenchmark(
   val_apply <- apply(diamonds_sub, 2, mean), 
   val_cpp <- colMeansC(diamonds_sub)
@@ -504,31 +482,29 @@ microbenchmark(
 identical(val_apply, means)
 ```
 
-It's milliseconds we are talking about here, but still - `colMeansC` runs 
-more than 5 times faster as compared to the `apply` approach!
+It's milliseconds we are talking about here, but still - `colMeansC()` runs 
+more than 5 times faster as compared to the `apply()` approach!
 
-<hr>
-
-<b>What's the point of that?</b>
+<br><b>What's the point of that?</b>
 
 You might guess that we did not decide to include this chapter on C++ 
 interconnectivity just for fun. The actual reason is that C++ code performs much 
-faster as compared to R when it comes to `for` loops. Without going too much 
+faster as compared to R when it comes to `for()` loops. Without going too much 
 into detail, one of the underlying reason is the very efficient memory 
 management of the C++ language as compared to the massive overhead that R 
 produces during each intermediary step. But find out for yourselves...
 
-<hr>
+<br><b>Task: `sumR()` vs. `sumC()`</b>
 
-<b>Task: `sumR` vs. `sumC`</b>
+Write a function `sumR()` (do <u>not</u> use the built-in `sum` function) as an 
+equivalent to the above `sumC()` function and have a look at the time it takes to 
+run `sumR(1:1e4)` using `system.time()` (or `microbenchmark()`). 
 
-Write a function `sumR` (do <u>not</u> use the built-in `sum` function) as an 
-equivalent to the above `sumC` function and have a look at the time it takes to 
-run `sumR(1:1e6)` using `system.time` (or `microbenchmark`). 
-
+<br>
 <center>
   <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
+<br>
 
 ```{r sumR, echo = FALSE}
 sumR <- function(x) {
@@ -548,25 +524,23 @@ sumR <- function(x) {
 ```{r speed_check, warning = FALSE}
 ## speed check
 microbenchmark(
-  sum(1:1e6), # built-in `sum` function
-  sumR(1:1e6), # base-R version
-  sumC(1:1e6)  # rcpp version
-, times = 20L)
+  sum(1:1e4), # built-in `sum` function
+  sumR(1:1e4), # base-R version
+  sumC(1:1e4)  # rcpp version
+, times = 100L)
 ```
 
-As you can see, `sumC` runs more than 40 times faster than `sumR` and, at the 
-same time, performs only slightly slower as compared to the highly optimized 
-(vectorized) built-in `sum` function. You cannot imagine what's possible with 
+As you can see, `sumC()` runs more than 40 times faster than `sumR()` and, at the 
+same time, takes only slightly longer as compared to the highly optimized 
+(because vectorized) built-in `sum()` function. You cannot imagine what's possible with 
 **Rcpp** when it comes to more complex operations!
 
-<hr>
+<br><b>A short note on the use of `sourceCpp`</b>
 
-<b>A short note on the use of `sourceCpp`</b>
-
-For such short operations, the use of `cppFunction` seems reasonable. However, 
-we recommend to use `sourceCpp` when it comes to more complex C++ functions. 
+For such short operations, the use of `cppFunction()` seems reasonable. However, 
+we recommend to use `sourceCpp()` when it comes to more complex C++ functions. 
 Take, for example, the following peace of C++ code that reproduces the built-in 
-`cor` function. 
+`cor()` function. 
 
 ```{r cor_cppFunction, eval = FALSE}
 cppFunction('double corC(NumericVector x, NumericVector y) {
@@ -590,17 +564,19 @@ cppFunction('double corC(NumericVector x, NumericVector y) {
 
 Quite confusing, isn't it? Not the least because the inline C++ is not formatted 
 properly. Luckily, RStudio comes with a C++ editor that allows you to write 
-stand-alone .cpp functions - including code formatting! For that purpose, 
-select 'C++ file' from the top-left dropdown menu and paste the code that we 
-initially passed as `code` argument to `cppFunction`. 
+stand-alone `.cpp` functions &ndash; including code formatting! For that purpose, 
+select 'C++ file' from the top-left drop-down menu and paste the code that we 
+initially passed as `character` input to `cppFunction()`. 
 
+<br>
 <center>
   <img src="http://i.imgur.com/nKf0QZH.png" alt="new_cpp" style="width: 125px;"/>
 </center>
+<br>
 
 In order to ensure compatibility with **Rcpp** and make the C++ function 
-available in R, we need to add a header to our .cpp file (see below). In the 
-end, our .cpp file should look as follows.
+available in R, we need to add a header to our `.cpp` file (see below). In the 
+end, this should look as follows.
 
 ```{r engine='Rcpp'}
 #include <Rcpp.h>
@@ -626,7 +602,7 @@ double corC(NumericVector x, NumericVector y) {
 }
 ```
 
-Save the file in 'src/corC.cpp' and return to R, then run
+Save the file in `src/corC.cpp`, for example, and go back to R. Then run
 
 ```{r cor_sourceCpp}
 ## source 'corC' function (remember to adjust the path)
@@ -639,5 +615,5 @@ microbenchmark(
 , times = 20L)
 ```
 
-Note that, again, `corC` performs only slightly slower than the built-in `cor` 
-function. Just imagine the speed gain as compared to a possible `corR` function!
+Wow, `corC()` performs even faster than the built-in and highly optimized `cor()` 
+function &ndash; at least on my machine. Just imagine the speed gain as compared to a self-written `corR()` function!

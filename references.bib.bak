@@ -1,0 +1,118 @@
+% Encoding: UTF-8
+@Manual{xie2015knitr,
+  title = {knitr: A General-Purpose Package for Dynamic Report Generation in R},
+  author = {Yihui Xie},
+  year = {2015},
+  note = {R package version 1.10.5},
+  url = {http://yihui.name/knitr/},
+}
+
+@Manual{boettiger2015knitcitations,
+  title = {knitcitations: Citations for Knitr Markdown Files},
+  author = {Carl Boettiger},
+  year = {2015},
+  note = {R package version 1.0.6},
+  url = {http://CRAN.R-project.org/package=knitcitations},
+}
+
+@Manual{wickham2015devtools,
+  title = {devtools: Tools to Make Developing R Packages Easier},
+  author = {Hadley Wickham and Winston Chang},
+  year = {2015},
+  note = {R package version 1.8.0},
+  url = {http://CRAN.R-project.org/package=devtools},
+}
+
+@Manual{2014gitbook,
+  title = {Gitbook: Build beautiful interactive books using GitHub/Git and Markdown},
+  author = {{Samy Pess{\a'e} and Aaron O'Mullan}},
+  year = {2014},
+  url = {http://www.gitbook.io/},
+}
+
+@Book{Xie2016,
+  title     = {{\textbf{bookdown}: Authoring Books and Technical Documents with R Markdown}},
+  publisher = {{CRC Press}},
+  year      = {2016},
+  author    = {Yihui Xie},
+  series    = {{Chapman \& Hall/CRC {The R Series}}},
+  isbn      = {9781138700109},
+  note      = {Available online: \url{https://bookdown.org/yihui/bookdown/}},
+}
+
+@article{Son2001,
+author = {Son, Jin Hyun and Kim, Myoung Ho},
+title = {Improving the performance of time-constrained workflow processing},
+journal = {Journal of Systems and Software},
+volume = {58},
+number = {3},
+pages = {211--219},
+year = {2001},
+issn = {0164-1212},
+doi = {10.1016/S0164-1212(01)00039-5}
+}
+
+@article{Wickham2007,
+   author = {Hadley  Wickham},
+   title = {Reshaping Data with the \textbf{reshape} Package},
+   journal = {Journal of Statistical Software},
+   volume = {21},
+   number = {12},
+   year = {2007},
+   pages = {1--20},
+   doi = {10.18637/jss.v021.i12}
+}
+
+@article{Denning1990,
+ ISSN = {00368075, 10959203},
+ author = {Peter J. Denning and Walter F. Tichy},
+ journal = {Science},
+ number = {4985},
+ pages = {1217-1222},
+ publisher = {American Association for the Advancement of Science},
+ title = {Highly Parallel Computation},
+ volume = {250},
+ year = {1990}
+}
+
+@Manual{Weston2014,
+    title = {Getting Started with \textbf{doParallel} and \textbf{foreach}},
+    author = {Steve Weston and Rich Calaway},
+    year = {2014},
+    note = {Available online: \url{http://www.stat.colostate.edu/~jah/Computing_Hints/files/gettingstartedParallel.pdf}},
+    url = {https://CRAN.R-project.org/package=doParallel}
+}
+
+@article{Eddelbuettel2011,
+   author = {Dirk Eddelbuettel and Romain Francois},
+   title = {\textbf{Rcpp}: Seamless R and C++ Integration},
+   journal = {Journal of Statistical Software},
+   volume = {40},
+   number = {8},
+   year = {2011},
+   issn = {1548-7660},
+   pages = {1--18},
+   doi = {10.18637/jss.v040.i08}
+}
+
+@Book{Wickham2014,
+  title     = {{Advanced R}},
+  publisher = {CRC Press},
+  year      = {2014},
+  author    = {Hadley Wickham},
+  series    = {{Chapman \& Hall/CRC {The R Series}}},
+  isbn      = {1466586966},
+  note      = {Available online: \url{http://adv-r.had.co.nz/}},
+}
+
+@Book{Eddelbuettel2013,
+  title     = {{Seamless R and C++ Integration with \textbf{Rcpp}}},
+  publisher = {Springer},
+  year      = {2013},
+  author    = {Dirk Eddelbuettel},
+  series    = {{Use R!}},
+  isbn      = {978-1-4614-6867-7},
+  doi       = {10.1007/978-1-4614-6868-4},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}

@@ -29,7 +29,7 @@ since most tutorials tend to start with the very basics of the language, e.g.
 ## [1] 2
 ```
 
-or, when it comes to using variables instead of calculator functionalities,  
+or, when it comes to using variables instead of calculator-style raw numbers,  
 
 
 ```r
@@ -48,26 +48,26 @@ is because of the overwhelming number of R tutorials on the web that
 this particular tutorial starts a little later, after the first excitement has 
 settled and one has grown familiar with the syntax and the basic commands.
 
-That is all very well, but soon you will notice that you could use a little more 
+All well and good, of course, but soon you will notice that you could use a little more 
 of the stuff you heard R was capable of. There is, for instance, the saying that 
 using `for` loops in R is not quite convenient - as opposed to other programming 
-languages, including C++! So how is that, and what should I use as an 
+languages like C++. So how is that, and what should I use as an 
 alternative?
 
 The same possibly applies for base **graphics**. Sure thing, everyone of us has been 
-excited at some stage about the professional default style of R's artworks, not 
-least because of the rather awkward MS Excel style that is still widely applied, 
-among others, in the fields of academic research. Well, decide for yourselves 
-which of the following figures is more appealing for you. 
+excited at some stage about the professional default style of R's artwork, not 
+least because of the rather awkward MS Excel style that is still widely applied 
+in the field of academic research, among others. Well, decide for yourselves 
+which of the following figures &ndash; that were both created using (almost) default settings only &ndash; is more appealing for you. 
 
 <img src="figure/figures-1.png" title="plot of chunk figures" alt="plot of chunk figures" style="display: block; margin: auto;" />
 
-It could also be conceivable that you came across a work step that requires 
-massive computational power, and thus takes quite long to perform. R, by default, 
+It could also be conceivable that you came across a work step that required 
+massive computational power, and thus took quite long to finish. R, by default, 
 uses only one core on your machine, which could likely be the reason for the 
 slow performance of your code. If you haven't heard, you can actually tell R to 
 use multiple cores to reasonably split up slow peaces of code and make certain 
-operations perform much fast. Today, most machines come with at least 4 internal 
+operations perform much faster. Today, most machines come with at least 4 internal 
 cores which makes it easy to do such stuff.
 
 You see, there's plenty of applications that definitely go beyond the scope of a 

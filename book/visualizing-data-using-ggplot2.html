@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Advanced Programming in R</title>
   <meta name="description" content="Advanced Programming in R">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.5.4 and GitBook 2.6.7">
 
   <meta property="og:title" content="Advanced Programming in R" />
   <meta property="og:type" content="book" />
@@ -103,8 +103,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="chapter" data-level="1" data-path="towards-a-structured-workflow.html"><a href="towards-a-structured-workflow.html"><i class="fa fa-check"></i><b>1</b> Towards a structured workflow</a><ul>
-<li class="chapter" data-level="1.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>1.1</b> RStudio projects</a></li>
-<li class="chapter" data-level="1.2" data-path="github-version-control.html"><a href="github-version-control.html"><i class="fa fa-check"></i><b>1.2</b> GitHub version control</a></li>
+<li class="chapter" data-level="1.1" data-path="git.html"><a href="git.html"><i class="fa fa-check"></i><b>1.1</b> Git version control</a></li>
+<li class="chapter" data-level="1.2" data-path="rproj.html"><a href="rproj.html"><i class="fa fa-check"></i><b>1.2</b> RStudio projects</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="data-handling-and-visualization.html"><a href="data-handling-and-visualization.html"><i class="fa fa-check"></i><b>2</b> Data handling and visualization</a><ul>
 <li class="chapter" data-level="2.1" data-path="summarizing-data.html"><a href="summarizing-data.html"><i class="fa fa-check"></i><b>2.1</b> Summarizing data</a></li>
@@ -112,9 +112,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.3" data-path="visualizing-data-using-ggplot2.html"><a href="visualizing-data-using-ggplot2.html"><i class="fa fa-check"></i><b>2.3</b> Visualizing data using <strong>ggplot2</strong></a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="iteration-procedures.html"><a href="iteration-procedures.html"><i class="fa fa-check"></i><b>3</b> Iteration procedures</a><ul>
-<li class="chapter" data-level="3.1" data-path="for-loops.html"><a href="for-loops.html"><i class="fa fa-check"></i><b>3.1</b> <em>for</em> loops</a></li>
-<li class="chapter" data-level="3.2" data-path="the-apply-family.html"><a href="the-apply-family.html"><i class="fa fa-check"></i><b>3.2</b> The <em>*apply</em> family</a></li>
-<li class="chapter" data-level="3.3" data-path="functional-programming.html"><a href="functional-programming.html"><i class="fa fa-check"></i><b>3.3</b> Functional programming</a></li>
+<li class="chapter" data-level="3.1" data-path="for.html"><a href="for.html"><i class="fa fa-check"></i><b>3.1</b> <code>for()</code> loops</a></li>
+<li class="chapter" data-level="3.2" data-path="the-apply-family.html"><a href="the-apply-family.html"><i class="fa fa-check"></i><b>3.2</b> The <code>*apply</code> family</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="the-apply-family.html"><a href="the-apply-family.html#apply"><i class="fa fa-check"></i><b>3.2.1</b> <code>apply()</code></a></li>
+<li class="chapter" data-level="3.2.2" data-path="the-apply-family.html"><a href="the-apply-family.html#lapply-and-sapply"><i class="fa fa-check"></i><b>3.2.2</b> <code>lapply()</code> and <code>sapply()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="functional-programming.html"><a href="functional-programming.html"><i class="fa fa-check"></i><b>3.3</b> Functional programming</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="functional-programming.html"><a href="functional-programming.html#custom-functions"><i class="fa fa-check"></i><b>3.3.1</b> Custom functions</a></li>
+<li class="chapter" data-level="3.3.2" data-path="functional-programming.html"><a href="functional-programming.html#functionals"><i class="fa fa-check"></i><b>3.3.2</b> Functionals</a></li>
+<li class="chapter" data-level="3.3.3" data-path="functional-programming.html"><a href="functional-programming.html#closures"><i class="fa fa-check"></i><b>3.3.3</b> Closures</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="speeding-up-iteration-procedures.html"><a href="speeding-up-iteration-procedures.html"><i class="fa fa-check"></i><b>4</b> Speeding up iteration procedures</a><ul>
 <li class="chapter" data-level="4.1" data-path="parallelization.html"><a href="parallelization.html"><i class="fa fa-check"></i><b>4.1</b> Parallelization</a></li>
@@ -144,32 +151,31 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="visualizing-data-using-ggplot2" class="section level2">
 <h2><span class="header-section-number">2.3</span> Visualizing data using <strong>ggplot2</strong></h2>
 <p>Now that you’ve grown familiar with the basics of data manipulation using <strong>dplyr</strong> and <strong>reshape2</strong>, the next logical step in our workflow is to visualize the data that we’ve exhaustively prepared. Be aware that there are plenty of marvellous graphics packages available in R depending on which tasks you’d like to perform. Within the scope of our short course, <strong>ggplot2</strong> will do just fine not least because it is closely linked to the previously performed manipulation tasks (maybe because of the same author).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## load &#39;ggplot2&#39; package
-<span class="kw">library</span>(ggplot2)</code></pre></div>
-<p>In <strong>ggplot2</strong>, every plot we want to draw consists of subsequent calls on how to represent the individual plot components (basically <code>x</code> and <code>y</code>). This means a much more consistent way of <em>building</em> visualizations as compared, for instance, to the much more conventional style of <strong>lattice</strong>, but it also means that things are rather different from what you might have learned about syntax and structure of (plotting) objects in R so far.</p>
-<p>Note also that the brief examples shown below are mainly taken from another MARA course about <a href="https://oer.uni-marburg.de/data/mriliasmooc/lm_data/lm_1901/index.html">Creating publication quality graphs using R</a>. Feel free to browse the text tutorial or the accompanying <a href="http://moc.environmentalinformatics-marburg.de/doku.php?id=courses:sp:pqgr">course slides</a> in case you’re not entirely satisfied with the rather shallow introduction given here or if you wish to learn more about <strong>lattice</strong>-style figures.</p>
-<hr>
-<p><b>Scatter plots</b></p>
-<p>Scatter plots are produced by invoking <code>geom_points()</code>. If we wanted to plot variables ‘price’ and ‘carat’ from the ‘diamonds’ dataset against each other, the <code>ggplot</code> call would be as follows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price), <span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
+<p>In <strong>ggplot2</strong>, every plot we want to draw consists of incremental calls on how to represent the individual plot components (basically <code>x</code> and <code>y</code>). This means a much more consistent way of <em>building</em> visualizations as compared, for instance, to the much more conventional style of <strong>lattice</strong>, but it also means that things are rather different from what you might have learned about syntax and structure of (plotting) objects in R so far.</p>
+<p>Note also that the brief examples shown below are mainly taken from another MARA course about <a href="https://oer.uni-marburg.de/data/mriliasmooc/lm_data/lm_1901/index.html">Creating publication quality graphs using R</a>. Feel free to browse the code tutorial or the accompanying <a href="http://moc.online.uni-marburg.de/doku.php?id=courses:sp:pqgr">course slides</a> in case you’re not entirely satisfied with the rather shallow introduction given here or if you wish to learn more about <strong>lattice</strong>-style figures.</p>
+<p><br><b>Scatter plots</b></p>
+<p>Scatter plots are produced by invoking <code>geom_points()</code>. If we wanted to plot variables ‘price’ and ‘carat’ from <code>diamonds</code> against each other, the <code>ggplot()</code> call would be as follows.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+
+<span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price), <span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:gg-scat"></span>
-<img src="main_files/figure-html/gg-scat-1.svg" alt="A basic scatter plot created with ggplot2" width="672" />
+<img src="main_files/figure-html/gg-scat-1.svg" alt="A basic scatter plot created with **ggplot2**." width="672" />
 <p class="caption">
-Figure 2.1: A basic scatter plot created with ggplot2
+Figure 2.1: A basic scatter plot created with <strong>ggplot2</strong>.
 </p>
 </div>
-<p>Let’s look at the above code in a little more detail. The first line is the fundamental definition of <strong>what</strong> we want to plot. We provide the ‘aesthetics’ for the plot (<code>aes()</code>) and state that we want the values on the <code>x</code>-axis (<code>y</code>-axis) to represent ‘carat’ (‘price’). The <code>data</code> to take these variables from is the ‘diamonds’ dataset. That’s basically it, and this will not change a hell of a lot in the subsequent plotting routines.</p>
-<p>What will change in the code chunks that follow is <strong>how</strong> we want the relationship between these variables to be represented in our plot. This is done by defining so-called geometries (<code>geom_...()</code>). In this first case we stated that we want the relationship between <code>x</code> and <code>y</code> to be rpresented as points, hence we used <code>geom_point()</code>.</p>
+<p>Let’s look at the above code in a little more detail. The first line is the fundamental definition of <em>what</em> we want to plot. We provide the ‘aesthetics’ for the plot (<code>aes()</code>) and state that we want the values on the <code>x</code>-axis (<code>y</code>-axis) to represent ‘carat’ (‘price’). The <code>data</code> to take these variables from is our <code>diamonds</code> dataset. That’s basically it, and this will not change a hell of a lot in the subsequent plotting routines.</p>
+<p>What will change in the code chunks that follow is <em>how</em> we want the relationship between these variables to be represented in our plot. This is done by defining so-called geometries (<code>geom_*()</code>). In this first case we stated that we want the relationship between <code>x</code> and <code>y</code> to be represented as points, hence we used <code>geom_point()</code>.</p>
 <p>For the sake of practicing, let’s add another layer to our plot. In order to provide the regression line, for instance, we need a function called <code>stat_smooth()</code>. Note that we also specify the smoothing <code>method</code> and the line <code>colour</code>, <code>size</code> and <code>linetype</code>. <code>se = FALSE</code> tells the function not to display confidence intervals for the moment. See <code>?stat_smooth</code> for a more detailed overview of costumization possibilities.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price), <span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">stat_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>, 
               <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>)</code></pre></div>
-<div class="figure"><span id="fig:gg-scat-stat"></span>
-<img src="main_files/figure-html/gg-scat-stat-1.svg" alt="A scatter plot incl. regression line." width="672" />
+<div class="figure" style="text-align: center"><span id="fig:gg-scat-stat"></span>
+<img src="main_files/figure-html/gg-scat-stat-1.svg" alt="A **ggplot2** scatter plot incl. regression line." width="672" />
 <p class="caption">
-Figure 2.2: A scatter plot incl. regression line.
+Figure 2.2: A <strong>ggplot2</strong> scatter plot incl. regression line.
 </p>
 </div>
 <p>If we wanted to provide a plot showing the relationship between ‘price’ and ‘carat’ in panels representing the quality of the diamonds, we need what in <strong>ggplot2</strong> is called facetting (similar to panels in <strong>lattice</strong>). To achive this, we simply repeat our plotting call from earlier and add another layer to the call which does the facetting. Note that this time, confidence intervals are included via <code>se = TRUE</code> and <code>fill</code>-ed grey.</p>
@@ -179,12 +185,12 @@ Figure 2.2: A scatter plot incl. regression line.
               <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;grey35&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>cut)</code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:gg-scat-facet"></span>
-<img src="main_files/figure-html/gg-scat-facet-1.svg" alt="ggplot2 version of a facetted plot" width="672" />
+<img src="main_files/figure-html/gg-scat-facet-1.svg" alt="A facetted scatter plot created with **ggplot2**." width="672" />
 <p class="caption">
-Figure 2.3: ggplot2 version of a facetted plot
+Figure 2.3: A facetted scatter plot created with <strong>ggplot2</strong>.
 </p>
 </div>
-<p>One thing that some people dislike about the default settings in <strong>ggplot2</strong> is the grey background of the plots. This grey background is, in our opinion, a good idea when colors are involved as it tends to increase the contrast of the colors. If, however, the plot is a simple black-and-white scatter plot, a white facet background seems more reasonable. We can easily change this using a pre-defined theme called <code>theme_bw()</code>. Note that in the following, we also change the axis titles (<code>labs</code>) and the number of rows (<code>nrow</code>) and columns (<code>ncol</code>) into which the facets should be arranged - simple and straightforward.</p>
+<p>One thing that some people dislike about the default settings in <strong>ggplot2</strong> is the grey background of the plots. This grey background is, in my opinion, a good idea when colors are involved as it tends to increase the contrast of the colors. If, however, the plot is a simple black-and-white scatter plot, a white facet background seems more reasonable. We can easily change this using a pre-defined theme called <code>theme_bw()</code>. Note that in the following, we also change the axis titles (<code>labs()</code>) and the number of rows (<code>nrow</code>) and columns (<code>ncol</code>) into which the facets should be arranged – simple and straightforward, isnt’t it?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price), <span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">colour =</span> <span class="st">&quot;grey65&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">stat_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">TRUE</span>, 
@@ -192,15 +198,14 @@ Figure 2.3: ggplot2 version of a facetted plot
 <span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>cut, <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">3</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Carat&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Price ($)&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
-<div class="figure" style="text-align: center">
-<img src="main_files/figure-html/gg-scat-facet_bw-1.svg" alt="A ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel" width="672" />
+<div class="figure" style="text-align: center"><span id="fig:gg-scat-facet-bw"></span>
+<img src="main_files/figure-html/gg-scat-facet-bw-1.svg" alt="A facetted scatter plot created with **ggplot2** and using a modified theme." width="672" />
 <p class="caption">
-(#fig:gg-scat-facet_bw)A ggplot2 panel plot with modified theme and added regression lines and confidence bands for each panel
+Figure 2.4: A facetted scatter plot created with <strong>ggplot2</strong> and using a modified theme.
 </p>
 </div>
-<hr>
-<p><b>Box and whisker plots</b></p>
-<p>Box and whisker plots drawn with <strong>ggplot2</strong> look quite nice and, in contrast to <strong>lattice</strong>, do not require the user to exhaustively modify graphical parameter settings in order to get an acceptable result. But see for yourselves (using the default settings).</p>
+<p><br><b>Box and whisker plots</b></p>
+<p>Box and whisker plots (in the following ‘boxplots’) drawn with <strong>ggplot2</strong> look quite nice and, in contrast to <strong>lattice</strong>, do not require the user to exhaustively modify graphical parameter settings in order to get an acceptable result. But see for yourselves (using the default settings).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## basic frame
 p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> color, <span class="dt">y =</span> price), <span class="dt">data =</span> diamonds)
 
@@ -210,13 +215,13 @@ p_bw &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> 
 ## print
 <span class="kw">print</span>(p_bw)</code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:gg-bw"></span>
-<img src="main_files/figure-html/gg-bw-1.svg" alt="A basic ggplot2 bw-plot" width="672" />
+<img src="main_files/figure-html/gg-bw-1.svg" alt="A basic boxplot created with **ggplot2**." width="672" />
 <p class="caption">
-Figure 2.4: A basic ggplot2 bw-plot
+Figure 2.5: A basic boxplot created with <strong>ggplot2</strong>.
 </p>
 </div>
-<p>Note that this time, we stored the basic frame of our plot in a variable <code>p</code> and added the desired <code>geom_boxplot()</code> layer afterwards. In order to keep a clear structure (and not to get in trouble with Tim), this is possibly the ideal way to create graphics using <strong>ggplot2</strong> - so stick to it!</p>
-<p>As we’ve already seen, the facetting is also just one more line of code.</p>
+<p>Note that this time, we stored the basic frame of our plot in a variable <code>p</code> and added the desired <code>geom_boxplot()</code> layer afterwards. In order to keep a clear structure, this is possibly the ideal way to create graphics using <strong>ggplot2</strong> - so stick to it!</p>
+<p>As we’ve already seen, facetting and modifying the default theme require also just one more line of code each.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## add faceted boxplots
 p_bw &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill =</span> <span class="st">&quot;grey90&quot;</span>) <span class="op">+</span>
@@ -225,14 +230,13 @@ p_bw &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> 
 
 <span class="kw">print</span>(p_bw)</code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:gg-bw-facet"></span>
-<img src="main_files/figure-html/gg-bw-facet-1.svg" alt="ggplot2 panel bw-plot" width="672" />
+<img src="main_files/figure-html/gg-bw-facet-1.svg" alt="A facetted boxplot created with **ggplot2** and using a modified theme." width="672" />
 <p class="caption">
-Figure 2.5: ggplot2 panel bw-plot
+Figure 2.6: A facetted boxplot created with <strong>ggplot2</strong> and using a modified theme.
 </p>
 </div>
-<hr>
-<p><b>Histograms and density plots</b></p>
-<p>Much like with the box and whisker plot, <strong>ggplot2</strong> produces quite nice histograms and density plots when using the default settings.</p>
+<p><br><b>Histograms and density plots</b></p>
+<p>Much like with boxplots, <strong>ggplot2</strong> produces quite nice histograms and density plots when using the default settings.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## new basic frame
 p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> price), <span class="dt">data =</span> diamonds)
 
@@ -241,12 +245,12 @@ p_hist &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"
 
 <span class="kw">print</span>(p_hist)</code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:gg-hist"></span>
-<img src="main_files/figure-html/gg-hist-1.svg" alt="A basic histogram produced with ggplot2" width="672" />
+<img src="main_files/figure-html/gg-hist-1.svg" alt="A basic histogram produced with **ggplot2**." width="672" />
 <p class="caption">
-Figure 2.6: A basic histogram produced with ggplot2
+Figure 2.7: A basic histogram produced with <strong>ggplot2</strong>.
 </p>
 </div>
-<p>When working with <strong>ggplot2</strong> densityplots, it is quite easy to fill the area under the curve which really contributes to the visual representation of the data.</p>
+<p>When working with density plots in <strong>ggplot2</strong>, it is quite easy to fill the area under the curve which really contributes to the visual representation of the data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## add densityplot
 p_dens &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">fill =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)
 
@@ -254,17 +258,17 @@ p_dens &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"
 <div class="figure" style="text-align: center"><span id="fig:gg-dens"></span>
 <img src="main_files/figure-html/gg-dens-1.svg" alt="A basic density plot produced with ggplot2" width="672" />
 <p class="caption">
-Figure 2.7: A basic density plot produced with ggplot2
+Figure 2.8: A basic density plot produced with ggplot2
 </p>
 </div>
-<p>In addition to <code>theme_bw</code> which you already encountered before, there’s a lot of different <code>theme</code> settings that let you customize your plots at will. For instance, let us slightly rotate the tick labels on the x-axis and move them horizontally a little bit. <code>element_text</code> is an essential function to achieve such things as it allows you to modify, amongst others,</p>
+<p>In addition to <code>theme_bw()</code>, there’s a lot of different <code>theme()</code> settings that let you customize your plots at will. For instance, let us slightly rotate the tick labels on the x-axis and move them horizontally a little bit. <code>element_text()</code> is an essential function to achieve such things as it allows you to modify, among others,</p>
 <ul>
 <li>font <code>family</code> and <code>face</code> (e.g. ‘bold’),</li>
 <li>text <code>colour</code> and <code>size</code>,</li>
 <li>horizontal (<code>hjust</code>) and vertical (<code>vjust</code>) justification as well as</li>
 <li><code>angle</code> of the tick labels.</li>
 </ul>
-<p>(In case you prefer American English, <code>element_text</code> also understands <code>color</code> instead of <code>colour</code> ☺)</p>
+<p>(In case you prefer American English, <code>element_text()</code> – or for that matter any <strong>ggplot2</strong> function – also understands <code>color</code> instead of <code>colour</code> ☺)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_dens &lt;-<span class="st"> </span>p <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">fill =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(color <span class="op">~</span><span class="st"> </span>cut) <span class="op">+</span>
@@ -273,9 +277,9 @@ Figure 2.7: A basic density plot produced with ggplot2
 
 <span class="kw">print</span>(p_dens)</code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:gg-facet-density"></span>
-<img src="main_files/figure-html/gg-facet-density-1.svg" alt="A ggplot2 panel density plot conditioned according to 2 variables" width="672" />
+<img src="main_files/figure-html/gg-facet-density-1.svg" alt="A facetted density plot conditioned according to 2 variables created with **ggplot2**." width="672" />
 <p class="caption">
-Figure 2.8: A ggplot2 panel density plot conditioned according to 2 variables
+Figure 2.9: A facetted density plot conditioned according to 2 variables created with <strong>ggplot2</strong>.
 </p>
 </div>
 

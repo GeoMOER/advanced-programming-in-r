@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Advanced Programming in R</title>
   <meta name="description" content="Advanced Programming in R">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.5.4 and GitBook 2.6.7">
 
   <meta property="og:title" content="Advanced Programming in R" />
   <meta property="og:type" content="book" />
@@ -103,8 +103,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="chapter" data-level="1" data-path="towards-a-structured-workflow.html"><a href="towards-a-structured-workflow.html"><i class="fa fa-check"></i><b>1</b> Towards a structured workflow</a><ul>
-<li class="chapter" data-level="1.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>1.1</b> RStudio projects</a></li>
-<li class="chapter" data-level="1.2" data-path="github-version-control.html"><a href="github-version-control.html"><i class="fa fa-check"></i><b>1.2</b> GitHub version control</a></li>
+<li class="chapter" data-level="1.1" data-path="git.html"><a href="git.html"><i class="fa fa-check"></i><b>1.1</b> Git version control</a></li>
+<li class="chapter" data-level="1.2" data-path="rproj.html"><a href="rproj.html"><i class="fa fa-check"></i><b>1.2</b> RStudio projects</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="data-handling-and-visualization.html"><a href="data-handling-and-visualization.html"><i class="fa fa-check"></i><b>2</b> Data handling and visualization</a><ul>
 <li class="chapter" data-level="2.1" data-path="summarizing-data.html"><a href="summarizing-data.html"><i class="fa fa-check"></i><b>2.1</b> Summarizing data</a></li>
@@ -112,9 +112,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.3" data-path="visualizing-data-using-ggplot2.html"><a href="visualizing-data-using-ggplot2.html"><i class="fa fa-check"></i><b>2.3</b> Visualizing data using <strong>ggplot2</strong></a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="iteration-procedures.html"><a href="iteration-procedures.html"><i class="fa fa-check"></i><b>3</b> Iteration procedures</a><ul>
-<li class="chapter" data-level="3.1" data-path="for-loops.html"><a href="for-loops.html"><i class="fa fa-check"></i><b>3.1</b> <em>for</em> loops</a></li>
-<li class="chapter" data-level="3.2" data-path="the-apply-family.html"><a href="the-apply-family.html"><i class="fa fa-check"></i><b>3.2</b> The <em>*apply</em> family</a></li>
-<li class="chapter" data-level="3.3" data-path="functional-programming.html"><a href="functional-programming.html"><i class="fa fa-check"></i><b>3.3</b> Functional programming</a></li>
+<li class="chapter" data-level="3.1" data-path="for.html"><a href="for.html"><i class="fa fa-check"></i><b>3.1</b> <code>for()</code> loops</a></li>
+<li class="chapter" data-level="3.2" data-path="the-apply-family.html"><a href="the-apply-family.html"><i class="fa fa-check"></i><b>3.2</b> The <code>*apply</code> family</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="the-apply-family.html"><a href="the-apply-family.html#apply"><i class="fa fa-check"></i><b>3.2.1</b> <code>apply()</code></a></li>
+<li class="chapter" data-level="3.2.2" data-path="the-apply-family.html"><a href="the-apply-family.html#lapply-and-sapply"><i class="fa fa-check"></i><b>3.2.2</b> <code>lapply()</code> and <code>sapply()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="functional-programming.html"><a href="functional-programming.html"><i class="fa fa-check"></i><b>3.3</b> Functional programming</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="functional-programming.html"><a href="functional-programming.html#custom-functions"><i class="fa fa-check"></i><b>3.3.1</b> Custom functions</a></li>
+<li class="chapter" data-level="3.3.2" data-path="functional-programming.html"><a href="functional-programming.html#functionals"><i class="fa fa-check"></i><b>3.3.2</b> Functionals</a></li>
+<li class="chapter" data-level="3.3.3" data-path="functional-programming.html"><a href="functional-programming.html#closures"><i class="fa fa-check"></i><b>3.3.3</b> Closures</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="speeding-up-iteration-procedures.html"><a href="speeding-up-iteration-procedures.html"><i class="fa fa-check"></i><b>4</b> Speeding up iteration procedures</a><ul>
 <li class="chapter" data-level="4.1" data-path="parallelization.html"><a href="parallelization.html"><i class="fa fa-check"></i><b>4.1</b> Parallelization</a></li>
@@ -143,11 +150,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="final-remarks" class="section level1">
 <h1><span class="header-section-number">5</span> Final remarks</h1>
-<p>We sincerely hope that this tutorial provides some useful parts to enhance your data analysis workflow. For a more general approach to software design (every function that you write is a software!) have a look at <a href="http://www.plosbiology.org/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.1001745&amp;representation=PDF">this publication</a>.</p>
-<p>This sources of this tutorial are hosted at <a href="https://github.com/marburg-open-courseware/advanced-programming-in-r">GitHub</a></p>
-<p>Bug reports or feature requests should be filed at <a href="https://github.com/marburg-open-courseware/advanced-programming-in-r/issues" class="uri">https://github.com/marburg-open-courseware/advanced-programming-in-r/issues</a></p>
-<p>In case you want to provide feedback, don’t hesitate to contact <a href="http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/florian-detsch/">Florian Detsch</a> or <a href="http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/tim-appelhans/">Tim Appelhans</a></p>
+<p>I sincerely hope that this tutorial provides some useful parts to enhance your data analysis workflow. For a more general approach to software design (every function that you write is a software!), have a look at <span class="citation">Wilson (<a href="#ref-Wilson2014">2014</a>)</span>.</p>
+<p>The sources of this tutorial are hosted at <a href="https://github.com/marburg-open-courseware/advanced-programming-in-r">GitHub</a>.</p>
+<p>Bug reports or feature requests are always welcome and should be filed <a href="https://github.com/marburg-open-courseware/advanced-programming-in-r/issues">here</a>.</p>
+<p>In case you want to provide feedback, don’t hesitate to contact me at <a href="mailto:florian.detsch@staff.uni-marburg.de">florian.detsch{at}staff.uni-marburg.de</a>.</p>
 
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Wilson2014">
+<p>Wilson, D. A. AND Brown, Greg AND Aruliah. 2014. “Best Practices for Scientific Computing.” <em>PLOS Biology</em> 12 (1). Public Library of Science: 1–7. doi:<a href="https://doi.org/10.1371/journal.pbio.1001745">10.1371/journal.pbio.1001745</a>.</p>
+</div>
 </div>
             </section>
 

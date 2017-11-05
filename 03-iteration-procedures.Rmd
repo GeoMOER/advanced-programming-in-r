@@ -5,22 +5,18 @@ In computer programming the term iterative process usually refers to some block 
 * Iteration
 * Recursion
 
-In this part of the tutorial we will have a closer look at **Iteration** and how to achieve it in numerous ways in R. In general, Iteration executes a certain function or combination of functions repeatedly until some condition is met.
+In this part of the tutorial we will have a closer look at _Iteration_ and how to achieve it in numerous ways in R. In general, _Iteration_ executes a certain function or combination of functions repeatedly until some condition is met.
 
-* The classical `for`-loop is common in pretty much all programming languages, 
-* while `*apply` is pretty exclusive to R. 
-* Finally, given that R is a so-called functional programming language, we will also see how we can use `functionals` and `closures` which are very elegant and flexible structures to iteratively achieve a certain aim.
+* The classical `for` loop is common in pretty much all programming languages, 
+* while `*apply` is pretty exclusive to R (except for **Pandas** in Python). 
+* Finally, given that R is a so-called functional programming language, we will also see how we can use 'functionals' and 'closures' which are very elegant and flexible structures to iteratively achieve a certain aim.
 
------
+*Recursion* is another aspect of repeated computation, however, we will not delve into any detail on this topic here. In contrast to Iteration, recursive structures define functions that call themselves until a certain condition is met. Below is a classical example of a recursive function, the so-called 'quicksort' algorithm. This function sorts a numerical vector from small to large values by 
 
-**Recursion** is another aspect of repeated computation, however, we will not delve into any detail on this topic here. In contrast to Iteration, recursive structures define functions that call themselves until a certain condition is met. Below is a classical example of a recursive function, the so-called `quicksort` algorithm. This function sorts a numerical vector from small to large values by 
-
-* first selecting an arbitrary value from the vector (in the below case the first) called the pivot
-* rearranging the remainding values so that all values smaller than pivot come before it and all larger values after it
+* first selecting an arbitrary value from the vector (in the below case the first) called the pivot,
+* rearranging the remainding values so that all values smaller than pivot come before it and all larger values after it, and
 * repeating this procedure within the function by calling itself for either side of the pivot.
-
-
-* Once there are only single values left on either side of the pivot, the function stops
+* Once there are only single values left on either side of the pivot, the function stops.
 
 Note, without the inherent stopping condition this function will run for eternity.
 
@@ -37,37 +33,39 @@ qsort <- function(v) {
 qsort(rnorm(10))
 ```
 
-Because they call themselves, recursive functions are inherently hard to code, understand and debug. Therefore, we leave it at this small example and continue with the more understandable structures of iterative comutation, namely `for`-loops, `*apply` functions and `functional programming`.
+Because they call themselves, recursive functions are inherently hard to code, understand and debug. Therefore, we leave it at this small example and continue with the more understandable structures of iterative comutation, namely `for()` loops, `*apply` functions and 'functional programming'.
 
 
-## *for* loops
+## `for()` loops {#for}
 
-Maybe the most important part of any advanced analysis workflow is to avoid (code) repetition. If you need to perform a certain task many times, propper interation structures are far more desirable than the classical copy and paste approach. 
+Maybe the most important part of any advanced analysis workflow is to avoid (code) repetition. If you need to perform a certain task many times, proper interation structures are far more desirable than the classical copy-and-paste approach. 
 
 Why? Because they
 
-* help you avoid errors (as each copy of any code chunk increases the risk of error introduction)
-* make debugging a lot easier as you only have to debug once
-* make your code a lot shorter and more readable
-* save you time coding
-* ...
+* help you avoid errors (as each copy of any code chunk increases the risk of error introduction);
+* make debugging a lot easier as you only have to debug once;
+* make your code a lot shorter and more readable;
+* save you time coding;
+* etc.
 
-The classical iteration structure is the so-called _for loop_. Classic, because it is the back-bone of any and all programming languages. The basic concept is simple
+The classical iteration structure is the so-called `for` loop. Classic, because it is the back-bone of any and all programming languages. The basic concept is simple
 
 ```
 for (a certain amount of iterations)
   do this
 ```
 
-The way the iteration sequence is specified differs between languages, but the basic principle is always the same.
-
-The sequence is usually specified via some placeholder - most popular of which is i for iteration - which usually represents an integer sequence, though you can also iterate over character strings. Here's a very simple loop:
+The way the iteration sequence is specified differs between languages, but the basic principle is always the same. The sequence is usually specified via some placeholder &ndash; most popular of which is `i` for iteration &ndash; which usually represents an `integer` sequence, though you can also iterate over `character` strings. Here's a very simple loop:
 
 ```{r print loop}
 for (i in 1:5) print(i)
 ```
 
 Make sure you code clearly so that you can easily understand what your code is doing. Therefore, when using iteration structures, try to provide meaningful placeholder names.
+
+```{r tmp1, message = FALSE, echo = FALSE}
+library(ggplot2)
+```
 
 ```{r name loop1}
 for (name in names(diamonds)) print(name)
@@ -76,30 +74,29 @@ for (name in names(diamonds)) print(name)
 Another way to specify an iteration is via the `seq()` function which can be used to create a sequence of integers based on the length of an object.
 
 ```{r names loop2}
-for (i in seq(names(diamonds))) cat("The class of colom", i, "is",  class(diamonds[, i]), "\n")
+for (i in seq(names(diamonds))) cat("The class of colom", i, "is",  class(data.frame(diamonds)[, i]), "\n")
 ```
 
 Did you spot the spelling mistake in the above example? It is easy to debug this, as we only need to correct the error once, not `r length(names(diamonds))` times.
 
-<hr>
+<br><b>Task: Looping the mean, meaning the loop</b>
 
-<b>Task: Looping the mean, meaning the loop</b>
+Take the above `for` loop and modify so that instead of the class it prints out the mean of each column.
 
-Take the above `for`-loop and modify so that instead of the class it prints out the mean of each column.
-
+<br>
 <center>
   <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
-
+<br>
 
 Obviously, we are usually not interested in simply printing something to the console (though this can be a great way of keeping track of where you're computation is in case of long running loops). Most of the time we want to actually run some computations/statistical analyses. The principle remains the same. 
 
-You may have heard the notion that `for`-loops in R are slow and should be avoided. This is true in many situations. As a general rule, 
+You may have heard the notion that `for()` loops in R are slow and should be avoided. This is true in many situations. As a general rule, 
 
-* __you should avoid `for`-loops whenever you want to do calculations on parts of an object. This can be achieved much more efficiently with indexing in R__
-* __if you have multiple objects and you want to carry out the same operation on each of them or you have one object and want to carry out different types of calculations on this same object, there is nothing wrong with using `for`-loops.__
+> you should avoid `for()` loops whenever you want to do calculations on parts of an object. This can be achieved much more efficiently with indexing in R
+> if you have multiple objects and you want to carry out the same operation on each of them or you have one object and want to carry out different types of calculations on this same object, there is nothing wrong with using `for()` loops.
 
-One common scenario is to work with different data sources. Here, `for`-loops can be quite useful. To highlight this, let's create a few data sources and save them to disk (we will load these again later).
+One common scenario is to work with different data sources. Here, `for()` loops can be quite useful. To highlight this, let's create a few data sources and save them to disk (we will load these again later).
 
 Instead of reusing the same lines of code, we dynamically subset the data, build suitable names for saving and finally save each part of the data.
 
@@ -132,24 +129,24 @@ for (i in seq(indx_start)) {
 }
 ```
 
-`for`-loops are great for iterative operations that do not require assignment of their output to an object, e.g. the example above of saving data or producing plots. If we want the outcome of a loop to be assigned to an object and use this for further analysis, R has much more convenient structures which we will see in the next chapter.
+`for()` loops are great for iterative operations that do not require assignment of their output to an object, e.g. the example above of saving data or producing plots. If we want the outcome of a loop to be assigned to an object and use this for further analysis, R has much more convenient structures which we will see in the next chapter.
 
 Finally, there are more pieces related to iteration procedures in R:
 
-* `while`-loops to do semthing while some condition is met (e.g. while a certain value is below a certain threshold or thelike)
-* `break` allows you to create a condition so that once it is met, the loop will stop
-* `next` allows you to create a condition so that if it is met, the execution of the current iteration is skipped and the loop procedes to the next iteration without breaking the loop
-* `if`-statements can also be helpful to prevent errors within loops
+* `while()` loops to do something while some condition is met (e.g. while a certain value is below a certain threshold or the like).
+* `break` allows you to create a condition so that once it is met, the loop will stop.
+* `next` allows you to create a condition so that if it is met, the execution of the current iteration is skipped and the loop procedes to the next iteration without breaking the loop.
+* Finally, `if`-statements can also be helpful to prevent errors within loops.
 
 
-## The *\*apply* family
+## The `*apply` family
 
-You may have heard of this family of functions and may have wondered what they are all about and how they differ from classic loop structures. 
+You have possibly heard of this family of functions and may have wondered what they are all about and how they differ from classic loop structures. 
 
-In this cóurse we will familiarize ourselves with 
+In this course we will familiarize ourselves with 
 
-* `apply()`
-* `lapply()` and `sapply()`
+* `apply()` as well as
+* `lapply()` and `sapply()`.
 
 First of all, we need to recognize that these structures are pretty much unique to R. The reason for this is that R is at its very core a so-called _functional programming language_. This means nothing else than "every operation in R is carried out by an appropriate function". In fact, even the classical `<-` assignment operator is defined in the same way as any other function in R.
 
@@ -163,27 +160,22 @@ b
 "+"(a, b)
 ```
 
-You may wonder why this is relevant to understand `*apply`? 
+You may wonder why this is relevant to understand `*apply`? Well, the one thing that all `*apply` functions have in common is that they are all so-called functionals that can take a function as an argument. Usually, these functionals take some object and some function as input and then apply the function to every entry of the object. The difference between the various `*apply` functions is basically the type of object they are designed for and hence each of these has slightly different requirements for the structure of the supplied function.
 
-The one thing that all `*apply` functions have in common is that they are all so-called functionals that can take a function as an argument. Usually, these functionals take some object and some function as input and then apply the function to every entry of the object. The difference between the various `*apply` functions is basically the type of object they are designed for and hence each of these has slightly different requirements for the structure of the supplied function.
 
-<hr>
+### `apply()`
 
-<b>apply()</b>
+First, let's have a look at `apply()`. It has three main arguments:
 
-First, let's have a look at `apply()`. It has three main arguments
+| Argument | Description                                                       |
+| -------- | ----------------------------------------------------------------- |
+| `X`      | A matrix (or array) or 'clean' data.frame that can be coerced to a matrix, i.e. no mixture of classes in the columns (see example below). |
+| `MARGIN` | An integer specifying whether to apply the supplied function across the rows (1) or columns (2). |
+| `FUN`    | The function to be applied. |
 
-* `X` a matrix (or array) - or a 'clean' data frame that can be coerced to a mtraix, i.e. no mixture of classes in the columns (see example below)
-* `MARGIN` an integer specifying whether to apply the supplied function to the rows (1) or the columns (2)
-* `FUN` the function to be applied
-
-Other function related arguments such as `na.rm = ...` can also be supplied.
-
-Let's try this
+Other function-related arguments such as `na.rm` can also be supplied. Let's try this:
 
 ```{r apply}
-data(diamonds)
-
 ## subset diamonds to only numerical columns
 diamonds_num <- diamonds[, -c(2:4)]
 
@@ -192,26 +184,24 @@ col_means <- apply(diamonds_num, 2, mean, na.rm = TRUE)
 col_means
 ```
 
-<hr>
+<br><b>Task: apply sd to rows</b>
 
-<b>Task: apply sd to rows</b>
+Similar to the example above, calculate the standard deviation for each row of `diamonds`.
 
-Similar to the example above, calculate the standard deviation for each row of diamonds.
-
+<br>
 <center>
   <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
+<br>
+
+In R, `apply()` is the classical function to be used with data in matrix-like form to quickly iterate over one dimension (rows or columns). It is optimized for this kind of action and is much quicker than looping over rows or columns with `for()` loops which is the standard way in other languages such as Python or C++.
 
 
-In R, `apply()` is the classical function to be used with data in matrix-like form to quickly iterate over one dimension (rows or columns). It is optimized for this kind of action and is much quicker than looping over rows/columns with a `for`-loop which is the satndard way in other languages such as Pyhton or C++.
-
-<hr>
-
-<b>lapply()</b>
+### `lapply()` and `sapply()`
 
 More powerful than `apply()` is `lapply()`. The 'l' stands for list and simply means that whatever is returned from an iterative process will be stored in a list. In R, lists are the most flexible way of storing things but their structure may need a little getting used to. Basically, you can store any combination of objects in lists. Matrices, for example, are much less versatile.
 
-Let's have a look at what these lists look like:
+Let's have a look at what these `list` objects look like:
 
 ```{r lists}
 lst <- list(1:10, 
@@ -221,34 +211,33 @@ lst <- list(1:10,
             function(x) x + 1, 
             data.frame(col1 = rnorm(10), col2 = runif(10)),
             matrix(1:9, 3, 3))
-
 lst
 ```
 
-As you can see we can combine any odd type of objects. Note how each list entry is numbered. We could have supplied names as well, but it is less common to do so if your list is the result of an interative procedure. And accessing lists via their numbered entries is quite straight forward, yet a little different from the classical `$` notation of data frames. To 'navigate' to one of the entries we need to use double square brackets `[[x]]`. This is important as this will be the notion we need to keep in mind when iteration over lists.
+As you can see we can combine any odd type of objects. Note how each list entry is numbered. We could have supplied names as well, but it is less common to do so if your list is the result of an interative procedure. And accessing lists via their numbered entries is quite straightforward, yet a little different from the classical `$` notation of data frames. To 'navigate' to one of the entries we need to use double square brackets `[[x]]`. This is important as this will be the notion we need to keep in mind when iterating over lists.
 
-`lapply()` can basically be used just like a `for`-loop, though the semntics are a little different. The two main differences are 
+`lapply()` can basically be used just like a `for()` loop, though the semantics are a little different. The two main differences are:
 
-1. we can store the whole result of the `lapply()` call in an object (a list)
-2. we need to write the bit that does the calculation part as a function 
+1. We can store the whole result of the `lapply()` call in an object (a `list`), and
+2. we need to write the bit that does the calculation part as a function.
 
-So, if we were to recreate the first example from the previous chapter on `for`-loops
+So, if we were to recreate the first example from the previous chapter on `for()` loops:
 
 ```{r lapply names}
 result <- lapply(1:5, function(i) i)
 result
 ```
 
-The only time we will use `sapply()` in his tutorial is right here. `sapply()` and `lapply()` are very similar, so that it is sufficient to cover only one in detail. The 's' stands for 'simplify' which means that `sapply()` will try to return and object of simple structure, such as a vector or a matrix. 
+The only time we will use `sapply()` in this tutorial is right here. `sapply()` and `lapply()` are very similar, so that it is sufficient to cover only one in detail. The 's' stands for 'simplify' which means that `sapply()` will try to return an object of simple structure, such as a vector or a matrix. 
 
-Let's repeat the above with `sapply()`
+Let's repeat the above with `sapply()`:
 
 ```{r sapply names}
 result <- sapply(1:5, function(i) i)
 result
 ```
 
-Getting a vector as a result is great if the calculation produces a vector, however this won't work if the result is e.g. a function or a `ggplot2`-object or something along those lines. Therefore, `lapply()` is simply the more versatile of the two as it can handle any type of result. 
+Getting a vector as a result is great if the calculation produces a vector, however, this won't work if the result is e.g. a function, a **ggplot2** object or something along those lines. Therefore, `lapply()` is simply the more versatile of the two as it can handle any type of result. 
 
 To highlight this, let's use `lapply()` to read in the numerous chunks of data we have previously saved.
 
@@ -263,16 +252,16 @@ dat_lst <- lapply(seq(fls), function(i) {
 str(dat_lst, 1)
 ```
 
-Great, you might say, but now we have a list of multiple data frames instead of one complete data frame. In our case this seems rather silly, but think about situations where you want to analyse the same sort of data only from different dates or from different locations or patients or ...
+Great, you might say, but now we have a list of multiple data frames instead of one complete data frame. In our case this seems rather silly, but think about situations where you want to analyze the same sort of data only from different dates or different locations or patients or ... &ndash; you probably get the idea.
 
-Also, recombining these individual data frames back into one is tsraight forward. 
+Also, recombining these individual data frames back into one is straightforward. 
 
 ```{r do.call dfs}
 diamonds_df <- do.call("rbind", dat_lst)
 str(diamonds_df)
 ```
 
-Fianlly, let's look at a slightly more involved example of how to use `lapply()`. A standard analysis workflow likely involves some sort of statistical analysis + the visualisation of the results in some way. Here, we will create linear models between 'carat' and 'price' and the corresponding scatterplots for all levels of 'cut' but only for those diamonds of 'color = D'.
+Fianlly, let's look at a slightly more involved example of how to use `lapply()`. A standard analysis workflow likely involves some sort of statistical analysis and the visualization of the results. Here, we will create linear models between 'carat' and 'price' and the corresponding scatter plots for all levels of 'cut', but only for those diamonds of 'color = D'.
 
 ```{r lapply final}
 ## split diamonds by cut
@@ -310,35 +299,34 @@ names(my_result_list) <- names(cut_lst)
 str(my_result_list, 2)
 ```
 
-This let's us now quickly access each of the analyses individually. To view the scatterplot for diamonds of 'cut = Premium' we simply navigate down to the respective entry (Note, given that we have set the names for the resulting lists we can now use the common `$` notation for the navigation):
+This lets us now quickly access each of the analyses individually. To view the scatter plot for diamonds of 'cut = Premium', we simply navigate down to the respective entry:
 
-```{r list scatter}
+```{r list-scatter}
 my_result_list$Premium$plt
 ```
 
-We can, hovever still navigate using `[[]]`. To get the summary of the linear model for 'cut = Ideal':
+Note that we can now use the common `$` notation for the navigation given that we have set the names for the resulting lists. We can, however, still navigate using double square brackets (`[[]]`). To get the summary of the linear model for 'cut = Ideal':
 
 ```{r list lm}
 summary(my_result_list[[5]][[1]])
 ```
 
-I hope this highlights how useful and flexible `lapply()` can be. Another scenario that is quite common is to carry out different calculations/computations on the same set of data. This can easily be done using `lapply()` by iterating over the different functions and calling them on the same data set within the `lapply()` loop.
+I hope this highlights how useful and flexible `lapply()` can be. Another scenario that is quite common is to carry out different calculations on the same set of data. This can easily be done using `lapply()` by iterating over the different functions and calling them on the same data set within the `lapply()` loop.
 
 
 ## Functional programming
 
 As mentioned in the previous chapter, R is at its core a functional programming language. Put more general, we can say that
 
-* everything that exists is an object
-* everything that happens is a function call
+* everything that exists is an object and
+* everything that happens is a function call.
 
-<hr>
 
-<b>Custom functions</b>
+### Custom functions
 
-The biggest draw-back of point-and-click statistics software is that they are usually limited in the functionality they provide. The provide you with a suite of pre-defined analysis tools and algorithms but usually it is rather tedious to extend these. R on the other hand is a full-blown programming language which means that there are next to no limits to what you can do. One of the most important features to expand existing functionality is to write your own functions. Functions that do not exist elsewhere. In fact, this is the main reason behind R package development.
+The biggest draw-back of point-and-click statistics software is that they are usually limited in the functionality they provide. In fact, they provide you with a suite of pre-defined analysis tools and algorithms but usually it is rather tedious to extend these. R, on the other hand, is a full-blown programming language which means that there are next to no limits to what you can do. One of the most important features to expand existing functionality is to write your own functions, i.e. functions that do not exist elsewhere. In fact, this is the main reason behind R package development.
 
-So, let's try and create a custom function. A function to calculate the Pythogorean Theorem does not exist in base R. Sure it may exist in some package somewhere, but I argue that it is much easier and quicker to write this yourself.
+So, let's try and create a custom function. A function to calculate the Pythagorean Theorem does not exist in base R. Sure, it may exist in some package somewhere, but I argue that it is much easier and quicker to write this yourself.
 
 ```{r custom function}
 pythagoreanTheorem <- function(a, b) {
@@ -349,34 +337,31 @@ pythagoreanTheorem <- function(a, b) {
 pythagoreanTheorem(3, 4)
 ```
 
-Easy!
+Easy! Creating custom functions thereby always follows the same procedure:
 
-Creating custom functions always follows the same procedure:
-
-1. provide a meaningful name and use `<-` to assign `function(x, y, z)` where
-2. `x, y, z` are an arbitrary number of named arguments (need not be x, y, z) that are needed for the calculation(s) in the 
-3. function body that does all the calculation(s) using the supplied arguments
-4. a `return()` call to specify what the function will return. If this is not supplied, the result of the last calculation is returned
+1. Provide a meaningful name and use `<-` (or `=`) to assign `function(x, y, z)` where
+2. `x, y, z` are an arbitrary number of arbitrarily named arguments that are needed for the calculation(s) in the 
+3. function body that does all the calculation(s) using the supplied arguments.
+4. Finally, a `return()` call to specify what the function will return. If this is not supplied, the result of the last calculation is returned
 
 Now it is time for you to try this yourselves.
 
-<hr>
+<br><b>Task: write your own function</b>
 
-<b>Task: write your own</b>
+In R, we can easily calculate a population's standard deviation around the mean using `sd()`, but there is no default implementation for the [standard error of the mean](https://en.wikipedia.org/wiki/Standard_error). Therefore, it is up to you to write one now. 
 
-In R we can easily calculate a pupolations standard deviation around the the mean using `sd()` but there is no default implementation for the [standard error of the mean](https://en.wikipedia.org/wiki/Standard_error). Therefore, it is up to you to write one now. 
+Note, there are far more standard error statistics for which R does not provide standard base functions, such as the [root mean square error (RMSE)](https://en.wikipedia.org/wiki/Root-mean-square_deviation) or the [absolute error (AE)](https://en.wikipedia.org/wiki/Approximation_error). Therefore, if you're keen go ahead and practice writing functions to provide these.
 
-Note, there are far more standard error statistics for which R does not provide standard base functions, such as the [root mean square error RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) or the [absolute error AE](https://en.wikipedia.org/wiki/Approximation_error). Therefore, if you're keen go ahead and practice writing functions to provide these.
-
+<br>
 <center>
   <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Hourglass_2.svg" alt="hourglass" style="width: 125px;"/>
 </center>
+<br>
 
-<hr>
 
-<b>Functionals</b>
+### Functionals
 
-We've already seen functionals, functions that take other functions as arguments. However, so far we've only used these with standard base R functions. But we can also supply a custom function to a functional.
+We've already seen _functionals_, functions that take other functions as arguments. However, so far we have only used these with standard, i.e. base R functions. But we can also supply a custom function to a functional.
 
 ```{r custom functional}
 dat <- data.frame(a = c(3, 7, 11, 1, 24, 2),
@@ -387,13 +372,12 @@ sapply(seq(nrow(dat)), function(i) pythagoreanTheorem(dat[i, 1], dat[i, 2]))
 
 Given that R comes equipped with a great variety of `*apply()` functionals, it is usually not necessary to write a functional yourself. 
 
-<hr>
 
-<b>Closures</b>
+### Closures
 
-The counterpart to functionals are so-called closures. These are functions that return (or build) a function according to some supplied argument. To illustrate this, let's consider the following situation:
+The counterpart to functionals are so-called _closures_. These are functions that return (or build) a function according to some supplied argument. To illustrate this, let's consider the following situation:
 
-We have a bunch of possible predictor variables and a bunch of response variables and we want to figure out the best combination in explaining the variances. 
+We have a bunch of possible predictor variables, a bunch of response variables, and we want to figure out the best combination in explaining the variances. 
 
 ```{r closure rsq}
 ### generate some random data
@@ -423,7 +407,7 @@ summary(lm(resp$resp2 ~ pred$pred2))$r.squared
 summary(lm(resp$resp3 ~ pred$pred2))$r.squared
 summary(lm(resp$resp4 ~ pred$pred3))$r.squared
 
-#.... and so forth
+# ... and so forth
 ```
 
 This is far from being optimal. Despite the fact that we have to type a lot, we are very prone to introduce errors (can you spot them?) and it is particularly hard to debug. Here, defining a closure can be of great help.
@@ -431,20 +415,17 @@ This is far from being optimal. Despite the fact that we have to type a lot, we 
 ```{r calRsq}
 ### define closure
 calcRsq <- function(pred) {
-
   function(y) {
     summary(lm(y ~ pred))$r.squared
   }
-
 }
 ```
 
-We now have a universal way of defining functions to calculate R-squared values
+We now have a universal way of defining functions to calculate R-squared values:
 
 ```{r closure pred1}
 ## create function using pred$v1 as predictor
 calcRsq_pred1 <- calcRsq(pred$pred1)
-
 calcRsq_pred1(resp$resp1)
 ```
 
@@ -454,7 +435,7 @@ Using it explicitly like above doesn't really help us much, although we have mad
 apply(resp, 2, calcRsq_pred1)
 ```
 
-But why stop here, taking advantage of `sapply()` we can calculate every possible combination in one go.
+But why stop here? Taking advantage of `sapply()`, we can calculate every possible combination in one go.
 
 ```{r sapply clacRsq, warning = FALSE}
 sapply(seq(ncol(pred)), function(i) {
@@ -465,9 +446,9 @@ sapply(seq(ncol(pred)), function(i) {
 
 In words, we 
 
-1. iterate over the columns of pred - `seq(ncol(pred))`
-2. define a function `f` by setting the closure to use the column of the current iteration - `f <- calcRsq(pred[, i])`
-3. apply this function `f` to all columns of resp - `apply(resp, 2, f)`
+1. iterate over the columns of pred - `seq(ncol(pred))`,
+2. define a function `f` by setting the closure to use the column of the current iteration &ndash; `f <- calcRsq(pred[, i])`, and
+3. apply this function `f` to all columns of resp - `apply(resp, 2, f)`.
 
 The result is equivalent to what `cor(resp, pred)` produces.
 
@@ -475,7 +456,7 @@ The result is equivalent to what `cor(resp, pred)` produces.
 cor(resp, pred)^2
 ```
 
-So you see that the combination of functionals and closures is a powerful, flexible and elegant way of generalising computations. In fact, it is so flexible that we can now use the same functions for any data frames.
+So you see that the combination of functionals and closures is a powerful, flexible and elegant way of generalizing computations. In fact, it is so flexible that we can now use the same functions for any data frames.
 
 ```{r closure-diamonds}
 df1 <- data.frame(diamonds[, c(1, 5, 6)])
@@ -487,6 +468,6 @@ sapply(seq(ncol(df1)), function(i) {
 })
 ```
 
-This is especially valuable for large calculations that require iterating over a set of objects. A classic scenario for using closures in combination with functionals is to find a 'best' value, i.e. some parameter that optimises a fit or something along those lines.
+This is especially valuable for large calculations that require iterating over a set of objects. A classic scenario for using closures in combination with functionals is to find a 'best' value, i.e. some parameter that optimizes a fit or something along those lines.
 
-A very detailed tutorial on how to use functional programming in R can be found in Hadley Wickham's book [Advanced R](http://adv-r.had.co.nz/Functional-programming.html). This goes quite a bit deeper than what is outlined here and has a rather neat example of how to use functional programming to flexibly deal with encodings for missing data (e.g. -99, -999, -9999, ...).
+A very detailed tutorial on how to use functional programming in R can be found in Hadley Wickham's book [Advanced R](http://adv-r.had.co.nz/Functional-programming.html) [@Wickham2014]. This goes quite a bit deeper than what is outlined here and has a rather neat example of how to use functional programming to flexibly deal with encodings for missing data (e.g. -99, -999, -9999, etc.).
